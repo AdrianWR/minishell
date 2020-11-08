@@ -2,6 +2,7 @@
 
 build/
 *.a.out
+minishell
 
 ### Vim.gitignore
 

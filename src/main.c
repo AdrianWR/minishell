@@ -1,4 +1,4 @@
-#include "msh.h"
+#include "minishell.h"
 
 int	main()
 {
