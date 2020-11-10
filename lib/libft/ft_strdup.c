@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2020/11/08 17:34:04 by aroque           ###   ########.fr       */
+/*   Created: 2020/01/22 14:09:14 by aroque            #+#    #+#             */
+/*   Updated: 2020/01/24 15:26:02 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(void)
+char	*ft_strdup(const char *s1)
 {
-	char cwd[PATH_MAX];
+	int		i;
+	char	*s;
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("Current working dir: %s\n", cwd);
-	else
-		perror("getcwd() error");
-	return (0);
+	i = -1;
+	if (!s1 || !(s = malloc((ft_strlen(s1) + 1) * sizeof(*s))))
+		return (NULL);
+	while (s1[++i])
+		s[i] = s1[i];
+	s[i] = '\0';
+	return (s);
 }

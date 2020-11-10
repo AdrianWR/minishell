@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2020/11/08 17:34:04 by aroque           ###   ########.fr       */
+/*   Created: 2020/01/20 11:21:14 by aroque            #+#    #+#             */
+/*   Updated: 2020/01/22 18:36:08 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(void)
+/*
+**	Returns the number of characters of
+**	nul-terminated string.
+*/
+
+size_t	ft_strlen(const char *s)
 {
-	char cwd[PATH_MAX];
-
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("Current working dir: %s\n", cwd);
-	else
-		perror("getcwd() error");
-	return (0);
+	if (!*s)
+		return (0);
+	return (ft_strlen(++s) + 1);
 }

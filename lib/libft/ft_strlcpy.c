@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2020/11/08 17:34:04 by aroque           ###   ########.fr       */
+/*   Created: 2019/12/02 14:47:01 by aroque            #+#    #+#             */
+/*   Updated: 2020/01/25 18:04:37 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(void)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char cwd[PATH_MAX];
+	size_t i;
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("Current working dir: %s\n", cwd);
-	else
-		perror("getcwd() error");
-	return (0);
+	if (!src)
+		return (0);
+	i = -1;
+	if (dstsize)
+	{
+		while (src[++i] && i < dstsize - 1)
+			dst[i] = src[i];
+		dst[i] = '\0';
+	}
+	return (ft_strlen(src));
 }

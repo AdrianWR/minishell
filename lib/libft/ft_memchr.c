@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2020/11/08 17:34:04 by aroque           ###   ########.fr       */
+/*   Created: 2020/01/21 20:24:23 by aroque            #+#    #+#             */
+/*   Updated: 2020/01/22 13:05:13 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(void)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	char cwd[PATH_MAX];
-
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("Current working dir: %s\n", cwd);
+	if (!n)
+		return (0);
+	else if (*(unsigned char*)s == (unsigned char)c)
+		return ((void *)s);
 	else
-		perror("getcwd() error");
-	return (0);
+		return (ft_memchr(++s, c, --n));
 }
