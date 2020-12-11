@@ -30,7 +30,7 @@ LD_FLAGS=	-L${LIB_DIR}	\
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB)
-	$(CC) $(LD_FLAGS) $< -o $@
+	$(CC) $< $(LD_FLAGS) -o $@
 
 ${OBJ_DIR}/%.o: %.c
 	$(CC) -g $(CC_FLAGS) $< -o $@ 
