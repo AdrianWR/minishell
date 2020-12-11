@@ -30,7 +30,7 @@ compile_commands.json
 
 # Libraries
 *.lib
-*.a
+**.a
 *.la
 *.lo
 
