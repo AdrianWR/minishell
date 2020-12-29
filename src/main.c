@@ -6,25 +6,47 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2020/12/15 21:16:18 by aroque           ###   ########.fr       */
+/*   Updated: 2020/12/28 23:13:51 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
+#include "libft.h"
 #include "minishell.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
+#include <stdio.h>
 
-// HEHEHE Vou quebrar a norminette
-// Boa Davi
-// Boa Victor
-// Boa Salem
-// Wow!!! :D
 
-int	main(void)
+/*
+ * Main shell execution loop. REPL stands
+ * for Read-Eval-Print-Loop. All the process
+ * may be forked from REPL, and it runs until
+ * an 'exit' command or a SIGINT.
+ */
+void	repl(void)
 {
-	char cwd[PATH_MAX];
+	char 	*line;
+	char	**args;
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("Current working dir: %s\n", cwd);
-	else
-		perror("getcwd() error");
-	return (0);
+	while (true)
+	{
+		ft_putstr_fd("aroque@minishell $ ", STDOUT_FILENO);
+		get_next_line(STDIN_FILENO, &line);
+		args = ft_split(line, ' ');
+		create_process(args);
+	}
+}
+
+int		main(void)
+{
+	// Load configuration file and env variables
+	
+	// REPL loop
+	repl();
+
+	// Free memory and config
+
+	return (EXIT_SUCCESS);
 }
