@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2020/12/28 23:13:51 by aroque           ###   ########.fr       */
+/*   Updated: 2020/12/29 11:44:46 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,14 @@ void	repl(void)
 	}
 }
 
-int		main(void)
+int		main(int argc, char *argv[], char *envp[])
 {
 	// Load configuration file and env variables
-	
+	(void) argc;
+	(void) argv;
+
+	printf("%s\n", *envp);
+
 	// REPL loop
 	repl();
 
