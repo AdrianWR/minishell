@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   errcode.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2020/12/28 23:13:28 by aroque           ###   ########.fr       */
+/*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
+/*   Updated: 2020/12/28 23:57:13 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef ERRCODE_H
+# define ERRCODE_H
 
-# include "libft.h"
+# include <errno.h>
 
-void  		create_process(char **argv);
+typedef enum	e_errcode {
+	__ERRNONE,
+	ERRSYS,
+	ECMDNF,
+	__ERRMAX
+}				t_errcode;
+
+char			*g_errstr[__ERRMAX] = {
+	"__ERRNONE",
+	"System error",
+	"Command not found..."
+};
+
+void			message_and_exit(t_errcode code, char *note);
 
 #endif
