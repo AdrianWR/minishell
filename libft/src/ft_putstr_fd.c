@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/22 11:27:22 by aroque            #+#    #+#             */
-/*   Updated: 2020/01/24 17:57:02 by aroque           ###   ########.fr       */
+/*   Created: 2020/01/22 11:28:59 by aroque            #+#    #+#             */
+/*   Updated: 2020/12/29 11:05:25 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "libft.h"
 
-void	ft_putchar_fd(char c, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
-	write(fd, &c, 1);
+	if (!s)
+		return ;
+	if (*s)
+	{
+		ft_putchar_fd(*s, fd);
+		ft_putstr_fd(++s, fd);
+	}
 }

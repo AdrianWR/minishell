@@ -1,24 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/22 11:28:59 by aroque            #+#    #+#             */
-/*   Updated: 2020/01/24 19:05:49 by aroque           ###   ########.fr       */
+/*   Created: 2020/12/28 18:44:22 by aroque            #+#    #+#             */
+/*   Updated: 2020/12/28 18:52:13 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_putstr_fd(char *s, int fd)
+void	cd(char *path)
 {
-	if (!s)
-		return ;
-	if (*s)
-	{
-		ft_putchar_fd(*s, fd);
-		ft_putstr_fd(++s, fd);
-	}
+	(void) path;
 }
