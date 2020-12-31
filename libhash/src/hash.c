@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 15:48:40 by aroque            #+#    #+#             */
-/*   Updated: 2020/05/12 18:09:21 by aroque           ###   ########.fr       */
+/*   Updated: 2020/12/30 21:20:00 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 ** Return: Numeric unique identifier related to input key.
 */
 
-unsigned int	hash(const char *key, unsigned int size)
+unsigned int		hash(const char *key, unsigned int size)
 {
 	unsigned int	hash;
 	unsigned int	i;

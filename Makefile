@@ -60,7 +60,7 @@ ifneq ($(BUILD_STATIC),0)
     STATIC_LIBRARY_OUTPUT = $(patsubst %,lib/%.a,$(LIBRARY_FOLDERS))
 endif
 
-all: $(SHARED_LIBRARY_OUTPUT) $(STATIC_LIBRARY_OUTPUT) $(NAME)
+all: $(NAME)
 
 override CPPFLAGS += -MMD
 -include $(shell find build -name "*.d" 2> /dev/null)
@@ -72,7 +72,7 @@ endif
 .build-target: force
 	@echo $(BUILD) | cmp -s - $@ || echo $(BUILD) > $@
 
-$(NAME): build/$(BUILD)/bin/$(NAME) .build-target
+$(NAME): build/$(BUILD)/bin/$(NAME) .build-target $(STATIC_LIBRARY_OUTPUT)
 	mkdir -p $(@D)
 	cp -f $< $@
 

@@ -5,6 +5,7 @@
 minishell
 .clangd/
 .cache/
+.build-target
 compile_commands.json
 
 ###################
