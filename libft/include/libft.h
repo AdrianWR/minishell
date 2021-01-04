@@ -6,7 +6,7 @@
 /*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 11:24:25 by aroque            #+#    #+#             */
-/*   Updated: 2020/12/29 11:06:50 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/04 00:08:50 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,10 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 */
 
 int					ft_isspace(char str);
+size_t				ft_strspn(const char *s, const char *accept);
+size_t				ft_strcspn(const char *s, const char *reject);
+char				*ft_strtok(char *str, const char *delim);
+char				*ft_strtok_r(char *str, const char *delim, char **ptr);
 
 /*
 **	░░░░░░░█▐▓▓░████▄▄▄█▀▄▓▓▓▌█

@@ -6,17 +6,17 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 15:40:53 by aroque            #+#    #+#             */
-/*   Updated: 2020/12/31 02:47:36 by aroque           ###   ########.fr       */
+/*   Updated: 2020/12/31 16:14:22 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HASH_H
 # define HASH_H
 
-typedef struct		s_list {
+typedef struct		s_htlist {
 	char			*key;
 	void			*value;
-	struct s_list	*next;
+	struct s_htlist	*next;
 }					t_htlist;
 
 typedef struct		s_hashtable {

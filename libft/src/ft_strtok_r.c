@@ -1,34 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strtok_r.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/02 10:26:57 by aroque           ###   ########.fr       */
+/*   Created: 2021/01/04 00:05:28 by aroque            #+#    #+#             */
+/*   Updated: 2021/01/04 00:06:23 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash.h"
 #include "libft.h"
 
-#define HT_SIZE_ENV 1031
-
-t_hashtable		*load_env(char *envp[])
+char		*ft_strtok_r(char *str, const char *delim, char **save_ptr)
 {
-	unsigned	i;
-	char		**pair;
-	t_hashtable	*env;
+	char	*end;
 
-	i = 0;
-	env = ht_create(HT_SIZE_ENV);
-	while (*envp) {
-		pair = ft_split(*envp, '=');
-		ht_set(env, pair[0], pair[1]);
-		free(pair[0]);
-		free(pair);
-		envp++;
+	if (str == NULL)
+		str = *save_ptr;
+	if (*str == '\0')
+	{
+		*save_ptr = str;
+		return (NULL);
 	}
-	return (env);
+	str += ft_strspn(str, delim);
+	if (*str == '\0')
+	{
+		*save_ptr = str;
+      	return (NULL);
+    }
+	end = str + ft_strcspn(str, delim);
+	if (*end == '\0')
+	{
+		*save_ptr = end;
+		return (str);
+    }
+	*end = '\0';
+	*save_ptr = end + 1;
+	return (str);
 }
