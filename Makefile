@@ -89,7 +89,10 @@ fclean:	clean
 
 re:	fclean all
 
-test: $(NAME)
+test: test/unit_test.c $(STATIC_LIBRARY_OUTPUT)
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -I./test $< -o test/unit_test.o
+	$(CC) $(LDFLAGS) test/unit_test.o $(LDLIBS) -o test/exec
+	./test/exec
 
 shell: $(NAME)
 	./$(NAME)
