@@ -9,14 +9,11 @@ NAME = minishell
 
 CC			=	clang
 CPPFLAGS	=
-CFLAGS		=	-g -O3
+CFLAGS		=	-g
 LDFLAGS		=
 LDLIBS		=
 RM			=	rm -f
 BUILD		=	default
-
-BUILD_SHARED = 0
-BUILD_STATIC = 1
 
 ifneq ($(BUILD),default)
     include build-targets/$(BUILD).inc
@@ -34,31 +31,21 @@ override LDLIBS	+=
 
 .SECONDARY:
 .SECONDEXPANSION:
-.PHONY: all clean fclean re force
+.PHONY: all clean fclean re force test shell
 
 # Find the source files that will be used.
-#EXEC_SRC_FILES = $(wildcard *.c)
-#EXECUTABLES = $(patsubst %.c,%,$(EXEC_SRC_FILES))
 SRC_FILES = $(wildcard src/*.c)
 O_FILES = $(patsubst %.c,build/$(BUILD)/build/%.o,$(SRC_FILES))
 
 # Allow build and link of multiple libraries
-LIBRARY_FOLDERS = $(wildcard lib?*)
+LIBRARY_FOLDERS = libft libhash
 LIBRARY_INCLUDES = $(patsubst %,-I%/include,$(LIBRARY_FOLDERS))
 override CPPFLAGS += $(LIBRARY_INCLUDES)
 LIBRARY_FLAGS = $(patsubst lib%,-l%,$(LIBRARY_FOLDERS))
 override LDLIBS += $(LIBRARY_FLAGS)
 library_src_files = $(wildcard lib$(1)/src/*.c)
 library_o_files   = $(patsubst %.c,build/$(BUILD)/build/%.o,$(call library_src_files,$(1)))
-library_os_files  = $(addsuffix s,$(call library_o_files,$(1)))
-
-ifneq ($(BUILD_SHARED),0)
-    SHARED_LIBRARY_OUTPUT = $(patsubst %,lib/%.so,$(LIBRARY_FOLDERS))
-endif
-
-ifneq ($(BUILD_STATIC),0)
-    STATIC_LIBRARY_OUTPUT = $(patsubst %,lib/%.a,$(LIBRARY_FOLDERS))
-endif
+STATIC_LIBRARY_OUTPUT = $(patsubst %,lib/%.a,$(LIBRARY_FOLDERS))
 
 all: $(NAME)
 
@@ -70,7 +57,7 @@ ifneq ($(BUILD),default)
 endif
 
 .build-target: force
-	@echo $(BUILD) | cmp -s - $@ || echo $(BUILD) > $@
+	echo $(BUILD) | cmp -s - $@ || echo $(BUILD) > $@
 
 $(NAME): build/$(BUILD)/bin/$(NAME) .build-target $(STATIC_LIBRARY_OUTPUT)
 	mkdir -p $(@D)
@@ -80,51 +67,19 @@ lib/%: build/$(BUILD)/lib/% .build-target
 	mkdir -p $(@D)
 	cp -f $< $@
 
-ifeq ($(shell test $(BUILD_SHARED) -gt $(BUILD_STATIC); echo $$?),0)
-build/$(BUILD)/bin/%: $(O_FILES) | $(SHARED_LIBRARY_OUTPUT)
-	mkdir -p $(@D)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-else
 build/$(BUILD)/bin/%: $(O_FILES) $(STATIC_LIBRARY_OUTPUT)
 	mkdir -p $(@D)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-endif
-
-#build/$(BUILD)/bin/%: build/$(BUILD)/build/%.o $(O_FILES) | $(LIBRARY_OUTPUT)
-#	mkdir -p $(@D)
-#	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-
-build/$(BUILD)/build/%.os: %.c
-	mkdir -p $(@D)
-	$(CC) -c -fPIC $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 build/$(BUILD)/build/%.o: %.c
 	mkdir -p $(@D)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
-
-
-define library_variables
-CPPFLAGS_EXTRA =
-CXXFLAGS_EXTRA =
-LDFLAGS_EXTRA  =
-SHARED_LDLIBS  =
--include $(1)/Makefile.inc
-build/$(1)/%.o: override CPPFLAGS := $$(CPPFLAGS) $$(CPPFLAGS_EXTRA)
-build/$(1)/%.o: override CFLAGS := $$(CFLAGS) $$(CXXFLAGS_EXTRA)
-lib/$(1).so:  override LDFLAGS  := $$(LDFLAGS)  $$(LDFLAGS_EXTRA)
-lib/$(1).so:  override LDLIBS := $$(LDLIBS)
-endef
 
 $(foreach lib,$(LIBRARY_FOLDERS),$(eval $(call library_variables,$(lib))))
 
 build/$(BUILD)/lib/lib%.a: $$(call library_o_files,%)
 	mkdir -p $(@D)
 	$(AR) rcs $@ $^
-
-build/$(BUILD)/lib/lib%.so: $$(call library_os_files,%)
-	mkdir -p $(@D)
-	$(CC) $(LDFLAGS) $^ -shared $(SHARED_LDLIBS) -o $@
-
 
 clean:
 	$(RM) -r bin build lib .build-target
@@ -135,4 +90,6 @@ fclean:	clean
 re:	fclean all
 
 test: $(NAME)
+
+shell: $(NAME)
 	./$(NAME)

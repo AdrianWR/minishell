@@ -3,6 +3,7 @@
 #####################
 
 minishell
+build
 .clangd/
 .cache/
 .build-target
