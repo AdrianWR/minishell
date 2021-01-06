@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/03 14:27:01 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/05 20:14:08 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,3 @@ void	repl(t_hashtable *env)
 	}
 }
 
-int		main(int argc, char *argv[], char *envp[])
-{
-	t_hashtable *env;
-
-	//(void) argc;
-	//(void) argv;
-	// Load configuration file and env variables
-	if (argc != 1 || ft_strncmp("./minishell", argv[0], 11))
-		message_and_exit(EUSAGE, 0x0);
-	env = load_env(envp);
-	// REPL loop
-	repl(env);
-
-	// Free memory and config
-
-	return (EXIT_SUCCESS);
-}

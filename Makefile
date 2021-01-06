@@ -9,7 +9,7 @@ NAME = minishell
 
 CC			=	clang
 CPPFLAGS	=
-CFLAGS		=	-g
+CFLAGS		=	-O3
 LDFLAGS		=
 LDLIBS		=
 RM			=	rm -f
@@ -33,11 +33,11 @@ override LDLIBS	+=
 .SECONDEXPANSION:
 .PHONY: all clean fclean re force test shell
 
-# Find the source files that will be used.
+# Source and object files for the executable
 SRC_FILES = $(wildcard src/*.c)
 O_FILES = $(patsubst %.c,build/$(BUILD)/build/%.o,$(SRC_FILES))
 
-# Allow build and link of multiple libraries
+# Build and link of multiple libraries
 LIBRARY_FOLDERS = libft libhash
 LIBRARY_INCLUDES = $(patsubst %,-I%/include,$(LIBRARY_FOLDERS))
 override CPPFLAGS += $(LIBRARY_INCLUDES)
@@ -47,6 +47,14 @@ library_src_files = $(wildcard lib$(1)/src/*.c)
 library_o_files   = $(patsubst %.c,build/$(BUILD)/build/%.o,$(call library_src_files,$(1)))
 STATIC_LIBRARY_OUTPUT = $(patsubst %,lib/%.a,$(LIBRARY_FOLDERS))
 
+# Source and object files for unit tests
+TEST_FOLDER = test
+TEST_INCLUDES = $(patsubst %,-I%/include,$(TEST_FOLDER))
+override CPPFLAGS += $(TEST_INCLUDES)
+TEST_SRC_FILES = $(wildcard $(TEST_FOLDER)/src/*.c)
+TEST_O_FILES   = $(patsubst %.c,build/$(BUILD)/build/%.o, $(TEST_SRC_FILES))
+override TEST_O_FILES += $(filter-out $(filter %/main.o, $(O_FILES)), $(O_FILES))
+
 all: $(NAME)
 
 override CPPFLAGS += -MMD
@@ -55,6 +63,12 @@ override CPPFLAGS += -MMD
 ifneq ($(BUILD),default)
     include build-targets/$(BUILD).inc
 endif
+
+################
+# SOURCE FILES #
+################
+
+all: $(NAME)
 
 .build-target: force
 	echo $(BUILD) | cmp -s - $@ || echo $(BUILD) > $@
@@ -75,11 +89,43 @@ build/$(BUILD)/build/%.o: %.c
 	mkdir -p $(@D)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
-$(foreach lib,$(LIBRARY_FOLDERS),$(eval $(call library_variables,$(lib))))
+##################
+# LIBRARIES ZONE #
+##################
 
+define library_variables
+CPPFLAGS_LIB =
+CFLAGS_LIB =
+LDFLAGS_LIB  =
+-include $(1)/Makefile.inc
+build/$(1)/%.o: CPPFLAGS := $$(CPPFLAGS) $$(CPPFLAGS_LIB)
+build/$(1)/%.o: CFLAGS := $$(CFLAGS) $$(CFLAGS_LIB)
+lib/$(1).a:  LDFLAGS  := $$(ALL_LDFLAGS)  $$(LDFLAGS_LIB)
+endef
+
+$(foreach lib,$(LIBRARY_FOLDERS),$(eval $(call library_variables,$(lib))))
+	
 build/$(BUILD)/lib/lib%.a: $$(call library_o_files,%)
 	mkdir -p $(@D)
 	$(AR) rcs $@ $^
+
+#############
+# TEST ZONE #
+#############
+
+build/$(BUILD)/bin/test: $(TEST_O_FILES) $(STATIC_LIBRARY_OUTPUT)
+	mkdir -p $(@D)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+test: build/$(BUILD)/bin/test
+	./$<
+
+shell: $(NAME)
+	./$(NAME)
+
+#########
+# UTILS #
+#########
 
 clean:
 	$(RM) -r bin build lib .build-target
@@ -88,11 +134,3 @@ fclean:	clean
 	$(RM) $(NAME)
 
 re:	fclean all
-
-test: test/unit_test.c $(STATIC_LIBRARY_OUTPUT)
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -I./test $< -o test/unit_test.o
-	$(CC) $(LDFLAGS) test/unit_test.o $(LDLIBS) -o test/exec
-	./test/exec
-
-shell: $(NAME)
-	./$(NAME)

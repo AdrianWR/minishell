@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 20:15:24 by aroque           ###   ########.fr       */
+/*   Created: 2021/01/05 20:14:00 by aroque            #+#    #+#             */
+/*   Updated: 2021/01/05 20:14:47 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
+#include "errcode.h"
 
-# include "libft.h"
-# include "hash.h"
-
-typedef enum	e_type
+int		main(int argc, char *argv[], char *envp[])
 {
-	COMMAND,
-	PARAMETER,
-	OPERATOR
-}				t_type;
+	t_hashtable *env;
 
-typedef struct	s_token
-{
-	char		*command;
-}				t_token;
+	//(void) argc;
+	//(void) argv;
+	// Load configuration file and env variables
+	if (argc != 1 || ft_strncmp("./minishell", argv[0], 11))
+		message_and_exit(EUSAGE, 0x0);
+	env = load_env(envp);
+	// REPL loop
+	repl(env);
 
+	// Free memory and config
 
-void  		create_process(char *const *argv);
-char		**tokenizer(char *input);
-t_hashtable	*load_env(char *envp[]);
-size_t	ft_strspn(const char *s, const char *accept);
-void	repl(t_hashtable *env);
-
-#endif
+	return (EXIT_SUCCESS);
+}
