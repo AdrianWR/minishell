@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/02 10:26:57 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/05 21:21:24 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_hashtable		*load_env(char *envp[])
 
 	i = 0;
 	env = ht_create(HT_SIZE_ENV);
-	while (*envp) {
+	while (*envp)
+	{
 		pair = ft_split(*envp, '=');
 		ht_set(env, pair[0], pair[1]);
 		free(pair[0]);

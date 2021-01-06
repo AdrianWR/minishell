@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 00:05:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/04 00:06:23 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/05 21:31:02 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ char		*ft_strtok_r(char *str, const char *delim, char **save_ptr)
 	if (*str == '\0')
 	{
 		*save_ptr = str;
-      	return (NULL);
-    }
+		return (NULL);
+	}
 	end = str + ft_strcspn(str, delim);
 	if (*end == '\0')
 	{
 		*save_ptr = end;
 		return (str);
-    }
+	}
 	*end = '\0';
 	*save_ptr = end + 1;
 	return (str);

@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 00:06:48 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/04 00:08:13 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/05 21:31:18 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 char			*ft_strtok(char *str, const char *delim)
 {
 	static char	*olds;
+
 	return (ft_strtok_r(str, delim, &olds));
 }
