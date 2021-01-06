@@ -9,7 +9,7 @@ NAME = minishell
 
 CC			=	clang
 CPPFLAGS	=
-CFLAGS		=	-O3
+CFLAGS		=
 LDFLAGS		=
 LDLIBS		=
 RM			=	rm -f
