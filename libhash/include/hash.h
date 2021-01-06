@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 15:40:53 by aroque            #+#    #+#             */
-/*   Updated: 2020/12/31 16:14:22 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/05 21:40:26 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ typedef struct		s_htlist {
 }					t_htlist;
 
 typedef struct		s_hashtable {
-	t_htlist			**array;
+	t_htlist		**array;
 	unsigned int	size;
 }					t_hashtable;
 
-unsigned int	hash(const char *key, unsigned int size);
-t_hashtable		*ht_create(unsigned int size);
-int				ht_set(t_hashtable *ht, const char *key, void *value);
-void			*ht_get(t_hashtable *ht, const void *key);
-void			ht_free(t_hashtable *ht, void (del)(void *));
-void			ht_remove(t_hashtable *ht, const char *key, void (*del)(void*));
+unsigned int		hash(const char *key, unsigned int size);
+t_hashtable			*ht_create(unsigned int size);
+int					ht_set(t_hashtable *ht, const char *key, void *value);
+void				*ht_get(t_hashtable *ht, const void *key);
+void				ht_free(t_hashtable *ht, void (del)(void *));
+void				ht_remove(t_hashtable *h, const char *k, void (*d)(void*));
 
 #endif

@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errcode.h                                          :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:29:22 by aroque           ###   ########.fr       */
+/*   Created: 2021/01/05 20:14:00 by aroque            #+#    #+#             */
+/*   Updated: 2021/01/05 21:20:23 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERRCODE_H
-# define ERRCODE_H
+#include "minishell.h"
+#include "errcode.h"
 
-# include <errno.h>
+int		main(int argc, char *argv[], char *envp[])
+{
+	t_hashtable *env;
 
-typedef enum		e_errcode {
-	ERRSYS,
-	EUSAGE,
-	ECMDNF,
-	__ERRMAX
-}					t_errcode;
-
-static char *const	g_errstr[__ERRMAX] = {
-	"__ERRSYS",
-	"Usage: ./minishell",
-	"Command not found..."
-};
-
-void				message_and_exit(t_errcode code, char *note);
-
-#endif
+	if (argc != 1 || ft_strncmp("./minishell", argv[0], 11))
+		message_and_exit(EUSAGE, 0x0);
+	env = load_env(envp);
+	repl(env);
+	return (EXIT_SUCCESS);
+}

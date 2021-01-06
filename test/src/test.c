@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unit_test.c                                        :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/03 14:54:33 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/04 08:59:50 by aroque           ###   ########.fr       */
+/*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
+/*   Updated: 2021/01/05 20:56:01 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
-#include "libft.h"
-#include "minunit.h"
 #include "minishell.h"
+#include "minunit.h"
+#include "libft.h"
 
 MU_TEST(test_ft_strspn)
 {
@@ -54,6 +54,7 @@ MU_TEST_SUITE(test_suite_tokens)
 	MU_RUN_TEST(test_ft_strcspn);
 	MU_RUN_TEST(test_ft_strtok);
 }
+
 
 int	main(void)
 {

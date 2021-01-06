@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/03 22:56:12 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/05 21:28:30 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ typedef struct	s_token
 	char		*command;
 }				t_token;
 
-
-void  		create_process(char *const *argv);
-char		**tokenizer(char *input);
-t_hashtable	*load_env(char *envp[]);
-size_t	ft_strspn(const char *s, const char *accept);
+void			create_process(char *const *argv);
+char			**tokenizer(char *input);
+t_hashtable		*load_env(char *envp[]);
+void			repl(t_hashtable *env);
 
 #endif
