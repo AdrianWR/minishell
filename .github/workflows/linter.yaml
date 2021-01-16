@@ -1,15 +1,7 @@
-# This is a basic linter workflow
-# that runs on every push.
-
 name: norminette
 
-# Controls when the action will run.
-# Right now, the action occurs whenever
-# we push to any branch on this repository;
 on: push
  
-# A workflow run is made up of one or more jobs that
-# can run sequentially or in parallel.
 jobs:
   linter:
     runs-on: ubuntu-18.04
