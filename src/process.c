@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:26:31 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/20 02:49:10 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ char	*setpath(const char *path, const char *argv, int i)
 			else
 				start = end;
 		}
-	if (!(fullpath = malloc((end - start + 2 + ft_strlen(argv)) * sizeof(char))))
+	if (!(fullpath = malloc(
+		(end - start + 2 + ft_strlen(argv)) * sizeof(char))))
 		return (NULL);
 	i = 0;
 	while (start < end)
@@ -113,11 +114,16 @@ void	execute(char *const *argv, char **envp, char *path)
 	freemat(paths);
 }
 
+/*
+**	void	(*builtin)();
+**	if ((builtin = ht_get(env, *argv)) != NULL)
+**		builtin(argv);
+*/
+
 void	create_process(char *const *argv, char **envp, t_hashtable *env)
 {
 	pid_t	pid;
 	int		status;
-	// void	(*builtin)();
 
 	if ((pid = fork()) < 0)
 		message_and_exit(ERRSYS, NULL);
@@ -125,8 +131,6 @@ void	create_process(char *const *argv, char **envp, t_hashtable *env)
 	{
 		if (ft_strncmp("cd", *argv, 2) == 0)
 			cd(argv);
-		// if ((builtin = ht_get(env, *argv)) != NULL)
-			// builtin(argv);
 		else
 		{
 			execute(argv, envp, ht_get(env, "PATH"));
@@ -134,6 +138,7 @@ void	create_process(char *const *argv, char **envp, t_hashtable *env)
 	}
 	else
 	{
-		while (wait(&status) != pid);
+		while (wait(&status) != pid)
+			;
 	}
 }

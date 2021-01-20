@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
+/*   Updated: 2021/01/20 02:38:19 by gariadno         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include <unistd.h>
 
@@ -22,13 +34,10 @@ void	cd(char *const *args)
 		return ;
 }
 
-// void	command_exit(char **args, t_hashtable *env)
 void	exit_(char **args)
 {
 	(void)args;
-	// (void)env;
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	// exit(1);
 }
 
 void	pwd(char **args)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:24:33 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/20 02:38:57 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ void		repl(t_hashtable *env, char **envp)
 	{
 		prompt(env);
 		get_next_line(STDIN_FILENO, &input);
-		// args = tokenizer(input);
 		args = ft_split(input, ' ');
 		create_process(args, envp, env);
-		// create_process(args);
 	}
 }
