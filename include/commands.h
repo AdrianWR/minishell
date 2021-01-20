@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   commands.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 22:57:42 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:27:46 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/20 19:30:56 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMANDS_H
 # define COMMANDS_H
 
+# include "hash.h"
+
+void			export(char *const *args, t_hashtable *env);
+void			unset(char *const *args, t_hashtable *env);
+void			env(char *const *args, t_hashtable *env);
 void			echo(const char **args);
+void			pwd(char *const *args);
 void			cd(char *const *args);
-void			pwd(char **args);
-void			export(char *env);
-void			unset(char *path);
-void			env(char *path);
 void			exit_(void);
 
 typedef struct	s_command

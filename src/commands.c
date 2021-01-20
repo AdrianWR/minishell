@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/01/20 02:38:19 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/01/20 19:24:55 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ void	echo(char **args)
 		ft_putstr_fd(*args++, STDOUT_FILENO);
 	if (flag)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-}
-
-void	cd(char *const *args)
-{
-	if (chdir(args[1]) != 0)
-		return ;
 }
 
 void	exit_(char **args)
