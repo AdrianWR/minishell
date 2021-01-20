@@ -17,11 +17,9 @@
 
 t_hashtable		*load_env(char *envp[])
 {
-	unsigned	i;
 	char		**pair;
 	t_hashtable	*env;
 
-	i = 0;
 	env = ht_create(HT_SIZE_ENV);
 	while (*envp)
 	{
@@ -32,4 +30,22 @@ t_hashtable		*load_env(char *envp[])
 		envp++;
 	}
 	return (env);
+}
+
+void			env(char **args, t_hashtable *env)
+{
+	(void)args;
+	(void)env;
+}
+
+void			export(char **args, t_hashtable *env)
+{
+	(void)args;
+	(void)env;
+}
+
+void			unset(char **args, t_hashtable *env)
+{
+	(void)args;
+	(void)env;
 }

@@ -48,11 +48,29 @@ MU_TEST(test_ft_strtok)
 	mu_assert_int_eq(strcmp(ft_strtok(str, " "), "This"), 0);
 }
 
+MU_TEST(test_getpaths)
+{
+	const char input[] = "code";
+	const char path[] = "/bin:/morango:/banana";
+	const char *expected[] = {
+		"/bin/code",
+		"/morango/code",
+		"/banana/code"
+	};
+	
+	char **paths = getpaths(input, path);
+	for (int i = 0; i < 3; i++)
+	{
+		mu_assert_int_eq(strcmp(paths[i], expected[i]), 0);
+	}
+}
+
 MU_TEST_SUITE(test_suite_tokens)
 {
 	MU_RUN_TEST(test_ft_strspn);
 	MU_RUN_TEST(test_ft_strcspn);
 	MU_RUN_TEST(test_ft_strtok);
+	MU_RUN_TEST(test_getpaths);
 }
 
 

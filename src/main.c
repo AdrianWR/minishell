@@ -20,6 +20,7 @@ int		main(int argc, char *argv[], char *envp[])
 	if (argc != 1 || ft_strncmp("./minishell", argv[0], 11))
 		message_and_exit(EUSAGE, 0x0);
 	env = load_env(envp);
-	repl(env);
+	repl(env, envp);
+	// repl(env);
 	return (EXIT_SUCCESS);
 }

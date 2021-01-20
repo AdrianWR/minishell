@@ -14,8 +14,8 @@
 # define COMMANDS_H
 
 void			echo(const char **args);
-void			cd(char *path);
-void			pwd(void);
+void			cd(char *const *args);
+void			pwd(char **args);
 void			export(char *env);
 void			unset(char *path);
 void			env(char *path);

@@ -28,9 +28,14 @@ typedef struct	s_token
 	char		*command;
 }				t_token;
 
-void			create_process(char *const *argv);
+void			create_process(char *const *argv, char **envp, t_hashtable *env);
+void			sighandler(int signum);
 char			**tokenizer(char *input);
 t_hashtable		*load_env(char *envp[]);
-void			repl(t_hashtable *env);
+void			repl(t_hashtable *env, char **envp);
+char			**getpaths(const char *argv, const char *path);
+void			freemat(char **mat);
+
+
 
 #endif

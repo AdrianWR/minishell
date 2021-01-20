@@ -19,12 +19,13 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <signal.h>
 
 static void	prompt(t_hashtable *env)
 {
 	ft_putstr_fd(ht_get(env, "USER"), STDOUT_FILENO);
 	ft_putchar_fd('@', STDOUT_FILENO);
-	ft_putstr_fd(ht_get(env, "HOSTNAME"), STDOUT_FILENO);
+	ft_putstr_fd(ht_get(env, "HOST"), STDOUT_FILENO);
 	ft_putstr_fd(" $ ", STDOUT_FILENO);
 }
 
@@ -35,16 +36,19 @@ static void	prompt(t_hashtable *env)
 ** an 'exit' command or a SIGINT.
 */
 
-void		repl(t_hashtable *env)
+void		repl(t_hashtable *env, char **envp)
 {
 	char	*input;
 	char	**args;
 
+	signal(SIGINT, sighandler);
 	while (true)
 	{
 		prompt(env);
 		get_next_line(STDIN_FILENO, &input);
-		args = tokenizer(input);
-		create_process(args);
+		// args = tokenizer(input);
+		args = ft_split(input, ' ');
+		create_process(args, envp, env);
+		// create_process(args);
 	}
 }
