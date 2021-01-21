@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   sighandler.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/28 18:44:22 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:20:41 by aroque           ###   ########.fr       */
+/*   Created: 2021/01/20 02:36:50 by gariadno          #+#    #+#             */
+/*   Updated: 2021/01/20 02:36:51 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	cd(char *path)
+#include <signal.h>
+#include "libft.h"
+#include "minishell.h"
+#include <unistd.h>
+
+void	sighandler(int signum)
 {
-	(void)path;
+	if (signum == SIGINT)
+	{
+		ft_putchar_fd('\n', 1);
+	}
 }

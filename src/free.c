@@ -1,20 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/28 18:45:09 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:20:59 by aroque           ###   ########.fr       */
+/*   Created: 2021/01/20 02:37:39 by gariadno          #+#    #+#             */
+/*   Updated: 2021/01/20 02:37:40 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <unistd.h>
+#include "minishell.h"
 
-void	echo(const char **args)
+void	freemat(char **mat)
 {
-	while (*args)
-		ft_putstr_fd(*args++, STDOUT_FILENO);
+	int i;
+
+	i = 0;
+	while (mat && mat[i])
+	{
+		free(mat[i]);
+		mat[i++] = NULL;
+	}
+	if (mat)
+	{
+		free(mat);
+		mat = NULL;
+	}
 }
