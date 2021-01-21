@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/20 02:49:10 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/01/21 01:32:15 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ int		pathslen(char c, const char *path)
 	return (len);
 }
 
+/*
+** Makes an absolute path by concatenating
+** an item i of environment path with argv and
+** returns a pointer of it
+*/
+
 char	*setpath(const char *path, const char *argv, int i)
 {
 	char	*fullpath;
@@ -51,45 +57,51 @@ char	*setpath(const char *path, const char *argv, int i)
 			else
 				start = end;
 		}
-	if (!(fullpath = malloc(
-		(end - start + 2 + ft_strlen(argv)) * sizeof(char))))
+	fullpath = malloc((end - start + 2 + ft_strlen(argv)) * sizeof(char));
+	if (!fullpath)
 		return (NULL);
 	i = 0;
 	while (start < end)
 		fullpath[i++] = path[start++];
 	fullpath[i++] = '/';
-	start = 0;
-	while (argv[start])
-		fullpath[i++] = argv[start++];
+	while (*argv)
+		fullpath[i++] = *argv++;
 	return (fullpath);
 }
 
-char	*abrlpath(const char *argv)
+/*
+** Returns a pointer to absolute
+** path of a program
+*/
+
+char	*abspath(const char *argv)
 {
-	char	*fullpath;
+	char	*abspath;
 	char	cwd[4096 + 1];
-	int		len;
 	int		i;
 
-	fullpath = NULL;
+	abspath = NULL;
 	if (*argv == '.')
 	{
 		if (getcwd(cwd, 4096) == NULL)
 			return (NULL);
-		len = ft_strlen(cwd);
-		if (!(fullpath = malloc((len + ft_strlen(argv) + 1) * sizeof(char))))
+		abspath = malloc((ft_strlen(cwd) + ft_strlen(argv) + 1) * sizeof(char));
+		if (!abspath)
 			return (NULL);
-		i = 0;
-		len = 0;
-		while (cwd[len])
-			fullpath[len++] = cwd[i++];
-		i = 0;
-		while (argv[i])
-			fullpath[len++] = argv[i++];
-		return (fullpath);
+		i = -1;
+		while (cwd[++i])
+			abspath[i] = cwd[i];
+		while (*argv)
+			abspath[i++] = *argv++;
+		return (abspath);
 	}
 	return (ft_strdup(argv));
 }
+
+/*
+** Use environment path and argv to make
+** paths of a program to try to execute
+*/
 
 void	execute(char *const *argv, char **envp, char *path)
 {
@@ -98,17 +110,17 @@ void	execute(char *const *argv, char **envp, char *path)
 	int		r;
 	int		i;
 
-	r = -1;
-	i = 0;
 	len = pathslen(**argv, path);
 	if (!(paths = malloc((len + 1) * sizeof(char *))))
 		return ;
 	paths[len] = NULL;
 	if (**argv == '/' || **argv == '~' || **argv == '.')
-		paths[--len] = abrlpath(*argv);
+		paths[--len] = abspath(*argv);
+	i = 0;
 	while (len--)
 		paths[len] = setpath(path, *argv, i++);
 	i = 0;
+	r = -1;
 	while (r < 0 && paths[i])
 		r = execve(paths[i++], &argv[0], envp);
 	freemat(paths);
