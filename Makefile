@@ -120,6 +120,10 @@ build/$(BUILD)/bin/test: $(TEST_O_FILES) $(STATIC_LIBRARY_OUTPUT)
 test: build/$(BUILD)/bin/test
 	./$<
 
+debug:
+	$(MAKE) BUILD=debug build/debug/bin/test
+	gdb ./build/debug/bin/test
+
 shell: $(NAME)
 	./$(NAME)
 
