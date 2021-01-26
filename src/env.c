@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/20 19:25:50 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/01/25 22:59:45 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,23 @@ t_hashtable		*load_env(char *envp[])
 	return (env);
 }
 
-void			env(char *const *args, t_hashtable *env)
+void			env(t_hashtable *env, int fd)
 {
-	(void)args;
-	(void)env;
+	unsigned int i;
+
+	if (!env)
+		return ;
+	i = 0;
+	while (i < env->size)
+	{
+		if (env->array[i] && ft_strncmp(env->array[i]->key, "?", 0x10))
+		{
+			ft_putstr_fd(env->array[i]->key, fd);
+			ft_putchar_fd('=', fd);
+			ft_putendl_fd((char *)env->array[i]->value, fd);
+		}
+		i++;
+	}
 }
 
 void			export(char *const *args, t_hashtable *env)
