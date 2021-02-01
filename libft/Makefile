@@ -6,7 +6,7 @@
 #    By: aroque <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/21 11:20:51 by aroque            #+#    #+#              #
-#    Updated: 2020/09/11 23:23:26 by aroque           ###   ########.fr        #
+#    Updated: 2021/02/01 00:30:52 by aroque           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC		=	${SRC_DIR}/ft_memset.c		\
 			${SRC_DIR}/ft_isalpha.c		\
 			${SRC_DIR}/ft_isdigit.c		\
 			${SRC_DIR}/ft_isalnum.c		\
+			${SRC_DIR}/ft_isalnum_or_uscore.c		\
 			${SRC_DIR}/ft_isascii.c		\
 			${SRC_DIR}/ft_isprint.c		\
 			${SRC_DIR}/ft_toupper.c		\
@@ -49,6 +50,7 @@ SRC		=	${SRC_DIR}/ft_memset.c		\
 			${SRC_DIR}/ft_substr.c		\
 			${SRC_DIR}/ft_strjoin.c		\
 			${SRC_DIR}/ft_strtrim.c 	\
+			${SRC_DIR}/ft_strreplace.c	\
 			${SRC_DIR}/ft_split.c		\
 			${SRC_DIR}/ft_itoa.c		\
 			${SRC_DIR}/ft_strmapi.c		\
