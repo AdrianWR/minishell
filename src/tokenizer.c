@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 14:11:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/25 09:16:40 by aroque           ###   ########.fr       */
+/*   Updated: 2021/01/31 23:46:02 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,12 @@ static t_tkdata	*init_tk(char *input)
 
 static void		get_token(t_tkdata *tk, t_list **tokens)
 {
-	char		*str;
-	t_list		*tk_list;
+	t_token		*token;
 
-	if (!tk->j)
+	if (!tk->j || !(token = malloc(sizeof(*token))))
 		return ;
-	str = ft_strdup(tk->buffer);
-	tk_list = ft_lstnew(str);
-	ft_lstadd_back(tokens, tk_list);
+	token->value = ft_strdup(tk->buffer);
+	ft_lstadd_back(tokens, ft_lstnew(token));
 	ft_bzero(tk->buffer, tk->j);
 	tk->j = 0;
 }

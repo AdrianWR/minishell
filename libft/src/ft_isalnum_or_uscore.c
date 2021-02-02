@@ -1,35 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errcode.h                                          :+:      :+:    :+:   */
+/*   ft_isalnum_or_uscore.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/31 00:51:59 by aroque           ###   ########.fr       */
+/*   Created: 2021/02/01 00:29:30 by aroque            #+#    #+#             */
+/*   Updated: 2021/02/01 00:29:51 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERRCODE_H
-# define ERRCODE_H
+#include "libft.h"
 
-# include <errno.h>
-
-typedef enum		e_errcode {
-	ERRSYS,
-	EUSAGE,
-	ECMDNF,
-	EUNFQT,
-	__ERRMAX
-}					t_errcode;
-
-static char *const	g_errstr[__ERRMAX] = {
-	"__ERRSYS",
-	"Usage: ./minishell",
-	"Command not found...",
-	"Unfinished quote"
-};
-
-void				message_and_exit(t_errcode code, char *note);
-
-#endif
+int	ft_isalnum_or_uscore(int c)
+{
+	return (ft_isalnum(c) || c == '_');
+}

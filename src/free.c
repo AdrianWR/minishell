@@ -6,11 +6,18 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:37:39 by gariadno          #+#    #+#             */
-/*   Updated: 2021/01/20 02:37:40 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/01/31 22:48:28 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "tokenizer.h"
+
+void	free_token(t_token *token)
+{
+	free(token->value);
+	free(token);
+}
 
 void	freemat(char **mat)
 {

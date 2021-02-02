@@ -6,7 +6,7 @@
 /*   By: aroque <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 11:24:25 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/04 00:08:50 by aroque           ###   ########.fr       */
+/*   Updated: 2021/02/01 00:30:25 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ size_t				ft_strspn(const char *s, const char *accept);
 size_t				ft_strcspn(const char *s, const char *reject);
 char				*ft_strtok(char *str, const char *delim);
 char				*ft_strtok_r(char *str, const char *delim, char **ptr);
+char				*ft_strreplace(char **str, const char *s, const char *r);
+int					ft_isalnum_or_uscore(int c);
 
 /*
 **	░░░░░░░█▐▓▓░████▄▄▄█▀▄▓▓▓▌█
