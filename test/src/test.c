@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/01 00:18:45 by aroque           ###   ########.fr       */
+/*   Updated: 2021/02/03 21:17:59 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 #include "libft.h"
 #include "tokenizer.h"
 
+t_shell		*shell;
 t_hashtable	*htenv;
+t_shell		*g_shell;
 
 void			setup(void)
 {
@@ -25,11 +27,13 @@ void			setup(void)
 	ht_set(htenv, "USER", ft_strdup("gariadno"));
 	ht_set(htenv, "SHELL", ft_strdup("minishell"));
 	ht_set(htenv, "CAKE", ft_strdup("strawberry"));
+	shell = ft_calloc(1, sizeof(*shell));
 }
 
 void	teardown(void)
 {
 	ht_free(htenv, free);
+	free(shell);
 }
 
 MU_TEST(test_ft_strspn)
@@ -91,7 +95,9 @@ MU_TEST(test_tokenizer)
 	t_list		*head;
 	char		str[] = " echo>>    here    we    go; 'single quotes <<<";
 
-	tokens = tokenizer(str);
+	shell->input = str;
+	tokenizer(shell);
+	tokens = shell->tokens;
 	head = tokens;
 	mu_assert_string_eq("echo", ((t_token *)tokens->content)->value);
 	tokens = tokens->next;
@@ -109,37 +115,37 @@ MU_TEST(test_tokenizer)
 	ft_lstclear(&head, (void *)free_token);
 }
 
-MU_TEST(test_lexical_analysis)
+MU_TEST(test_lexer)
 {
 	t_token	tk;
 
 	tk.value = ">>";
-	lexical_analysis(&tk, htenv);
+	lexer(&tk, htenv);
 	mu_assert_int_eq(T_APPEND_OUTPUT, tk.type);
 
 	tk.value = ">";
-	lexical_analysis(&tk, htenv);
+	lexer(&tk, htenv);
 	mu_assert_int_eq(T_REDIRECT_OUTPUT, tk.type);
 
 	tk.value = "<";
-	lexical_analysis(&tk, htenv);
+	lexer(&tk, htenv);
 	mu_assert_int_eq(T_REDIRECT_INPUT, tk.type);
 
 	tk.value = ft_strdup("$CAKE");
-	lexical_analysis(&tk, htenv);
-	mu_assert_int_eq(T_LITERAL, tk.type);
+	lexer(&tk, htenv);
+	mu_assert_int_eq(T_WORD, tk.type);
 	mu_assert_string_eq("strawberry", tk.value);
 	free(tk.value);
 
 	tk.value = ft_strdup("\"$USER, this cake has $CAKE flavor.\"");
-	lexical_analysis(&tk, htenv);
-	mu_assert_int_eq(T_LITERAL, tk.type);
+	lexer(&tk, htenv);
+	mu_assert_int_eq(T_WORD, tk.type);
 	mu_assert_string_eq("gariadno, this cake has strawberry flavor.", tk.value);
 	free(tk.value);
 
 	tk.value = ft_strdup("\"This cake has $NOTHING flavor.\"");
-	lexical_analysis(&tk, htenv);
-	mu_assert_int_eq(T_LITERAL, tk.type);
+	lexer(&tk, htenv);
+	mu_assert_int_eq(T_WORD, tk.type);
 	mu_assert_string_eq("This cake has  flavor.", tk.value);
 	free(tk.value);
 }
@@ -152,7 +158,7 @@ MU_TEST_SUITE(test_suite_tokens)
 	MU_RUN_TEST(test_ft_strtok);
 	MU_RUN_TEST(test_ft_strreplace);
 	MU_RUN_TEST(test_tokenizer);
-	MU_RUN_TEST(test_lexical_analysis);
+	MU_RUN_TEST(test_lexer);
 }
 
 int	main(void)

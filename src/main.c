@@ -34,14 +34,21 @@ t_hashtable		*load_builtins(void)
 	return (ht);
 }
 
-int		main(int argc, char *argv[], char *envp[])
+int				main(int argc, char *argv[], char *envp[])
 {
-	t_hashtable *env;
 	t_shell	*shell;
 
-	if (argc != 1 || ft_strncmp("./minishell", argv[0], 11))
-		message_and_exit(EUSAGE, 0x0);
-	env = load_env(envp);
-	repl(env, envp);
+	(void)argv;
+	if (!(shell = ft_calloc(1, sizeof(*shell))))
+		message_and_exit(ERRSYS, 0);
+	g_shell = shell;
+	if (argc != 1)
+		message_and_exit(EUSAGE, 0);
+	shell->env = load_env(envp);
+	shell->envp = envp;
+	shell->builtins = load_builtins();
+	shell->fd = STDOUT_FILENO;
+	repl(shell);
+	free_shell(shell);
 	return (EXIT_SUCCESS);
 }
