@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:44:50 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/01 00:31:39 by aroque           ###   ########.fr       */
+/*   Updated: 2021/02/04 22:38:10 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include "libft.h"
 #include "tokenizer.h"
 #include <stdbool.h>
-
-static bool	ft_streq(const char *s1, const char *s2)
-{
-	return (!(ft_strncmp(s1, s2, ft_strlen(s2) + 1)));
-}
 
 int			expand_env(char **str, t_hashtable *env)
 {
@@ -39,7 +34,7 @@ int			expand_env(char **str, t_hashtable *env)
 			key = ft_substr(*str, i, j + 1);
 			value = ht_get(env, key + 1);
 			if (!value)
-				value = STR_EMPTY;
+				value = "";
 			*str = ft_strreplace(str, key, value);
 			i += ft_strlen(value);
 			j = 0;
@@ -61,7 +56,7 @@ static int	lex_squote(t_token *token)
 	tmp = ft_substr(token->value, 1, len - 2);
 	free(token->value);
 	token->value = tmp;
-	token->type = T_LITERAL;
+	token->type = T_WORD;
 	return (0);
 }
 
@@ -76,12 +71,12 @@ static int	lex_dquote(t_token *token, t_hashtable *env)
 	tmp = ft_substr(token->value, 1, len - 2);
 	free(token->value);
 	token->value = tmp;
-	token->type = T_LITERAL;
+	token->type = T_WORD;
 	expand_env(&token->value, env);
 	return (0);
 }
 
-int			lexical_analysis(t_token *token, t_hashtable *env)
+int			lexer(t_token *token, t_hashtable *env)
 {
 	int		err;
 
@@ -98,12 +93,12 @@ int			lexical_analysis(t_token *token, t_hashtable *env)
 		token->type = T_PIPE;
 	else if (token->value[0] == '\'')
 		err = lex_squote(token);
-	else if (token->value[0] == '\"')
+	else if (token->value[0] == '"')
 		err = lex_dquote(token, env);
 	else
 	{
 		expand_env(&token->value, env);
-		token->type = T_LITERAL;
+		token->type = T_WORD;
 	}
 	return (err);
 }

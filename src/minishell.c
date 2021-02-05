@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/20 02:38:57 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/02/03 23:37:25 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 
 static void	prompt(t_hashtable *env)
 {
-	ft_putstr_fd(ht_get(env, "USER"), STDOUT_FILENO);
+	ft_putstr_fd(ht_get(env, "USERNAME"), STDOUT_FILENO);
 	ft_putchar_fd('@', STDOUT_FILENO);
-	ft_putstr_fd(ht_get(env, "HOST"), STDOUT_FILENO);
+	ft_putstr_fd(ht_get(env, "HOSTNAME"), STDOUT_FILENO);
 	ft_putstr_fd(" $ ", STDOUT_FILENO);
 }
 
@@ -36,17 +36,16 @@ static void	prompt(t_hashtable *env)
 ** an 'exit' command or a SIGINT.
 */
 
-void		repl(t_hashtable *env, char **envp)
+void		repl(t_shell *shell)
 {
 	char	*input;
-	char	**args;
 
-	signal(SIGINT, sighandler);
-	while (true)
+	while (shell->exit == false)
 	{
-		prompt(env);
+		signal(SIGINT, sighandler);
+		prompt(shell->env);
 		get_next_line(STDIN_FILENO, &input);
-		args = ft_split(input, ' ');
-		create_process(args, envp, env);
+		shell->args = ft_split(input, ' ');
+		execute_command(shell);
 	}
 }

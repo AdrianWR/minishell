@@ -1,32 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 22:35:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:37:21 by aroque           ###   ########.fr       */
+/*   Created: 2021/02/03 21:23:37 by aroque            #+#    #+#             */
+/*   Updated: 2021/02/03 21:24:53 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdbool.h>
+#include "libft.h"
 
-void			ft_env(t_shell *shell)
+bool		ft_streq(const char *s1, const char *s2)
 {
-	unsigned	i;
-
-	if (!shell->env)
-		return ;
-	i = 0;
-	while (i < shell->env->size)
-	{
-		if (shell->env->array[i])
-		{
-			ft_putstr_fd(shell->env->array[i]->key, shell->fd);
-			ft_putchar_fd('=', shell->fd);
-			ft_putendl_fd((char *)shell->env->array[i]->value, shell->fd);
-		}
-		i++;
-	}
+	return (!(ft_strncmp(s1, s2, ft_strlen(s2) + 1)));
 }

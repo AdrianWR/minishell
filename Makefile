@@ -31,7 +31,7 @@ override LDLIBS	+=
 
 .SECONDARY:
 .SECONDEXPANSION:
-.PHONY: all clean fclean re force test shell
+.PHONY: all clean fclean re force test shell debug
 
 # Source and object files for the executable
 SRC_FILES = $(wildcard src/*.c)

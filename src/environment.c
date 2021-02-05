@@ -3,30 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 22:35:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:37:21 by aroque           ###   ########.fr       */
+/*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
+/*   Updated: 2021/02/04 22:29:58 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "hash.h"
+#include "libft.h"
+#include <unistd.h>
 
-void			ft_env(t_shell *shell)
+#define HT_SIZE_ENV 1031
+
+t_hashtable		*load_env(char *envp[])
 {
-	unsigned	i;
+	char		**pair;
+	t_hashtable	*env;
 
-	if (!shell->env)
-		return ;
-	i = 0;
-	while (i < shell->env->size)
+	env = ht_create(HT_SIZE_ENV);
+	while (*envp)
 	{
-		if (shell->env->array[i])
-		{
-			ft_putstr_fd(shell->env->array[i]->key, shell->fd);
-			ft_putchar_fd('=', shell->fd);
-			ft_putendl_fd((char *)shell->env->array[i]->value, shell->fd);
-		}
-		i++;
+		pair = ft_split(*envp, '=');
+		ht_set(env, pair[0], pair[1]);
+		free(pair[0]);
+		free(pair);
+		envp++;
 	}
+	return (env);
 }
