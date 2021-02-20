@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/03 21:17:59 by aroque           ###   ########.fr       */
+/*   Updated: 2021/02/13 15:24:49 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "minunit.h"
 #include "libft.h"
 #include "tokenizer.h"
+#include "ast.h"
 
 t_shell		*shell;
 t_hashtable	*htenv;
@@ -150,6 +151,46 @@ MU_TEST(test_lexer)
 	free(tk.value);
 }
 
+//MU_TEST(test_ast)
+//{
+//	t_astnode	*tree;
+//	t_list		*tokens;
+//	char		str[] = " echo>>    here    we    go; 'single quotes <<<";
+//
+//	shell->input = str;
+//	tokenizer(shell);
+//	tokens = shell->tokens;
+//	tree = ast_parser(tokens);
+//}
+
+MU_TEST(test_execute)
+{
+	t_astnode	*ast;
+	t_astnode	*root;
+	int std[2];
+
+	std[0] = 0;
+	std[1] = 1;
+	ast = ft_nodenew(0x0);
+	root = ast;
+	ast->type = PIPE_SEQUENCE;
+
+	ast->left = ft_nodenew(0x0);
+	ast->left->type = COMMAND;
+
+	ast->left->left = ft_nodenew(ft_strdup("echo hello teste"));
+	ast->left->left->type = CMD_NAME;
+	//ast->left->right = ft_nodenew(ft_strdup("hello teste"));
+	//ast->left->left->type = CMD_SUFFIX;
+
+	//ast->right = ft_nodenew(0x0);
+	//ast->right->type = COMMAND;
+	//ast->right->left = ft_nodenew("cat");
+	//ast->right->left->type = CMD_NAME;
+
+	pipe_execution(root, std);
+}
+
 MU_TEST_SUITE(test_suite_tokens)
 {
 	MU_SUITE_CONFIGURE(&setup, &teardown);
@@ -159,6 +200,8 @@ MU_TEST_SUITE(test_suite_tokens)
 	MU_RUN_TEST(test_ft_strreplace);
 	MU_RUN_TEST(test_tokenizer);
 	MU_RUN_TEST(test_lexer);
+	//MU_RUN_TEST(test_ast);
+	MU_RUN_TEST(test_execute);
 }
 
 int	main(void)
