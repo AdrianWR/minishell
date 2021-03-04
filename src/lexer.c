@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:44:50 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:38:10 by aroque           ###   ########.fr       */
+/*   Updated: 2021/02/28 19:39:53 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,36 @@
 #include "tokenizer.h"
 #include <stdbool.h>
 
-int			expand_env(char **str, t_hashtable *env)
+static void	replace_env(char **str, t_hashtable *env, size_t *i)
 {
-	size_t	i;
 	size_t	j;
 	char	*key;
 	char	*value;
 
-	i = 0;
 	j = 0;
+	while (ft_isalnum_or_uscore((*str)[*i + j + 1]))
+		j++;
+	key = ft_substr(*str, *i, j + 1);
+	value = ht_get(env, key + 1);
+	if (!value)
+		value = "";
+	*str = ft_strreplace(str, key, value);
+	*i += ft_strlen(value);
+	j = 0;
+	free(key);
+}
+
+int			expand_env(char **str, t_hashtable *env)
+{
+	size_t	i;
+
+	if (env == NULL)
+		return (0);
+	i = 0;
 	while ((*str)[i])
 	{
 		if ((*str)[i] == '$')
-		{
-			while (ft_isalnum_or_uscore((*str)[i + j + 1]))
-				j++;
-			key = ft_substr(*str, i, j + 1);
-			value = ht_get(env, key + 1);
-			if (!value)
-				value = "";
-			*str = ft_strreplace(str, key, value);
-			i += ft_strlen(value);
-			j = 0;
-			free(key);
-		}
+			replace_env(str, env, &i);
 		i++;
 	}
 	return (0);
@@ -82,11 +88,11 @@ int			lexer(t_token *token, t_hashtable *env)
 
 	err = 0;
 	if (ft_streq(token->value, ">"))
-		token->type = T_REDIRECT_OUTPUT;
+		token->type = T_OREDIRECT;
 	else if (ft_streq(token->value, ">>"))
-		token->type = T_APPEND_OUTPUT;
+		token->type = T_OAPPEND;
 	else if (ft_streq(token->value, "<"))
-		token->type = T_REDIRECT_INPUT;
+		token->type = T_IREDIRECT;
 	else if (ft_streq(token->value, ";"))
 		token->type = T_SEPARATOR;
 	else if (ft_streq(token->value, "|"))
