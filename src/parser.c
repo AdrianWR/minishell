@@ -5,75 +5,72 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/07 10:30:35 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/09 23:33:19 by aroque           ###   ########.fr       */
+/*   Created: 2021/02/21 16:26:28 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/03 23:24:58 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
 #include "libft.h"
+#include "tokenizer.h"
+#include "parser.h"
+#include "errcode.h"
 
-/*
-** Backus-Naur Form for Shell Syntax
-**
-** pipe_sequence  	: command
-**                	| pipe_sequence '|' command
-**                	;
-**
-** command			: cmd_name	cmd_suffix
-**                	| cmd_name
-**                	;
-**
-** cmd_name			: WORD
-**					;
-**
-** cmd_suffix		: WORD
-** 					| cmd_suffix	WORD
-** 					| io_redirect
-** 					| cmd_suffix	io_redirect
-** 					;
-**
-** io_redirect      :           io_file
-**            	    | IO_NUMBER	io_file
-**                	|           io_here
-**                 	| IO_NUMBER io_here
-**                 	;
-**
-** io_file          : '<'       filename
-** 					| '>'       filename
-**					| DGREAT    filename
-**					| LESSGREAT	filename
-**					;
-**
-** filename         : WORD
-**					;
-*/
-
-//<command line>	:=	<job>
-//					|	<job> ';'
-//					|	<job> ';' <command line>
-//					         
-//<job>				:=	<command>
-//					|	< job > '|' < command >
-//					        
-//<command			:=	<simple command>
-//	        		|	<simple command> '<' <filename>
-//	        		|	<simple command> '>' <filename>
-//					        
-//<simple command>	:=	<simple command>
-//	        		|	<simple command>  <token>
-
-t_astnode *ast_parser(t_list *tokens)
+t_process	*parse_command(t_list **tokens)
 {
-	t_astnode	*ast;
-	t_astnode	*root;
+	t_process	*command;
+	bool		exit;
+	unsigned	i;
 
+	i = 0;
+	exit = false;
+	command = ft_calloc(1, sizeof(*command));
+	while (*tokens && !exit)
+	{
+		if (((t_token *)(*tokens)->content)->type == T_SEPARATOR ||
+				((t_token *)(*tokens)->content)->type == T_PIPE)
+			exit = true;
+		else if (((t_token *)(*tokens)->content)->type == T_WORD)
+			command->argv[i++] = ((t_token *)(*tokens)->content)->value;
+		else if (((t_token *)(*tokens)->content)->type == T_IREDIRECT)
+			parse_input_redirect(command, tokens);
+		else if (((t_token *)(*tokens)->content)->type == T_OREDIRECT)
+			parse_output_redirect(command, tokens, false);
+		else if (((t_token *)(*tokens)->content)->type == T_OAPPEND)
+			parse_output_redirect(command, tokens, true);
+		if (!exit)
+			*tokens = (*tokens)->next;
+	}
+	return (command);
+}
+
+t_process	*parse_job(t_list **tokens)
+{
+	t_process	*head;
+	t_process	*command;
+
+	head = NULL;
+	while (*tokens && ((t_token *)((*tokens)->content))->type != T_SEPARATOR)
+	{
+		command = parse_command(tokens);
+		push_process(&head, command);
+		if (*tokens && ((t_token *)((*tokens)->content))->type != T_SEPARATOR)
+			*tokens = (*tokens)->next;
+	}
+	return (head);
+}
+
+t_list		*parser(t_list *tokens)
+{
+	t_list		*jobs;
+	t_process	*commands;
+
+	jobs = NULL;
 	while (tokens)
 	{
-
+		commands = parse_job(&tokens);
+		ft_lstadd_back(&jobs, ft_lstnew(commands));
+		if (tokens)
+			tokens = tokens->next;
 	}
-	ast = ft_nodenew(0x0);
-	root = ast;
-	ast->type = PIPE_SEQUENCE;
-	return (ast);
+	return (jobs);
 }
