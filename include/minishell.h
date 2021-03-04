@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:30:28 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:39:34 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stdbool.h>
 # include "libft.h"
 # include "hash.h"
-# include "ast.h"
 
 # define BIN	"./minishell"
 
@@ -24,7 +23,6 @@ typedef	struct	s_shell
 {
 	int			status;
 	t_list		*tokens;
-	t_astnode	*ast;
 	t_hashtable	*env;
 	t_hashtable	*builtins;
 	char		**envp;
@@ -49,7 +47,5 @@ void			free_shell(t_shell *shell);
 int				pathslen(char c, const char *path);
 char			*setpath(const char *path, const char *argv, int i);
 char			*abspath(const char *argv);
-
-int				pipe_execution(t_astnode *node, int std[2]);
 
 #endif

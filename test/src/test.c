@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 22:55:37 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:39:48 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "minunit.h"
 #include "libft.h"
 #include "tokenizer.h"
-#include "ast.h"
 #include "parser.h"
 
 t_shell		*shell;
