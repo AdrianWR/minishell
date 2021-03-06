@@ -6,13 +6,13 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 16:26:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:24:58 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/06 17:53:19 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "tokenizer.h"
-#include "parser.h"
+#include "process.h"
 #include "errcode.h"
 
 t_process	*parse_command(t_list **tokens)
@@ -41,36 +41,4 @@ t_process	*parse_command(t_list **tokens)
 			*tokens = (*tokens)->next;
 	}
 	return (command);
-}
-
-t_process	*parse_job(t_list **tokens)
-{
-	t_process	*head;
-	t_process	*command;
-
-	head = NULL;
-	while (*tokens && ((t_token *)((*tokens)->content))->type != T_SEPARATOR)
-	{
-		command = parse_command(tokens);
-		push_process(&head, command);
-		if (*tokens && ((t_token *)((*tokens)->content))->type != T_SEPARATOR)
-			*tokens = (*tokens)->next;
-	}
-	return (head);
-}
-
-t_list		*parser(t_list *tokens)
-{
-	t_list		*jobs;
-	t_process	*commands;
-
-	jobs = NULL;
-	while (tokens)
-	{
-		commands = parse_job(&tokens);
-		ft_lstadd_back(&jobs, ft_lstnew(commands));
-		if (tokens)
-			tokens = tokens->next;
-	}
-	return (jobs);
 }
