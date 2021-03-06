@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:44:07 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:39:34 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 # include <stdbool.h>
-
 # include "libft.h"
 # include "hash.h"
 
@@ -35,7 +34,7 @@ typedef	struct	s_shell
 
 extern t_shell	*g_shell;
 
-int				create_process(char *const *argv, t_shell *shell);
+int				create_process(t_shell *shell);
 void			sighandler(int signum);
 void			repl(t_shell *shell);
 char			**getpaths(const char *argv, const char *path);

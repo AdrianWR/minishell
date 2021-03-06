@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 14:42:49 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/03 23:45:52 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:29:32 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 # define C_LESS		'<'
 # define C_GREATER	'>'
 # define C_SMCOLON	';'
-# define C_SPACE		' '
+# define C_SPACE	' '
 # define C_NULL		'\0'
 # define C_GENERAL	-1
 
-# define BUFFER_SIZE 4096
+# define TOKEN_BUFFER_SIZE 4096
 
 typedef enum	e_state
 {
@@ -43,21 +43,21 @@ typedef enum	e_type
 	T_UNDEFINED,
 	T_WORD,
 	T_SEPARATOR,
-	T_REDIRECT_INPUT,
-	T_APPEND_OUTPUT,
-	T_REDIRECT_OUTPUT,
 	T_PIPE,
-	T_END_OF_LINE
+	T_END_OF_LINE,
+	T_IREDIRECT,
+	T_OREDIRECT,
+	T_OAPPEND
 }				t_type;
 
 typedef struct	s_tkdata
 {
 	size_t		i;
 	size_t		j;
-	char		*input;
+	const char	*input;
 	t_state		state;
 	t_hashtable	*env;
-	char		buffer[BUFFER_SIZE];
+	char		buffer[TOKEN_BUFFER_SIZE];
 }				t_tkdata;
 
 typedef struct	s_token
@@ -66,9 +66,8 @@ typedef struct	s_token
 	t_type		type;
 }				t_token;
 
-void			tokenizer(t_shell *shell);
+t_list			*tokenizer(const char *input, t_hashtable *env);
 int				lexer(t_token *token, t_hashtable *env);
-void			replace_env(char *str, size_t i, t_hashtable *env);
 void			free_token(void *token);
 
 #endif

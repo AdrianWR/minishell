@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/03 23:37:25 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:26:25 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "libft.h"
 #include "minishell.h"
 #include "errcode.h"
+#include "tokenizer.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
@@ -45,6 +46,7 @@ void		repl(t_shell *shell)
 		signal(SIGINT, sighandler);
 		prompt(shell->env);
 		get_next_line(STDIN_FILENO, &input);
+		shell->tokens = tokenizer(shell->input, shell->env);
 		shell->args = ft_split(input, ' ');
 		execute_command(shell);
 	}

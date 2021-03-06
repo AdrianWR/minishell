@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:45:15 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:28:48 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		execute(char *const *argv, char **envp, char *path)
 	freemat(paths);
 }
 
-int			create_process(char *const *argv, t_shell *shell)
+int			create_process(t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
@@ -56,23 +56,22 @@ int			create_process(char *const *argv, t_shell *shell)
 	if ((pid = fork()) < 0)
 		message_and_exit(ERRSYS, NULL);
 	else if (pid == 0)
-		execute(argv, shell->envp, ht_get(shell->env, "PATH"));
+		execute(shell->args, shell->envp, ht_get(shell->env, "PATH"));
 	else
-	{
-		while (wait(&status) != pid)
-			;
-	}
+		waitpid(pid, &status, 0);
 	return (ret);
 }
 
 int			execute_command(t_shell *shell)
 {
+	int		fd[2];
 	void	(*builtin)(t_shell *);
 
+	pipe(fd);
 	builtin = ht_get(shell->builtins, shell->args[0]);
 	if (builtin)
 		builtin(shell);
 	else
-		create_process(shell->args, shell);
+		create_process(shell);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 14:11:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:30:04 by aroque           ###   ########.fr       */
+/*   Updated: 2021/02/25 21:22:52 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ static void		tokenize_general(t_tkdata *tk, t_list **tokens)
 		tk->buffer[tk->j++] = tk->input[tk->i];
 }
 
-void			tokenizer(t_shell *shell)
+t_list			*tokenizer(const char *input, t_hashtable *env)
 {
 	t_list		*tokens;
 	t_tkdata	*tk;
 
 	tokens = NULL;
 	tk = ft_calloc(1, sizeof(*tk));
-	tk->input = shell->input;
-	tk->env = shell->env;
+	tk->input = input;
+	tk->env = env;
 	while (tk->input[tk->i])
 	{
 		if (tk->state == S_GENERAL)
@@ -86,5 +86,5 @@ void			tokenizer(t_shell *shell)
 		tk->i++;
 	}
 	free(tk);
-	shell->tokens = tokens;
+	return (tokens);
 }
