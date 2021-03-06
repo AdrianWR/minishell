@@ -6,12 +6,12 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 22:59:11 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:22:01 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/06 17:55:10 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
-#include "parser.h"
+#include "process.h"
 #include "errcode.h"
 #include <fcntl.h>
 
@@ -20,14 +20,13 @@ void	push_process(t_process **lst, t_process *new)
 	t_process		*last;
 
 	if (!*lst)
-	{
 		*lst = new;
-		return ;
+	else {
+		last = *lst;
+		while (last->next)
+			last = last->next;
+		last->next = new;
 	}
-	last = *lst;
-	while (last->next)
-		last = last->next;
-	last->next = new;
 }
 
 void	add_to_args(char **argv, char *word)

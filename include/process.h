@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   process.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/28 10:41:48 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:23:49 by aroque           ###   ########.fr       */
+/*   Created: 2021/03/06 17:45:59 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/06 17:53:09 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef COMMAND_H
+# define COMMAND_H
 
 # include <stdbool.h>
 # include "libft.h"
@@ -30,12 +30,11 @@ typedef struct			s_process
 	struct s_process	*next;
 }						t_process;
 
-t_process				*get_process(t_list *tokens);
-t_list					*parser(t_list *tokens);
 int						parse_input_redirect(t_process *command, t_list **tk);
 int						parse_output_redirect(t_process *cmd,
 							t_list **tk, bool append);
 void					add_to_args(char **argv, char *word);
 void					push_process(t_process **lst, t_process *new);
+t_process				*parse_command(t_list **tokens);
 
 #endif
