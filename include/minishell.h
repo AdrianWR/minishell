@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:39:34 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 01:29:57 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 # include <stdbool.h>
 # include "libft.h"
 # include "hash.h"
+# include "token.h"
 
 # define BIN	"./minishell"
 
 typedef	struct	s_shell
 {
 	int			status;
-	t_list		*tokens;
+	t_token		*tokens;
 	t_hashtable	*env;
 	t_hashtable	*builtins;
 	char		**envp;
@@ -39,7 +40,6 @@ void			sighandler(int signum);
 void			repl(t_shell *shell);
 char			**getpaths(const char *argv, const char *path);
 void			freemat(char **mat);
-bool			ft_streq(const char *s1, const char *s2);
 t_hashtable		*load_env(char *envp[]);
 int				execute_command(t_shell *shell);
 void			free_shell(t_shell *shell);
