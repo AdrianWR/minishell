@@ -1,77 +1,106 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process.c                                          :+:      :+:    :+:   */
+/*   process_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:28:48 by aroque           ###   ########.fr       */
+/*   Created: 2021/03/03 22:59:11 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/07 01:27:47 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include "commands.h"
-#include "minishell.h"
-#include "libft.h"
+#include "token.h"
+#include "process.h"
 #include "errcode.h"
+#include <fcntl.h>
 
-/*
-** Use environment path and argv to make
-** paths of a program to try to execute
-*/
-
-void		execute(char *const *argv, char **envp, char *path)
+void		push_process(t_process **lst, t_process *new)
 {
-	char	**paths;
-	int		len;
-	int		r;
-	int		i;
+	t_process		*last;
 
-	len = pathslen(**argv, path);
-	if (!(paths = malloc((len + 1) * sizeof(char *))))
-		return ;
-	paths[len] = NULL;
-	if (**argv == '/' || **argv == '~' || **argv == '.')
-		paths[--len] = abspath(*argv);
-	i = 0;
-	while (len--)
-		paths[len] = setpath(path, *argv, i++);
-	i = 0;
-	r = -1;
-	while (r < 0 && paths[i])
-		r = execve(paths[i++], &argv[0], envp);
-	freemat(paths);
+	if (!*lst)
+		*lst = new;
+	else
+	{
+		last = *lst;
+		while (last->next)
+			last = last->next;
+		last->next = new;
+	}
 }
 
-int			create_process(t_shell *shell)
+void		add_to_args(char **argv, char *word)
 {
-	pid_t	pid;
-	int		status;
-	int		ret;
+	static unsigned	i;
+	static char		**s;
 
-	ret = 0;
-	if ((pid = fork()) < 0)
-		message_and_exit(ERRSYS, NULL);
-	else if (pid == 0)
-		execute(shell->args, shell->envp, ht_get(shell->env, "PATH"));
-	else
-		waitpid(pid, &status, 0);
-	return (ret);
+	if (!s || s != argv)
+	{
+		s = argv;
+		i = 0;
+	}
+	argv[i] = word;
+	i++;
 }
 
-int			execute_command(t_shell *shell)
+int			parse_output_redirect(t_process *cmd, t_token **tokens, bool append)
 {
-	int		fd[2];
-	void	(*builtin)(t_shell *);
+	static unsigned	i;
+	static void		*tmp;
+	t_token			*token;
 
-	pipe(fd);
-	builtin = ht_get(shell->builtins, shell->args[0]);
-	if (builtin)
-		builtin(shell);
-	else
-		create_process(shell);
+	if (!tmp || tmp != cmd)
+	{
+		tmp = cmd;
+		i = 0;
+	}
+	*tokens = (*tokens)->next;
+	token = *tokens;
+	if ((token)->type != T_WORD)
+		return (EPARSE);
+	cmd->output_file[i].path = (token)->value;
+	cmd->output_file[i].flags = O_CREAT | (append * O_APPEND);
+	i++;
 	return (0);
+}
+
+int			parse_input_redirect(t_process *command, t_token **tokens)
+{
+	t_token	*token;
+
+	*tokens = (*tokens)->next;
+	token = *tokens;
+	if ((*tokens)->type != T_WORD)
+		return (EPARSE);
+	command->input_file.path = (*tokens)->value;
+	return (0);
+}
+
+t_process	*parse_command(t_token **tokens)
+{
+	t_process	*command;
+	bool		exit;
+	unsigned	i;
+
+	i = 0;
+	exit = false;
+	if (!(command = ft_calloc(1, sizeof(*command))))
+		return (NULL);
+	while (*tokens && !exit)
+	{
+		if ((*tokens)->type == T_SEPARATOR || (*tokens)->type == T_PIPE)
+			exit = true;
+		else if ((*tokens)->type == T_WORD)
+			command->argv[i++] = (*tokens)->value;
+		else if ((*tokens)->type == T_IREDIRECT)
+			parse_input_redirect(command, tokens);
+		else if ((*tokens)->type == T_OREDIRECT)
+			parse_output_redirect(command, tokens, false);
+		else if ((*tokens)->type == T_OAPPEND)
+			parse_output_redirect(command, tokens, true);
+		if (!exit)
+			*tokens = (*tokens)->next;
+	}
+	return (command);
 }
