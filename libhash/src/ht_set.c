@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 13:21:38 by aroque            #+#    #+#             */
-/*   Updated: 2020/12/30 18:27:24 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 11:40:04 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ int			ht_set(t_hashtable *ht, const char *key, void *value)
 	node->key = ft_strdup(key);
 	node->value = value;
 	insert_node(ht, node);
+	ht->storage++;
 	return (0);
 }
