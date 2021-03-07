@@ -6,14 +6,14 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 17:44:23 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/06 17:51:59 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/06 18:28:37 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "job.h"
 #include "process.h"
 #include "libft.h"
-#include "tokenizer.h"
+#include "token.h"
 #include "errcode.h"
 
 static void		push_job(t_job **job, t_job *new)
@@ -31,7 +31,7 @@ static void		push_job(t_job **job, t_job *new)
 	}
 }
 
-static t_job	*parse_job(t_list **tokens)
+static t_job	*parse_job(t_token **tokens)
 {
 	t_job		*job;
 	t_process	*head;
@@ -39,18 +39,18 @@ static t_job	*parse_job(t_list **tokens)
 
 	job = ft_calloc(1, sizeof(*job));
 	head = NULL;
-	while (*tokens && ((t_token *)((*tokens)->content))->type != T_SEPARATOR)
+	while (*tokens && (*tokens)->type != T_SEPARATOR)
 	{
 		command = parse_command(tokens);
 		push_process(&head, command);
-		if (*tokens && ((t_token *)((*tokens)->content))->type != T_SEPARATOR)
+		if (*tokens && (*tokens)->type != T_SEPARATOR)
 			*tokens = (*tokens)->next;
 	}
 	job->process_list = head;
 	return (job);
 }
 
-t_job			*parser(t_list *tokens)
+t_job			*parser(t_token *tokens)
 {
 	t_job		*jobs;
 
