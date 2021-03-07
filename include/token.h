@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.h                                        :+:      :+:    :+:   */
+/*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 14:42:49 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:29:32 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 01:31:21 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKENIZER_H
-# define TOKENIZER_H
+#ifndef TOKEN_H
+# define TOKEN_H
 
 # include "hash.h"
 # include "libft.h"
-# include "minishell.h"
 
 # define C_SQUOTE	'\''
 # define C_DQUOTE	'"'
@@ -30,15 +29,15 @@
 
 # define TOKEN_BUFFER_SIZE 4096
 
-typedef enum	e_state
+typedef enum		e_state
 {
 	S_GENERAL,
 	S_SQUOTE,
 	S_DQUOTE,
 	S_ESCAPE
-}				t_state;
+}					t_state;
 
-typedef enum	e_type
+typedef enum		e_type
 {
 	T_UNDEFINED,
 	T_WORD,
@@ -48,26 +47,27 @@ typedef enum	e_type
 	T_IREDIRECT,
 	T_OREDIRECT,
 	T_OAPPEND
-}				t_type;
+}					t_type;
 
-typedef struct	s_tkdata
+typedef struct		s_tkdata
 {
-	size_t		i;
-	size_t		j;
-	const char	*input;
-	t_state		state;
-	t_hashtable	*env;
-	char		buffer[TOKEN_BUFFER_SIZE];
-}				t_tkdata;
+	size_t			i;
+	size_t			j;
+	const char		*input;
+	t_state			state;
+	t_hashtable		*env;
+	char			buffer[TOKEN_BUFFER_SIZE];
+}					t_tkdata;
 
-typedef struct	s_token
+typedef struct		s_token
 {
-	char		*value;
-	t_type		type;
-}				t_token;
+	char			*value;
+	t_type			type;
+	struct s_token	*next;
+}					t_token;
 
-t_list			*tokenizer(const char *input, t_hashtable *env);
-int				lexer(t_token *token, t_hashtable *env);
-void			free_token(void *token);
+t_token				*tokenizer(const char *input, t_hashtable *env);
+int					lexer(t_token *token, t_hashtable *env);
+void				free_token(void *token);
 
 #endif

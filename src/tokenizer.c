@@ -6,23 +6,39 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 14:11:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/25 21:22:52 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/06 19:03:08 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-#include "tokenizer.h"
+#include "token.h"
 
-static void		get_token(t_tkdata *tk, t_list **tokens)
+static void		push_token(t_token **token, t_token *new)
+{
+	t_token		*tmp;
+
+	if (!*token)
+		*token = new;
+	else
+	{
+		tmp = *token;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}
+
+static void		get_token(t_tkdata *tk, t_token **tokens)
 {
 	t_token		*token;
 
 	if (!tk->j || !(token = malloc(sizeof(*token))))
 		return ;
+	ft_bzero(token, sizeof(*token));
 	token->value = ft_strdup(tk->buffer);
 	lexer(token, tk->env);
-	ft_lstadd_back(tokens, ft_lstnew(token));
+	push_token(tokens, token);
 	ft_bzero(tk->buffer, tk->j);
 	tk->j = 0;
 }
@@ -36,7 +52,7 @@ static void		tokenize_quoted(t_tkdata *tk, char quote)
 		tk->state = S_GENERAL;
 }
 
-static void		tokenize_general(t_tkdata *tk, t_list **tokens)
+static void		tokenize_general(t_tkdata *tk, t_token **tokens)
 {
 	if (tk->input[tk->i] == C_SQUOTE)
 	{
@@ -64,9 +80,9 @@ static void		tokenize_general(t_tkdata *tk, t_list **tokens)
 		tk->buffer[tk->j++] = tk->input[tk->i];
 }
 
-t_list			*tokenizer(const char *input, t_hashtable *env)
+t_token			*tokenizer(const char *input, t_hashtable *env)
 {
-	t_list		*tokens;
+	t_token		*tokens;
 	t_tkdata	*tk;
 
 	tokens = NULL;
