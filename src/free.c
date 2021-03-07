@@ -6,13 +6,13 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:37:39 by gariadno          #+#    #+#             */
-/*   Updated: 2021/02/04 22:39:55 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 01:27:56 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-#include "tokenizer.h"
+#include "token.h"
 
 void		free_token(void *token)
 {
@@ -42,6 +42,5 @@ void		freemat(char **mat)
 
 void		free_shell(t_shell *shell)
 {
-	ft_lstclear(&shell->tokens, free_token);
 	ht_free(shell->env, free);
 }

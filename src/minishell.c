@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:26:25 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/06 18:19:06 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "minishell.h"
 #include "errcode.h"
-#include "tokenizer.h"
+#include "token.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>

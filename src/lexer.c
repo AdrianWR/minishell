@@ -6,14 +6,14 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:44:50 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/28 19:39:53 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/06 18:18:57 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "errcode.h"
 #include "hash.h"
 #include "libft.h"
-#include "tokenizer.h"
+#include "token.h"
 #include <stdbool.h>
 
 static void	replace_env(char **str, t_hashtable *env, size_t *i)
