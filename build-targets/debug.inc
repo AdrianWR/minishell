@@ -1,1 +1,1 @@
-CPPFLAGS = -g
+CPPFLAGS += -g

@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/06 18:27:16 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 19:43:03 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,16 @@ MU_TEST(test_parser)
 	mu_assert_string_eq("job", parsed->argv[2]);
 }
 
+MU_TEST(test_unload_env)
+{
+	char **envp;
+
+	envp = unload_env(htenv);
+	mu_assert_string_eq("USER=gariadno", envp[0]);
+	mu_assert_string_eq("CAKE=strawberry", envp[1]);
+	mu_assert_string_eq("SHELL=minishell", envp[2]);
+}
+
 MU_TEST_SUITE(test_suite_tokens)
 {
 	MU_SUITE_CONFIGURE(&setup, &teardown);
@@ -192,6 +202,7 @@ MU_TEST_SUITE(test_suite_tokens)
 	MU_RUN_TEST(test_tokenizer);
 	MU_RUN_TEST(test_lexer);
 	MU_RUN_TEST(test_parser);
+	MU_RUN_TEST(test_unload_env);
 }
 
 int	main(void)
