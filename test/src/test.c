@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:39:48 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/06 18:27:16 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 #include "minishell.h"
 #include "minunit.h"
 #include "libft.h"
-#include "tokenizer.h"
-#include "parser.h"
+#include "token.h"
+#include "process.h"
+#include "job.h"
 
 t_shell		*shell;
 t_hashtable	*htenv;
@@ -93,26 +94,26 @@ MU_TEST(test_ft_strreplace)
 
 MU_TEST(test_tokenizer)
 {
-	t_list		*tokens;
-	t_list		*head;
+	t_token		*tokens;
+	t_token		*head;
 	char		str[] = " echo>>    here    we    go; 'single quotes <<<";
 
 	tokens = tokenizer(str, NULL);
 	head = tokens;
-	mu_assert_string_eq("echo", ((t_token *)tokens->content)->value);
+	mu_assert_string_eq("echo", tokens->value);
 	tokens = tokens->next;
-	mu_assert_string_eq(">>", ((t_token *)tokens->content)->value);
+	mu_assert_string_eq(">>", tokens->value);
 	tokens = tokens->next;
-	mu_assert_string_eq("here", ((t_token *)tokens->content)->value);
+	mu_assert_string_eq("here", tokens->value);
 	tokens = tokens->next;
-	mu_assert_string_eq("we", ((t_token *)tokens->content)->value);
+	mu_assert_string_eq("we", tokens->value);
 	tokens = tokens->next;
-	mu_assert_string_eq("go", ((t_token *)tokens->content)->value);
+	mu_assert_string_eq("go", tokens->value);
 	tokens = tokens->next;
-	mu_assert_string_eq(";", ((t_token *)tokens->content)->value);
+	mu_assert_string_eq(";", tokens->value);
 	tokens = tokens->next;
-	mu_assert_string_eq("'single quotes <<<", ((t_token *)tokens->content)->value);
-	ft_lstclear(&head, (void *)free_token);
+	mu_assert_string_eq("'single quotes <<<", tokens->value);
+	//ft_lstclear(&head, (void *)free_token);
 }
 
 MU_TEST(test_lexer)
@@ -152,14 +153,14 @@ MU_TEST(test_lexer)
 
 MU_TEST(test_parser)
 {
-	t_list		*jobs;
-	t_list		*tokens;
+	t_job		*jobs;
+	t_token		*tokens;
 	t_process	*parsed;
 	char		str[] = "echo >alimento 'my command' is >>appendplease  cool  < fruta < abobora | cat something > here ; a new job";
 
 	tokens = tokenizer(str, NULL);
 	jobs = parser(tokens);
-	parsed = ((t_list *)jobs)->content;
+	parsed = jobs->process_list;
 	mu_assert_string_eq("echo", parsed->argv[0]);
 	mu_assert_string_eq("my command", parsed->argv[1]);
 	mu_assert_string_eq("is", parsed->argv[2]);
@@ -175,7 +176,7 @@ MU_TEST(test_parser)
 	mu_assert_string_eq("here", parsed->output_file[0].path);
 	mu_assert_int_eq(O_CREAT, parsed->output_file[0].flags);
 	jobs = jobs->next;
-	parsed = ((t_list *)jobs)->content;
+	parsed = jobs->process_list;
 	mu_assert_string_eq("a", parsed->argv[0]);
 	mu_assert_string_eq("new", parsed->argv[1]);
 	mu_assert_string_eq("job", parsed->argv[2]);
