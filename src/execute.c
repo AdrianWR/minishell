@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 20:32:53 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/09 03:39:19 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,30 @@
 ** paths of a program to try to execute
 */
 
-void		execute(char *const *argv, t_shell *shell)
+void	execute(char *const *argv, t_shell *shell)
+{
+	char	*pathtotry;
+	char	*path;
+	int		len;
+	int		r;
+	int		i;
+
+	i = 0;
+	r = -1;
+	path = ht_get(shell->env, "PATH");
+	len = pathslen(**argv, path);
+	while (r < 0 && len--)
+	{
+		pathtotry = setpath(path, *argv, i++);
+		r = execve(pathtotry, &argv[0], shell->envp);
+		free(pathtotry);
+	}
+	free(path);
+	if (r == -1)
+		return ;
+}
+
+void	execute_(char *const *argv, t_shell *shell)
 {
 	char	**paths;
 	int		len;
@@ -35,7 +58,7 @@ void		execute(char *const *argv, t_shell *shell)
 	path = ht_get(shell->env, "PATH");
 	len = pathslen(**argv, path);
 	if (!(paths = malloc((len + 1) * sizeof(char *))))
-		return ;
+		return;
 	paths[len] = NULL;
 	if (**argv == '/' || **argv == '~' || **argv == '.')
 		paths[--len] = abspath(*argv);
@@ -50,7 +73,7 @@ void		execute(char *const *argv, t_shell *shell)
 	exit(0);
 }
 
-int			execute_process(t_process *process, t_shell *shell)
+int		execute_process(t_process *process, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
@@ -65,7 +88,7 @@ int			execute_process(t_process *process, t_shell *shell)
 	return (status);
 }
 
-int			execute_job(t_process *process, t_shell *shell)
+int		execute_job(t_process *process, t_shell *shell)
 {
 	int	status;
 
@@ -78,16 +101,16 @@ int			execute_job(t_process *process, t_shell *shell)
 	return (status);
 }
 
-int			execute_all(t_shell *shell)
+int		execute_all(t_shell *shell)
 {
-	int	status;
+	int status;
 
 	status = 0;
 	while (shell->jobs && !status)
 	{
 		shell->envp = unload_env(shell->env);
 		status = execute_job(shell->jobs->process_list, shell);
-		//freemat(shell->envp);
+		// freemat(shell->envp);
 		shell->jobs = shell->jobs->next;
 	}
 	return (status);
