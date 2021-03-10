@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 15:40:53 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:40:26 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 11:38:54 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct		s_htlist {
 typedef struct		s_hashtable {
 	t_htlist		**array;
 	unsigned int	size;
+	unsigned int	storage;
 }					t_hashtable;
 
 unsigned int		hash(const char *key, unsigned int size);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   repl.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/06 18:19:06 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 18:19:50 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,17 @@ static void	prompt(t_hashtable *env)
 void		repl(t_shell *shell)
 {
 	char	*input;
+	t_token	*tokens;
 
+	(void)tokens;
 	while (shell->exit == false)
 	{
 		signal(SIGINT, sighandler);
 		prompt(shell->env);
 		get_next_line(STDIN_FILENO, &input);
-		shell->tokens = tokenizer(shell->input, shell->env);
-		shell->args = ft_split(input, ' ');
-		execute_command(shell);
+		tokens = tokenizer(input, shell->env);
+		shell->jobs = parser(tokens);
+		execute_all(shell);
+		free(input);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 13:20:06 by aroque            #+#    #+#             */
-/*   Updated: 2020/05/12 23:20:15 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/07 11:39:24 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ t_hashtable	*ht_create(unsigned int size)
 		i++;
 	}
 	ht->size = size;
+	ht->storage = 0;
 	return (ht);
 }
