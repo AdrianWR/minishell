@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/09 03:39:19 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/03/10 20:03:34 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	execute_(char *const *argv, t_shell *shell)
 	path = ht_get(shell->env, "PATH");
 	len = pathslen(**argv, path);
 	if (!(paths = malloc((len + 1) * sizeof(char *))))
-		return;
+		return ;
 	paths[len] = NULL;
 	if (**argv == '/' || **argv == '~' || **argv == '.')
 		paths[--len] = abspath(*argv);
@@ -110,7 +110,7 @@ int		execute_all(t_shell *shell)
 	{
 		shell->envp = unload_env(shell->env);
 		status = execute_job(shell->jobs->process_list, shell);
-		// freemat(shell->envp);
+		freemat(shell->envp);
 		shell->jobs = shell->jobs->next;
 	}
 	return (status);

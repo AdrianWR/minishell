@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 19:51:12 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/10 20:06:19 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ t_hashtable		*load_env(char *envp[])
 	return (env);
 }
 
-static char *node_to_envp(t_htlist *node)
+static char		*node_to_envp(t_htlist *node)
 {
-	char	*str;
-	char 	*tmp;
+	char		*str;
+	char		*tmp;
 
 	if (!node)
 		return (NULL);
@@ -46,10 +46,10 @@ static char *node_to_envp(t_htlist *node)
 	return (str);
 }
 
-char **unload_env(t_hashtable *env)
+char			**unload_env(t_hashtable *env)
 {
 	unsigned	i;
-	unsigned 	j;
+	unsigned	j;
 	char		**envp;
 	t_htlist	*tmp;
 
