@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/02/04 22:39:38 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 18:35:51 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include "libft.h"
 #include <unistd.h>
 
-void	ft_exit(t_shell *shell)
+int		ft_exit(t_shell *shell)
 {
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	shell->exit = true;
+	return (0);
 }
 
 void	ft_pwd(t_shell *shell)
