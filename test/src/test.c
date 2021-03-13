@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 19:43:03 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/11 23:56:43 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,8 @@ MU_TEST(test_parser)
 	t_token		*tokens;
 	t_process	*parsed;
 	char		str[] = "echo >alimento 'my command' is >>appendplease  cool  < fruta < abobora | cat something > here ; a new job";
+	int trunc_flags = O_WRONLY | O_CREAT | O_TRUNC;
+	int append_flags = O_WRONLY | O_CREAT | O_APPEND;
 
 	tokens = tokenizer(str, NULL);
 	jobs = parser(tokens);
@@ -165,16 +167,16 @@ MU_TEST(test_parser)
 	mu_assert_string_eq("my command", parsed->argv[1]);
 	mu_assert_string_eq("is", parsed->argv[2]);
 	mu_assert_string_eq("cool", parsed->argv[3]);
-	mu_assert_string_eq("abobora", parsed->input_file.path);
-	mu_assert_string_eq("alimento", parsed->output_file[0].path);
-	mu_assert_int_eq(O_CREAT, parsed->output_file[0].flags);
-	mu_assert_string_eq("appendplease", parsed->output_file[1].path);
-	mu_assert_int_eq(O_CREAT | O_APPEND, parsed->output_file[1].flags);
+	mu_assert_string_eq("abobora", parsed->input_file->path);
+	mu_assert_string_eq("alimento", parsed->output_file[0]->path);
+	mu_assert_int_eq(trunc_flags, parsed->output_file[0]->flags);
+	mu_assert_string_eq("appendplease", parsed->output_file[1]->path);
+	mu_assert_int_eq(append_flags, parsed->output_file[1]->flags);
 	parsed = parsed->next;
 	mu_assert_string_eq("cat", parsed->argv[0]);
 	mu_assert_string_eq("something", parsed->argv[1]);
-	mu_assert_string_eq("here", parsed->output_file[0].path);
-	mu_assert_int_eq(O_CREAT, parsed->output_file[0].flags);
+	mu_assert_string_eq("here", parsed->output_file[0]->path);
+	mu_assert_int_eq(trunc_flags, parsed->output_file[0]->flags);
 	jobs = jobs->next;
 	parsed = jobs->process_list;
 	mu_assert_string_eq("a", parsed->argv[0]);
@@ -190,6 +192,8 @@ MU_TEST(test_unload_env)
 	mu_assert_string_eq("USER=gariadno", envp[0]);
 	mu_assert_string_eq("CAKE=strawberry", envp[1]);
 	mu_assert_string_eq("SHELL=minishell", envp[2]);
+	//printf("%p\n", envp[3]);
+	mu_assert(envp[3] == NULL, "Error: Last env not null.");
 }
 
 MU_TEST_SUITE(test_suite_tokens)

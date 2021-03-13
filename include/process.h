@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 17:45:59 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 01:29:38 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 17:48:52 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,16 @@ typedef struct			s_file
 {
 	char				*path;
 	int					flags;
+	int					fd;
 }						t_file;
 
 typedef struct			s_process
 {
 	char				*argv[64];
-	t_file				input_file;
-	t_file				output_file[16];
+	t_file				*input_file;
+	t_file				*output_file[16];
 	struct s_process	*next;
+	struct s_process	*prev;
 }						t_process;
 
 t_process				*parse_command(t_token **tokens);

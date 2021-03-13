@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_parser.c                                   :+:      :+:    :+:   */
+/*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 22:59:11 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 01:27:47 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 13:36:14 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void		push_process(t_process **lst, t_process *new)
 		while (last->next)
 			last = last->next;
 		last->next = new;
+		new->prev = last;
 	}
 }
 
@@ -49,6 +50,7 @@ int			parse_output_redirect(t_process *cmd, t_token **tokens, bool append)
 	static unsigned	i;
 	static void		*tmp;
 	t_token			*token;
+	t_file			*output;
 
 	if (!tmp || tmp != cmd)
 	{
@@ -59,21 +61,28 @@ int			parse_output_redirect(t_process *cmd, t_token **tokens, bool append)
 	token = *tokens;
 	if ((token)->type != T_WORD)
 		return (EPARSE);
-	cmd->output_file[i].path = (token)->value;
-	cmd->output_file[i].flags = O_CREAT | (append * O_APPEND);
-	i++;
+	if (!(output = malloc(sizeof(*output))))
+		return (ERRSYS);
+	output->path = token->value;
+	output->flags = O_WRONLY | O_CREAT | (append ? O_APPEND : O_TRUNC);
+	cmd->output_file[i++] = output;
 	return (0);
 }
 
 int			parse_input_redirect(t_process *command, t_token **tokens)
 {
 	t_token	*token;
+	t_file	*input;
 
 	*tokens = (*tokens)->next;
 	token = *tokens;
 	if ((*tokens)->type != T_WORD)
 		return (EPARSE);
-	command->input_file.path = (*tokens)->value;
+	if (!(input = malloc(sizeof(*input))))
+		return (ERRSYS);
+	input->path = (*tokens)->value;
+	input->flags = O_RDONLY;
+	command->input_file = input;
 	return (0);
 }
 
