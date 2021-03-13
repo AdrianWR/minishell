@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/10 20:06:19 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/11 23:56:30 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@
 
 t_hashtable		*load_env(char *envp[])
 {
-	char		**pair;
 	t_hashtable	*env;
+	char		*pair[2];
+	char		*tmp;
 
 	env = ht_create(HT_SIZE_ENV);
 	while (*envp)
 	{
-		pair = ft_split(*envp, '=');
+		tmp = ft_strchr(*envp, '=');
+		pair[0] = ft_substr(*envp, 0, tmp - *envp);
+		pair[1] = ft_strdup(tmp + 1);
 		ht_set(env, pair[0], pair[1]);
 		free(pair[0]);
-		free(pair);
 		envp++;
 	}
 	return (env);
@@ -55,7 +57,7 @@ char			**unload_env(t_hashtable *env)
 
 	i = 0;
 	j = 0;
-	if (!(envp = ft_calloc(env->storage, sizeof(*envp))))
+	if (!(envp = ft_calloc(env->storage + 1, sizeof(*envp))))
 		return (NULL);
 	while (i < env->size && j < env->storage)
 	{
@@ -67,5 +69,6 @@ char			**unload_env(t_hashtable *env)
 		}
 		i++;
 	}
+	envp[env->storage] = NULL;
 	return (envp);
 }

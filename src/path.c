@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 22:41:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/09 03:25:04 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/03/11 23:01:01 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*setpath(const char *path, const char *argv, int i)
 			else
 				start = end;
 		}
-	if (!(fpath = malloc((end - start + 2 + ft_strlen(argv)) * sizeof(char))))
+	if (!(fpath = ft_calloc((end - start + 2 + ft_strlen(argv)), sizeof(char))))
 		return (NULL);
 	i = 0;
 	while (start < end)
