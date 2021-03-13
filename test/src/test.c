@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/11 23:56:43 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 18:53:44 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,8 @@ MU_TEST(test_parser)
 	mu_assert_string_eq("my command", parsed->argv[1]);
 	mu_assert_string_eq("is", parsed->argv[2]);
 	mu_assert_string_eq("cool", parsed->argv[3]);
-	mu_assert_string_eq("abobora", parsed->input_file->path);
+	mu_assert_string_eq("fruta", parsed->input_file[0]->path);
+	mu_assert_string_eq("abobora", parsed->input_file[1]->path);
 	mu_assert_string_eq("alimento", parsed->output_file[0]->path);
 	mu_assert_int_eq(trunc_flags, parsed->output_file[0]->flags);
 	mu_assert_string_eq("appendplease", parsed->output_file[1]->path);
@@ -192,7 +193,6 @@ MU_TEST(test_unload_env)
 	mu_assert_string_eq("USER=gariadno", envp[0]);
 	mu_assert_string_eq("CAKE=strawberry", envp[1]);
 	mu_assert_string_eq("SHELL=minishell", envp[2]);
-	//printf("%p\n", envp[3]);
 	mu_assert(envp[3] == NULL, "Error: Last env not null.");
 }
 

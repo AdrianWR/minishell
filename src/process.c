@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 22:59:11 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 13:36:14 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 18:48:22 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,18 @@ int			parse_output_redirect(t_process *cmd, t_token **tokens, bool append)
 	return (0);
 }
 
-int			parse_input_redirect(t_process *command, t_token **tokens)
+int			parse_input_redirect(t_process *cmd, t_token **tokens)
 {
-	t_token	*token;
-	t_file	*input;
+	static unsigned	i;
+	static void		*tmp;
+	t_token			*token;
+	t_file			*input;
 
+	if (!tmp || tmp != cmd)
+	{
+		tmp = cmd;
+		i = 0;
+	}
 	*tokens = (*tokens)->next;
 	token = *tokens;
 	if ((*tokens)->type != T_WORD)
@@ -82,7 +89,7 @@ int			parse_input_redirect(t_process *command, t_token **tokens)
 		return (ERRSYS);
 	input->path = (*tokens)->value;
 	input->flags = O_RDONLY;
-	command->input_file = input;
+	cmd->input_file[i++] = input;
 	return (0);
 }
 

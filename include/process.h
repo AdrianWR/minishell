@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 17:45:59 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 17:48:52 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 18:46:11 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct			s_file
 typedef struct			s_process
 {
 	char				*argv[64];
-	t_file				*input_file;
+	t_file				*input_file[16];
 	t_file				*output_file[16];
 	struct s_process	*next;
 	struct s_process	*prev;
