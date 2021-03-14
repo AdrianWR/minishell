@@ -6,24 +6,35 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 22:36:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:27:48 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 23:55:16 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
+#include <unistd.h>
 #include "libft.h"
 #include "minishell.h"
 
-#define NO_NL_OPTION	"-n "
-#define EMPTY			""
-
-void		ft_echo(char *suffix, int fd[2])
+int		ft_echo(char **argv)
 {
+	int		i;
 	bool	newline;
 
-	newline = ft_strncmp(suffix, NO_NL_OPTION, 3);
-	ft_strreplace(&suffix, NO_NL_OPTION, EMPTY);
-	ft_putstr_fd(suffix, fd[1]);
+	i = 1;
+	newline = true;
+	if (argv[i] && ft_streq(argv[i], "-n"))
+	{
+		newline = false;
+		i++;
+	}
+	while (argv[i])
+	{
+		ft_putstr_fd(argv[i], STDOUT_FILENO);
+		if (argv[i + 1])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		i++;
+	}
 	if (newline)
-		ft_putchar_fd('\n', fd[1]);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (0);
 }

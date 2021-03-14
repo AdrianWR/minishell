@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 18:36:58 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 22:53:12 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char			*setpath(const char *path, const char *argv, int i);
 char			*abspath(const char *argv);
 
 int				execute_all(t_shell *shell);
-int				execute_builtin(t_process *p, t_shell *shell, int *status);
+int				execute_builtin(t_process *p, t_shell *shell, bool *builtin);
 int				execute_process(t_process *p, t_shell *shell, int in, int out);
 void			free_array(void **array);
 

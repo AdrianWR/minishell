@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 18:34:39 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 23:50:15 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,34 @@ void	execute(char *const *argv, t_shell *shell)
 	exit(0);
 }
 
-int		execute_builtin(t_process *process, t_shell *shell, int *status)
+int		execute_builtin(t_process *process, t_shell *shell, bool *exec)
 {
 	char	*command;
-	bool	exec;
+	int		status;
 
-	exec = true;
+	status = 0;
+	*exec = true;
 	command = process->argv[0];
-	if (ft_streq(command, "exit"))
-		*status = ft_exit(shell);
+	if (ft_streq(command, "echo"))
+		status = ft_echo(process->argv);
+	else if (ft_streq(command, "exit"))
+		status = ft_exit(shell);
 	else
-		exec = false;
-	return (!exec);
+		*exec = false;
+	return (status);
 }
 
 int		execute_process(t_process *p, t_shell *shell, int in, int out)
 {
 	pid_t	pid;
 	int		status;
+	bool	builtin;
 
 	status = 0;
+	builtin = false;
 	redirect_handler(p, in, out);
-	if (!(execute_builtin(p, shell, &status)))
+	status = execute_builtin(p, shell, &builtin);
+	if (builtin || status)
 		return (status);
 	if ((pid = fork()) < 0)
 		message_and_exit(ERRSYS, NULL);
