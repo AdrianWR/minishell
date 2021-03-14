@@ -6,7 +6,11 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/03/14 16:21:00 by aroque           ###   ########.fr       */
+=======
+/*   Updated: 2021/03/14 20:01:49 by aroque           ###   ########.fr       */
+>>>>>>> 871a1be (Fix file descriptor built-in bug)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +55,7 @@ void	execute(char *const *argv, t_shell *shell)
 	exit(r);
 }
 
-int		execute_builtin(t_process *process, t_shell *shell, bool *exec)
+int		execute_builtin(t_process *process, t_shell *shell, bool *exec, int out)
 {
 	char	*command;
 	int		status;
@@ -60,7 +64,7 @@ int		execute_builtin(t_process *process, t_shell *shell, bool *exec)
 	*exec = true;
 	command = process->argv[0];
 	if (ft_streq(command, "echo"))
-		status = ft_echo(process->argv);
+		status = ft_echo(process->argv, out);
 	else if (ft_streq(command, "exit"))
 		status = ft_exit(shell);
 	else
@@ -77,14 +81,16 @@ int		execute_process(t_process *p, t_shell *shell, int in, int out)
 	status = 0;
 	builtin = false;
 	redirect_handler(p, in, out);
-	//file_descriptor_handler(in, out);
-	status = execute_builtin(p, shell, &builtin);
+	status = execute_builtin(p, shell, &builtin, out);
 	if (!builtin && !status)
 	{
 		if ((pid = fork()) < 0)
 			message_and_exit(ERRSYS, EXIT_FAILURE, NULL);
 		else if (pid == 0)
+		{
+			file_descriptor_handler(in, out);
 			execute(p->argv, shell);
+		}
 		else
 			waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
