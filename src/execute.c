@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 23:50:15 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 00:41:42 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int		execute_process(t_process *p, t_shell *shell, int in, int out)
 	status = 0;
 	builtin = false;
 	redirect_handler(p, in, out);
+	file_descriptor_handler(in, out);
 	status = execute_builtin(p, shell, &builtin);
 	if (builtin || status)
 		return (status);
@@ -81,7 +82,8 @@ int		execute_process(t_process *p, t_shell *shell, int in, int out)
 		message_and_exit(ERRSYS, NULL);
 	else if (pid == 0)
 	{
-		file_descriptor_handler(in, out);
+		//redirect_handler(p, in, out);
+		//file_descriptor_handler(in, out);
 		execute(p->argv, shell);
 	}
 	else
@@ -118,13 +120,18 @@ int		execute_job(t_process *process, t_shell *shell)
 int		execute_all(t_shell *shell)
 {
 	int status;
+	int fd[2];
 
 	status = 0;
 	while (shell->jobs && !status)
 	{
+		fd[0] = dup(0);
+		fd[1] = dup(1);
 		shell->envp = unload_env(shell->env);
 		status = execute_job(shell->jobs->process_list, shell);
 		freemat(shell->envp);
+		dup2(fd[0], 0);
+		dup2(fd[1], 1);
 		shell->jobs = shell->jobs->next;
 	}
 	return (status);
