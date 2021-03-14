@@ -6,10 +6,11 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 12:07:42 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 14:59:09 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -45,7 +46,9 @@ void	execute(char *const *argv, t_shell *shell)
 		free(pathtotry);
 	}
 	free(path);
-	exit(0);
+	if (r)
+		message_and_exit(ECMDNF, 127, argv[0]);
+	exit(r);
 }
 
 int		execute_builtin(t_process *process, t_shell *shell, bool *exec)
@@ -76,14 +79,18 @@ int		execute_process(t_process *p, t_shell *shell, int in, int out)
 	redirect_handler(p, in, out);
 	file_descriptor_handler(in, out);
 	status = execute_builtin(p, shell, &builtin);
-	if (builtin || status)
-		return (status);
-	if ((pid = fork()) < 0)
-		message_and_exit(ERRSYS, NULL);
-	else if (pid == 0)
-		execute(p->argv, shell);
-	else
-		waitpid(pid, &status, 0);
+	if (!builtin && !status)
+	{
+		if ((pid = fork()) < 0)
+			message_and_exit(ERRSYS, EXIT_FAILURE, NULL);
+		else if (pid == 0)
+			execute(p->argv, shell);
+		else
+			waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+	}
+	set_exit_status(shell->env, status);
 	return (status);
 }
 
@@ -119,7 +126,7 @@ int		execute_all(t_shell *shell)
 	int fd[2];
 
 	status = 0;
-	while (shell->jobs && !status)
+	while (shell->jobs)
 	{
 		fd[0] = dup(0);
 		fd[1] = dup(1);

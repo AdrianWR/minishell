@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 12:55:42 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 14:24:49 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_hashtable		*load_env(char *envp[])
 		free(key);
 		envp++;
 	}
+	set_value(env, "?", ft_strdup("0"), false);
 	return (env);
 }
 
