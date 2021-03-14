@@ -1,40 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   status.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 22:36:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 23:55:16 by aroque           ###   ########.fr       */
+/*   Created: 2021/03/14 14:58:03 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/14 14:58:20 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <unistd.h>
-#include "libft.h"
 #include "minishell.h"
 
-int		ft_echo(char **argv)
+void	set_exit_status(t_hashtable *env, int status)
 {
-	int		i;
-	bool	newline;
+	char *exit_status;
 
-	i = 1;
-	newline = true;
-	if (argv[i] && ft_streq(argv[i], "-n"))
-	{
-		newline = false;
-		i++;
-	}
-	while (argv[i])
-	{
-		ft_putstr_fd(argv[i], STDOUT_FILENO);
-		if (argv[i + 1])
-			ft_putchar_fd(' ', STDOUT_FILENO);
-		i++;
-	}
-	if (newline)
-		ft_putchar_fd('\n', STDOUT_FILENO);
-	return (0);
+	exit_status = get_value(env, "?");
+	free(exit_status);
+	exit_status = ft_strdup(ft_itoa(status));
 }

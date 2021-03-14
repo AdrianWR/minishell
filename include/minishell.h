@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 19:01:15 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 14:58:43 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include "job.h"
 
 # define BIN	"./minishell"
+
+typedef struct	s_variable
+{
+	char		*value;
+	bool		env;
+}				t_variable;
 
 typedef	struct	s_shell
 {
@@ -51,6 +57,13 @@ char			*setpath(const char *path, const char *argv, int i);
 char			*abspath(const char *argv);
 
 int				execute_all(t_shell *shell);
+int				execute_builtin(t_process *p, t_shell *shell, bool *builtin);
+int				execute_process(t_process *p, t_shell *shell, int in, int out);
 void			free_array(void **array);
+
+int				redirect_handler(t_process *p, int in, int out);
+int				file_descriptor_handler(int in, int out);
+char			*get_value(t_hashtable *env, const char *key);
+void			set_exit_status(t_hashtable *env, int status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 22:57:42 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/03 23:29:45 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/13 23:38:50 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 # include "minishell.h"
 
-void	ft_export(t_shell *shell);
-void	ft_unset(t_shell *shell);
-void	ft_env(t_shell *shell);
-void	ft_echo(char *cmd_suffix, int fd[2]);
-void	ft_pwd(t_shell *shell);
-void	ft_cd(t_shell *shell);
-void	ft_exit(t_shell *shell);
+int	ft_export(t_shell *shell);
+int	ft_unset(t_shell *shell);
+int	ft_env(t_shell *shell);
+int	ft_echo(char **argv);
+int	ft_pwd(t_shell *shell);
+int	ft_cd(t_shell *shell);
+int	ft_exit(t_shell *shell);
 
 #endif
