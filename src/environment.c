@@ -6,30 +6,53 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/11 23:56:30 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:55:42 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "hash.h"
 #include "libft.h"
-#include <unistd.h>
+#include "minishell.h"
 
 #define HT_SIZE_ENV 1031
+
+char			*get_value(t_hashtable *env, const char *key)
+{
+	void		*value;
+
+	value = ht_get(env, key);
+	return (value ? ((t_variable *)value)->value : ft_strdup(""));
+}
+
+char			*set_value(t_hashtable *env, const char *key,
+					char *value, bool is_env)
+{
+	t_variable	*variable;
+
+	if (!(variable = malloc(sizeof(*variable))))
+		return (NULL);
+	variable->value = value;
+	variable->env = is_env;
+	ht_set(env, key, variable);
+	return (value);
+}
 
 t_hashtable		*load_env(char *envp[])
 {
 	t_hashtable	*env;
-	char		*pair[2];
 	char		*tmp;
+	char		*key;
+	char		*value;
 
 	env = ht_create(HT_SIZE_ENV);
 	while (*envp)
 	{
 		tmp = ft_strchr(*envp, '=');
-		pair[0] = ft_substr(*envp, 0, tmp - *envp);
-		pair[1] = ft_strdup(tmp + 1);
-		ht_set(env, pair[0], pair[1]);
-		free(pair[0]);
+		key = ft_substr(*envp, 0, tmp - *envp);
+		value = ft_strdup(tmp + 1);
+		set_value(env, key, value, true);
+		free(key);
 		envp++;
 	}
 	return (env);
@@ -43,7 +66,7 @@ static char		*node_to_envp(t_htlist *node)
 	if (!node)
 		return (NULL);
 	tmp = ft_strjoin(node->key, "=");
-	str = ft_strjoin(tmp, node->value);
+	str = ft_strjoin(tmp, ((t_variable *)node->value)->value);
 	free(tmp);
 	return (str);
 }
@@ -64,7 +87,8 @@ char			**unload_env(t_hashtable *env)
 		tmp = env->array[i];
 		while (tmp && j < env->storage)
 		{
-			envp[j++] = node_to_envp(tmp);
+			if (((t_variable *)(tmp->value))->env)
+				envp[j++] = node_to_envp(tmp);
 			tmp = tmp->next;
 		}
 		i++;

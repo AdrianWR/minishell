@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 18:53:44 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:42:04 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,16 @@ t_shell		*g_shell;
 
 void			setup(void)
 {
-	htenv = ht_create(128);
-	ht_set(htenv, "USER", ft_strdup("gariadno"));
-	ht_set(htenv, "SHELL", ft_strdup("minishell"));
-	ht_set(htenv, "CAKE", ft_strdup("strawberry"));
+	//htenv = ht_create(128);
+	//ht_set(htenv, "USER", ft_strdup("gariadno"));
+	//ht_set(htenv, "SHELL", ft_strdup("minishell"));
+	//ht_set(htenv, "CAKE", ft_strdup("strawberry"));
+	char *envp[128] = {
+		"USER=gariadno",
+		"SHELL=minishell",
+		"CAKE=strawberry"
+	};
+	htenv = load_env(envp);
 	shell = ft_calloc(1, sizeof(*shell));
 }
 
@@ -190,9 +196,9 @@ MU_TEST(test_unload_env)
 	char **envp;
 
 	envp = unload_env(htenv);
-	mu_assert_string_eq("USER=gariadno", envp[0]);
-	mu_assert_string_eq("CAKE=strawberry", envp[1]);
-	mu_assert_string_eq("SHELL=minishell", envp[2]);
+	mu_assert_string_eq("CAKE=strawberry", envp[0]);
+	mu_assert_string_eq("SHELL=minishell", envp[1]);
+	mu_assert_string_eq("USER=gariadno", envp[2]);
 	mu_assert(envp[3] == NULL, "Error: Last env not null.");
 }
 

@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 00:41:42 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:07:42 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	execute(char *const *argv, t_shell *shell)
 
 	i = 0;
 	r = -1;
-	path = ht_get(shell->env, "PATH");
+	path = get_value(shell->env, "PATH");
 	len = pathslen(**argv, path);
 	while (r < 0 && len--)
 	{
@@ -81,11 +81,7 @@ int		execute_process(t_process *p, t_shell *shell, int in, int out)
 	if ((pid = fork()) < 0)
 		message_and_exit(ERRSYS, NULL);
 	else if (pid == 0)
-	{
-		//redirect_handler(p, in, out);
-		//file_descriptor_handler(in, out);
 		execute(p->argv, shell);
-	}
 	else
 		waitpid(pid, &status, 0);
 	return (status);

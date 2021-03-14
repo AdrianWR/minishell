@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:44:50 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/06 18:18:57 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:20:51 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "hash.h"
 #include "libft.h"
 #include "token.h"
+#include "minishell.h"
 #include <stdbool.h>
 
 static void	replace_env(char **str, t_hashtable *env, size_t *i)
@@ -26,7 +27,7 @@ static void	replace_env(char **str, t_hashtable *env, size_t *i)
 	while (ft_isalnum_or_uscore((*str)[*i + j + 1]))
 		j++;
 	key = ft_substr(*str, *i, j + 1);
-	value = ht_get(env, key + 1);
+	value = get_value(env, key + 1);
 	if (!value)
 		value = "";
 	*str = ft_strreplace(str, key, value);
