@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 12:06:39 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 17:17:53 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void		repl(t_shell *shell)
 	char	*input;
 	t_token	*tokens;
 
-	(void)tokens;
 	while (shell->exit == false)
 	{
 		signal(SIGINT, sighandler);
