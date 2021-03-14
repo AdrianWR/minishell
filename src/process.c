@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 22:59:11 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 18:48:22 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 15:02:45 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,28 +95,28 @@ int			parse_input_redirect(t_process *cmd, t_token **tokens)
 
 t_process	*parse_command(t_token **tokens)
 {
-	t_process	*command;
+	t_process	*process;
 	bool		exit;
 	unsigned	i;
 
 	i = 0;
 	exit = false;
-	if (!(command = ft_calloc(1, sizeof(*command))))
+	if (!(process = ft_calloc(1, sizeof(*process))))
 		return (NULL);
 	while (*tokens && !exit)
 	{
 		if ((*tokens)->type == T_SEPARATOR || (*tokens)->type == T_PIPE)
 			exit = true;
 		else if ((*tokens)->type == T_WORD)
-			command->argv[i++] = (*tokens)->value;
+			process->argv[i++] = (*tokens)->value;
 		else if ((*tokens)->type == T_IREDIRECT)
-			parse_input_redirect(command, tokens);
+			parse_input_redirect(process, tokens);
 		else if ((*tokens)->type == T_OREDIRECT)
-			parse_output_redirect(command, tokens, false);
+			parse_output_redirect(process, tokens, false);
 		else if ((*tokens)->type == T_OAPPEND)
-			parse_output_redirect(command, tokens, true);
+			parse_output_redirect(process, tokens, true);
 		if (!exit)
 			*tokens = (*tokens)->next;
 	}
-	return (command);
+	return (process);
 }

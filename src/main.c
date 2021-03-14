@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:14:00 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 14:50:45 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 17:17:29 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,6 @@
 
 t_shell			*g_shell;
 
-t_hashtable		*load_builtins(void)
-{
-	t_hashtable *ht;
-
-	ht = ht_create(7);
-	ht_set(ht, "echo", ft_echo);
-	ht_set(ht, "cd", ft_cd);
-	ht_set(ht, "pwd", ft_pwd);
-	ht_set(ht, "export", ft_export);
-	ht_set(ht, "unset", ft_exit);
-	ht_set(ht, "env", ft_env);
-	ht_set(ht, "exit", ft_exit);
-	return (ht);
-}
-
 int				main(int argc, char *argv[], char *envp[])
 {
 	t_shell	*shell;
@@ -45,7 +30,7 @@ int				main(int argc, char *argv[], char *envp[])
 	if (argc != 1)
 		message_and_exit(EUSAGE, EXIT_FAILURE, NULL);
 	shell->env = load_env(envp);
-	shell->builtins = load_builtins();
+	//shell->builtins = load_builtins();
 	shell->fd = STDOUT_FILENO;
 	repl(shell);
 	free_shell(shell);
