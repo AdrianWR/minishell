@@ -6,15 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2021/03/14 16:21:00 by aroque           ###   ########.fr       */
-=======
-/*   Updated: 2021/03/14 20:01:49 by aroque           ###   ########.fr       */
->>>>>>> 871a1be (Fix file descriptor built-in bug)
-=======
-/*   Updated: 2021/03/15 09:21:44 by aroque           ###   ########.fr       */
->>>>>>> 8882b57 (Implement local env variables)
+/*   Updated: 2021/03/15 09:47:14 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +160,7 @@ int		execute_job(t_process *process, t_shell *shell)
 int		execute_all(t_shell *shell)
 {
 	int status;
-	//int fd[2];
+	int fd[2];
 
 	status = 0;
 	while (shell->jobs)
@@ -178,10 +170,10 @@ int		execute_all(t_shell *shell)
 		shell->envp = unload_env(shell->env, &(shell->envp_size));
 		status = execute_job(shell->jobs->process_list, shell);
 		freemat(shell->envp);
-		//dup2(fd[0], 0);
-		//dup2(fd[1], 1);
-		//close(fd[0]);
-		//close(fd[1]);
+		dup2(fd[0], 0);
+		dup2(fd[1], 1);
+		close(fd[0]);
+		close(fd[1]);
 		shell->jobs = shell->jobs->next;
 	}
 	return (status);
