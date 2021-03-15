@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 22:41:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/11 23:01:01 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/14 22:45:07 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ char	*abspath(const char *argv)
 	{
 		if (getcwd(cwd, 4096) == NULL)
 			return (NULL);
-		abspath = malloc((ft_strlen(cwd) + ft_strlen(argv) + 1) * sizeof(char));
+		abspath = malloc((ft_strlen(cwd) + ft_strlen(argv) + 2) * sizeof(char));
 		if (!abspath)
 			return (NULL);
 		i = -1;
 		while (cwd[++i])
 			abspath[i] = cwd[i];
+		abspath[i++] = '/';
 		while (*argv)
 			abspath[i++] = *argv++;
+		abspath[i] = '\0';
 		return (abspath);
 	}
 	return (ft_strdup(argv));

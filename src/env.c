@@ -6,27 +6,16 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 22:35:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:37:21 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 00:11:39 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void			ft_env(t_shell *shell)
+int	ft_env(char **envp, int out)
 {
-	unsigned	i;
-
-	if (!shell->env)
-		return ;
-	i = 0;
-	while (i < shell->env->size)
-	{
-		if (shell->env->array[i])
-		{
-			ft_putstr_fd(shell->env->array[i]->key, shell->fd);
-			ft_putchar_fd('=', shell->fd);
-			ft_putendl_fd((char *)shell->env->array[i]->value, shell->fd);
-		}
-		i++;
-	}
+	while (*envp)
+		ft_putendl_fd(*envp++, out);
+	return (0);
 }
+

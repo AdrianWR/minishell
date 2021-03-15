@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 14:24:49 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 08:53:14 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,37 +25,33 @@ char			*get_value(t_hashtable *env, const char *key)
 	return (value ? ((t_variable *)value)->value : ft_strdup(""));
 }
 
-char			*set_value(t_hashtable *env, const char *key,
-					char *value, bool is_env)
+char			*set_value(t_hashtable *env, const char *pair, bool is_env)
 {
 	t_variable	*variable;
+	char		*tmp;
+	char		*key;
+	char		*value;
 
 	if (!(variable = malloc(sizeof(*variable))))
 		return (NULL);
+	tmp = ft_strchr(pair, '=');
+	key = ft_substr(pair, 0, tmp - pair);
+	value = ft_strdup(tmp + 1);
 	variable->value = value;
 	variable->env = is_env;
 	ht_set(env, key, variable);
+	free(key);
 	return (value);
 }
 
 t_hashtable		*load_env(char *envp[])
 {
 	t_hashtable	*env;
-	char		*tmp;
-	char		*key;
-	char		*value;
 
 	env = ht_create(HT_SIZE_ENV);
 	while (*envp)
-	{
-		tmp = ft_strchr(*envp, '=');
-		key = ft_substr(*envp, 0, tmp - *envp);
-		value = ft_strdup(tmp + 1);
-		set_value(env, key, value, true);
-		free(key);
-		envp++;
-	}
-	set_value(env, "?", ft_strdup("0"), false);
+		set_value(env, *envp++, true);
+	set_value(env, "?=0", false);
 	return (env);
 }
 
@@ -72,7 +68,7 @@ static char		*node_to_envp(t_htlist *node)
 	return (str);
 }
 
-char			**unload_env(t_hashtable *env)
+char			**unload_env(t_hashtable *env, size_t *envp_size)
 {
 	unsigned	i;
 	unsigned	j;
@@ -94,6 +90,8 @@ char			**unload_env(t_hashtable *env)
 		}
 		i++;
 	}
-	envp[env->storage] = NULL;
+	envp[j] = NULL;
+	if (envp_size)
+		*envp_size = j;
 	return (envp);
 }
