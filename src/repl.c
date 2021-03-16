@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 03:02:40 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/03/16 03:23:27 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <signal.h>
 
-void	prompt(t_hashtable *env)
+void		prompt(t_hashtable *env)
 {
 	ft_putstr_fd(get_value(env, "USERNAME"), STDOUT_FILENO);
 	ft_putchar_fd('@', STDOUT_FILENO);
