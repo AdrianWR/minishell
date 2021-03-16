@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 23:36:47 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 20:25:39 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ typedef	struct	s_shell
 
 extern t_shell	*g_shell;
 
+void			prompt(t_hashtable *env);
 int				create_process(t_shell *shell);
-void			sighandler(int signum);
+void			sighandler_prompt(int signum);
+void			sighandler_process(int signum);
 void			repl(t_shell *shell);
 char			**getpaths(const char *argv, const char *path);
 void			freemat(char **mat);

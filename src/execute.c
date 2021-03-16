@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 23:36:27 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 03:25:19 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <signal.h>
 #include <fcntl.h>
 #include "commands.h"
 #include "minishell.h"
@@ -138,6 +139,8 @@ int		execute_all(t_shell *shell)
 	int status;
 	int fd[2];
 
+	signal(SIGINT, sighandler_process);
+	signal(SIGQUIT, sighandler_process);
 	status = 0;
 	while (shell->jobs)
 	{
