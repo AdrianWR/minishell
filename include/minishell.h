@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 08:54:27 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 23:36:47 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef	struct	s_shell
 	t_hashtable	*env;
 	t_hashtable	*builtins;
 	char		**envp;
+	char		**child_envp;
 	size_t		envp_size;
 	char		*input;
 	bool		exit;
@@ -68,5 +69,8 @@ int				file_descriptor_handler(int in, int out);
 char			*get_value(t_hashtable *env, const char *key);
 void			set_exit_status(t_hashtable *env, int status);
 char			*set_value(t_hashtable *env, const char *pair, bool is_env);
+
+char			*node_to_envp(t_htlist *node);
+char			**local_envp(char **local_envp, char **envp, size_t envp_size);
 
 #endif

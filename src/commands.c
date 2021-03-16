@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/14 23:42:05 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 22:12:01 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ void	ft_pwd(t_shell *shell)
 	if (getcwd(cwd, 4096) == NULL)
 		return ;
 	ft_putendl_fd(cwd, STDOUT_FILENO);
-}
-
-void	ft_unset(t_shell *shell)
-{
-	(void)shell;
 }
 
 void	ft_cd(t_shell *shell)

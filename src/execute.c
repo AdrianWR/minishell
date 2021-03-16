@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 09:47:14 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 23:36:27 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,6 @@
 #include "errcode.h"
 #include "job.h"
 
-char **local_envp(char **local_envp, char **envp, size_t envp_size)
-{
-	unsigned i;
-	unsigned j;
-	char **new_envp;
-
-	i = 0;
-	j = 0;
-	while (local_envp[i])
-		i++;
-	i += envp_size + 1;
-	new_envp = ft_calloc(i, sizeof(*new_envp));
-	new_envp[i] = NULL;
-	while (j < i)
-	{
-		if (envp[j])
-			new_envp[j] = *envp++;
-		else
-			new_envp[j] = *local_envp++;
-		j++;
-	}
-	return (new_envp);
-}
-
 /*
 ** Use environment path and argv to make
 ** paths of a program to try to execute
@@ -58,9 +34,7 @@ void	execute(t_process *p, t_shell *shell)
 	int		len;
 	int		r;
 	int		i;
-	char 	**child_env;
 
-	child_env = local_envp(p->local_env, shell->envp, shell->envp_size);
 	i = 0;
 	r = -1;
 	path = get_value(shell->env, "PATH");
@@ -68,10 +42,9 @@ void	execute(t_process *p, t_shell *shell)
 	while (r < 0 && len--)
 	{
 		pathtotry = setpath(path, p->command, i++);
-		r = execve(pathtotry, p->argv, child_env);
+		r = execve(pathtotry, p->argv, shell->child_envp);
 		free(pathtotry);
 	}
-	freemat(child_env);
 	free(path);
 	if (r)
 		message_and_exit(ECMDNF, 127, p->command);
@@ -97,13 +70,15 @@ int		execute_builtin(t_process *p, t_shell *shell, bool *exec, int out)
 	else if (ft_streq(p->command, "env"))
 		status = ft_env(shell->envp, out);
 	else if (ft_streq(p->command, "export"))
-		status = ft_export(p->argv, shell->envp, shell->envp_size, out);
+		status = ft_export(p, shell, out);
+	else if (ft_streq(p->command, "unset"))
+		status = ft_unset(p->argv, shell->env);
 	else
 		*exec = false;
 	return (status);
 }
 
-int		execute_process(t_process *p, t_shell *shell, int in, int out)
+int		execute_process(t_process *p, t_shell *s, int in, int out)
 {
 	pid_t	pid;
 	int		status;
@@ -112,22 +87,23 @@ int		execute_process(t_process *p, t_shell *shell, int in, int out)
 	status = 0;
 	builtin = false;
 	redirect_handler(p, in, out);
-	status = execute_builtin(p, shell, &builtin, out);
-	if (!builtin && !status)
+	status = execute_builtin(p, s, &builtin, out);
+	if (!builtin)
 	{
 		if ((pid = fork()) < 0)
 			message_and_exit(ERRSYS, EXIT_FAILURE, NULL);
 		else if (pid == 0)
 		{
 			file_descriptor_handler(in, out);
-			execute(p, shell);
+			s->child_envp = local_envp(p->local_env, s->envp, s->envp_size);
+			execute(p, s);
 		}
 		else
 			waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
 	}
-	set_exit_status(shell->env, status);
+	set_exit_status(s->env, status);
 	return (status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 08:53:14 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 23:26:34 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,6 @@
 #include "minishell.h"
 
 #define HT_SIZE_ENV 1031
-
-char			*get_value(t_hashtable *env, const char *key)
-{
-	void		*value;
-
-	value = ht_get(env, key);
-	return (value ? ((t_variable *)value)->value : ft_strdup(""));
-}
-
-char			*set_value(t_hashtable *env, const char *pair, bool is_env)
-{
-	t_variable	*variable;
-	char		*tmp;
-	char		*key;
-	char		*value;
-
-	if (!(variable = malloc(sizeof(*variable))))
-		return (NULL);
-	tmp = ft_strchr(pair, '=');
-	key = ft_substr(pair, 0, tmp - pair);
-	value = ft_strdup(tmp + 1);
-	variable->value = value;
-	variable->env = is_env;
-	ht_set(env, key, variable);
-	free(key);
-	return (value);
-}
 
 t_hashtable		*load_env(char *envp[])
 {
@@ -55,16 +28,22 @@ t_hashtable		*load_env(char *envp[])
 	return (env);
 }
 
-static char		*node_to_envp(t_htlist *node)
+char			*node_to_envp(t_htlist *node)
 {
 	char		*str;
 	char		*tmp;
 
 	if (!node)
 		return (NULL);
-	tmp = ft_strjoin(node->key, "=");
-	str = ft_strjoin(tmp, ((t_variable *)node->value)->value);
-	free(tmp);
+	str = ((t_variable *)node->value)->value;
+	if (str)
+	{
+		tmp = ft_strjoin("=", str);
+		str = ft_strjoin(node->key, tmp);
+		free(tmp);
+	}
+	else
+		str = ft_strdup(node->key);
 	return (str);
 }
 
@@ -94,4 +73,28 @@ char			**unload_env(t_hashtable *env, size_t *envp_size)
 	if (envp_size)
 		*envp_size = j;
 	return (envp);
+}
+
+char			**local_envp(char **local_envp, char **envp, size_t envp_size)
+{
+	unsigned	i;
+	unsigned	j;
+	char		**new_envp;
+
+	i = 0;
+	j = 0;
+	while (local_envp[i])
+		i++;
+	i += envp_size + 1;
+	new_envp = ft_calloc(i, sizeof(*new_envp));
+	new_envp[i] = NULL;
+	while (j < i)
+	{
+		if (envp[j])
+			new_envp[j] = *envp++;
+		else
+			new_envp[j] = *local_envp++;
+		j++;
+	}
+	return (new_envp);
 }

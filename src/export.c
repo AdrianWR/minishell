@@ -6,19 +6,21 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 00:11:02 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 00:14:45 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 23:21:31 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "errcode.h"
+#include "minishell.h"
 
-# define MAX_STRING_SIZE 64
+#define MAX_STRING_SIZE 64
 
 static void	sort(char **array, int size)
 {
-	int i;
-	int j;
-	char *key;
+	int		i;
+	int		j;
+	char	*key;
 
 	j = 1;
 	while (j < size)
@@ -37,8 +39,7 @@ static void	sort(char **array, int size)
 
 static void	export_raw(char **envp, int size, int out)
 {
-
-	sort(envp, size - 1);
+	sort(envp, size);
 	while (*envp)
 	{
 		ft_putstr_fd("export ", out);
@@ -46,9 +47,26 @@ static void	export_raw(char **envp, int size, int out)
 	}
 }
 
-int			ft_export(char **argv, char **envp, int size, int out)
+int			ft_export(t_process *p, t_shell *shell, int out)
 {
-	if (!argv[1])
-		export_raw(envp, size,  out);
+	unsigned	i;
+	t_variable	*v;
+
+	i = 1;
+	if (!p->argv[i])
+	{
+		export_raw(shell->envp, shell->envp_size, out);
+		return (0);
+	}
+	while (p->argv[i])
+	{
+		if (p->argv[i][0] == '=')
+			return (EBADASS);
+		if ((v = (t_variable *)ht_get(shell->env, p->argv[i])))
+			v->env = true;
+		else
+			set_value(shell->env, p->argv[i], true);
+		i++;
+	}
 	return (0);
 }
