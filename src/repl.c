@@ -6,12 +6,13 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 17:17:53 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 03:02:40 by gariadno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "hash.h"
+#include "commands.h"
 #include "libft.h"
 #include "minishell.h"
 #include "errcode.h"
@@ -22,7 +23,7 @@
 #include <stdio.h>
 #include <signal.h>
 
-static void	prompt(t_hashtable *env)
+void	prompt(t_hashtable *env)
 {
 	ft_putstr_fd(get_value(env, "USERNAME"), STDOUT_FILENO);
 	ft_putchar_fd('@', STDOUT_FILENO);
@@ -44,9 +45,11 @@ void		repl(t_shell *shell)
 
 	while (shell->exit == false)
 	{
-		signal(SIGINT, sighandler);
+		signal(SIGINT, sighandler_prompt);
+		signal(SIGQUIT, sighandler_prompt);
 		prompt(shell->env);
-		get_next_line(STDIN_FILENO, &input);
+		if (get_next_line(STDIN_FILENO, &input) == 0)
+			ft_exit(shell);
 		tokens = tokenizer(input, shell->env);
 		shell->jobs = parser(tokens);
 		execute_all(shell);
