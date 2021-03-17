@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 00:01:59 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 10:39:31 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ void	execute(t_process *p, t_shell *shell)
 		r = execve(pathtotry, p->argv, shell->child_envp);
 		free(pathtotry);
 	}
-	free(path);
 	if (r)
-		message_and_exit(ECMDNF, 127, p->command);
+		error_message(ECMDNF, p->command);
+	free(path);
+	free_buffer(shell->child_envp);
+	free_shell(shell);
 	exit(r);
 }
 
@@ -92,7 +94,7 @@ int		execute_process(t_process *p, t_shell *s, int in, int out)
 	if (!builtin)
 	{
 		if ((pid = fork()) < 0)
-			message_and_exit(ERRSYS, EXIT_FAILURE, NULL);
+			message_and_exit(ERRSYS, NULL);
 		else if (pid == 0)
 		{
 			file_descriptor_handler(in, out);
@@ -138,22 +140,24 @@ int		execute_all(t_shell *shell)
 {
 	int status;
 	int fd[2];
+	t_job *job;
 
 	signal(SIGINT, sighandler_process);
 	signal(SIGQUIT, sighandler_process);
 	status = 0;
-	while (shell->jobs)
+	job = shell->jobs;
+	while (job)
 	{
 		fd[0] = dup(0);
 		fd[1] = dup(1);
 		shell->envp = unload_env(shell->env, &(shell->envp_size));
-		status = execute_job(shell->jobs->process_list, shell);
+		status = execute_job(job->process_list, shell);
 		freemat(shell->envp);
 		dup2(fd[0], 0);
 		dup2(fd[1], 1);
 		close(fd[0]);
 		close(fd[1]);
-		shell->jobs = shell->jobs->next;
+		job = job->next;
 	}
 	return (status);
 }

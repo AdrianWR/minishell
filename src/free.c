@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:37:39 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/16 23:56:31 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 10:54:36 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,39 +43,41 @@ void	free_buffer(char **buffer)
 void	free_process(t_process **process)
 {
 	int i;
+	t_process *p;
 
-	if (!(*process))
+	p = *process;
+	if (!p)
 		return ;
-	if ((*process)->next)
-		free_process(&(*process)->next);
+	if (p->next)
+		free_process(&(p->next));
 	i = 0;
-	while ((*process)->input_file[i])
+	while ((p)->input_file[i])
 	{
-		free((*process)->input_file[i]->path);
-		free((*process)->input_file[i++]);
+		free((p)->input_file[i]->path);
+		free((p)->input_file[i++]);
 	}
 	i = 0;
-	while ((*process)->output_file[i])
+	while ((p)->output_file[i])
 	{
-		free((*process)->output_file[i]->path);
-		free((*process)->output_file[i++]);
+		free((p)->output_file[i]->path);
+		free((p)->output_file[i++]);
 	}
-	free_buffer((*process)->local_env);
-	free_buffer((*process)->argv);
-	free((*process)->command);
-	free(*process);
-	*process = NULL;
+	free_buffer((p)->local_env);
+	free_buffer((p)->argv);
+	free(p->command);
+	free(p);
 }
 
 void	free_jobs(t_job **jobs)
 {
-	if (!(*jobs))
+	t_job *job;
+	job = *jobs;
+	if (!job)
 		return ;
-	if ((*jobs)->next)
-		free_jobs(&(*jobs)->next);
-	free_process(&((*jobs)->process_list));
-	free(*jobs);
-	*jobs = NULL;
+	if (job->next)
+		free_jobs(&(job->next));
+	free_process(&(job->process_list));
+	free(job);
 	return ;
 }
 

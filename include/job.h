@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 17:46:01 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 01:30:45 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 09:13:44 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ typedef struct			s_job
 }						t_job;
 
 t_job					*parser(t_token *tokens);
+void					free_jobs(t_job **jobs);
 
 #endif

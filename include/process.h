@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 17:45:59 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 08:17:26 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 11:31:27 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ typedef struct			s_process
 }						t_process;
 
 t_process				*parse_command(t_token **tokens);
-int						parse_input_redirect(t_process *process,
-							t_token **token);
-int						parse_output_redirect(t_process *process,
-							t_token **token, bool append);
+//int						parse_input_redirect(t_process *process,
+//							t_token **token);
+//int						parse_output_redirect(t_process *process,
+//							t_token **token, bool append);
 void					add_to_args(char **argv, char *word);
 void					push_process(t_process **lst, t_process *new);
 

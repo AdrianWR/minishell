@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 12:24:14 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 09:55:48 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,35 @@
 typedef enum		e_errcode {
 	ERRSYS,
 	EUSAGE,
-	ECMDNF,
 	ENOFDI,
 	EPARSE,
 	EUNFQT,
 	EBADASS,
+	ECMDNF,
 	__ERRMAX
 }					t_errcode;
 
 static char *const	g_errstr[__ERRMAX] = {
 	"__ERRSYS",
 	"Usage: ./minishell",
-	"command not found...",
 	"No such file or directory: ",
 	"Parse error",
 	"Unfinished quote",
-	"bad assignment"
+	"bad assignment",
+	"command not found...",
 };
 
-void				message_and_exit(t_errcode code, int status, char *note);
+static const int	g_errstatus[__ERRMAX] = {
+	128,
+	0,
+	1,
+	1,
+	1,
+	1,
+	127,
+};
+
+void				error_message(t_errcode code, char *note);
+void				message_and_exit(t_errcode code, char *note);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 23:43:37 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 10:06:53 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char			*node_to_envp(t_htlist *node);
 char			**local_envp(char **local_envp, char **envp, size_t envp_size);
 
 void			freemat(char **mat);
+void			free_buffer(char **buffer);
 void			free_variable(void *v);
 void			free_shell(t_shell *shell);
 

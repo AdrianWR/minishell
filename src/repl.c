@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 00:10:47 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 10:48:52 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ void		repl(t_shell *shell)
 		shell->jobs = parser(tokens);
 		free_tokens(&tokens);
 		execute_all(shell);
+		free_jobs(&(shell->jobs));
 	}
 }
