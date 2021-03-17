@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 00:11:02 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 23:21:31 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 23:08:35 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	sort(char **array, int size)
 	char	*key;
 
 	j = 1;
-	while (j < size)
+	while (j < size + 1)
 	{
 		i = j - 1;
 		key = array[j];

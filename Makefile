@@ -120,7 +120,7 @@ build/$(BUILD)/bin/test: $(TEST_O_FILES) $(STATIC_LIBRARY_OUTPUT)
 test: build/$(BUILD)/bin/test
 	./$<
 
-debug:
+test_debug:
 	$(MAKE) BUILD=debug build/debug/bin/test
 	gdb ./build/debug/bin/test
 
@@ -130,6 +130,10 @@ shell: $(NAME)
 #########
 # UTILS #
 #########
+
+debug:
+	$(MAKE) BUILD=debug build/debug/bin/$(NAME)
+	gdb ./build/debug/bin/$(NAME)
 
 clean:
 	$(RM) -r bin build lib .build-target

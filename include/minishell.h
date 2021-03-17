@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 20:25:39 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/03/16 23:43:37 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,12 @@ typedef struct	s_variable
 
 typedef	struct	s_shell
 {
-	int			status;
 	t_job		*jobs;
 	t_hashtable	*env;
-	t_hashtable	*builtins;
 	char		**envp;
 	char		**child_envp;
 	size_t		envp_size;
-	char		*input;
 	bool		exit;
-	char		**args;
-	int			fd;
 }				t_shell;
 
 extern t_shell	*g_shell;
@@ -50,7 +45,6 @@ void			sighandler_prompt(int signum);
 void			sighandler_process(int signum);
 void			repl(t_shell *shell);
 char			**getpaths(const char *argv, const char *path);
-void			freemat(char **mat);
 t_hashtable		*load_env(char *envp[]);
 char			**unload_env(t_hashtable *env, size_t *envp_size);
 int				execute_command(t_shell *shell);
@@ -74,5 +68,9 @@ char			*set_value(t_hashtable *env, const char *pair, bool is_env);
 
 char			*node_to_envp(t_htlist *node);
 char			**local_envp(char **local_envp, char **envp, size_t envp_size);
+
+void			freemat(char **mat);
+void			free_variable(void *v);
+void			free_shell(t_shell *shell);
 
 #endif

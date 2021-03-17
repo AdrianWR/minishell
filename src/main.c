@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:14:00 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 03:30:08 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/03/16 23:18:03 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int				main(int argc, char *argv[], char *envp[])
 	if (argc != 1)
 		message_and_exit(EUSAGE, EXIT_FAILURE, NULL);
 	shell->env = load_env(envp);
-	shell->fd = STDOUT_FILENO;
 	repl(shell);
-	free_shell(shell);
 	return (EXIT_SUCCESS);
 }

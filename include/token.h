@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 14:42:49 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 01:31:21 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 20:52:36 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ typedef struct		s_token
 
 t_token				*tokenizer(const char *input, t_hashtable *env);
 int					lexer(t_token *token, t_hashtable *env);
-void				free_token(void *token);
+void				free_tokens(t_token **tokens);
 
 #endif

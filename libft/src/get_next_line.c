@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 11:50:29 by aroque            #+#    #+#             */
-/*   Updated: 2020/05/11 10:02:06 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 00:11:54 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void	ft_strdel(char **str)
 {
-	if (*str && str)
+	if (str)
 	{
 		free(*str);
 		*str = NULL;

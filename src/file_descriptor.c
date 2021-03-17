@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/13 18:03:06 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/13 18:49:47 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 23:00:29 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	redirect_handler(t_process *p, int in, int out)
 	while (p->output_file[i] && !status)
 	{
 		file = p->output_file[i++];
-		file->fd = open(file->path, file->flags, 0644);
+		file->fd = open(file->path, file->flags, 0664);
 		dup2(file->fd, out);
 		close(file->fd);
 	}

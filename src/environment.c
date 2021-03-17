@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/15 23:26:34 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 23:13:03 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,16 @@ char			**unload_env(t_hashtable *env, size_t *envp_size)
 	while (i < env->size && j < env->storage)
 	{
 		tmp = env->array[i];
-		while (tmp && j < env->storage)
+		while (tmp && j < env->storage && ((t_variable *)(tmp->value))->env)
 		{
-			if (((t_variable *)(tmp->value))->env)
-				envp[j++] = node_to_envp(tmp);
+			envp[j++] = node_to_envp(tmp);
 			tmp = tmp->next;
 		}
 		i++;
 	}
 	envp[j] = NULL;
 	if (envp_size)
-		*envp_size = j;
+		*envp_size = j - 1;
 	return (envp);
 }
 
@@ -86,14 +85,17 @@ char			**local_envp(char **local_envp, char **envp, size_t envp_size)
 	while (local_envp[i])
 		i++;
 	i += envp_size + 1;
-	new_envp = ft_calloc(i, sizeof(*new_envp));
-	new_envp[i] = NULL;
-	while (j < i)
+	if (!(new_envp = ft_calloc(i + 1, sizeof(*new_envp))))
+		return (NULL);
+	while (envp[j])
 	{
-		if (envp[j])
-			new_envp[j] = *envp++;
-		else
-			new_envp[j] = *local_envp++;
+		new_envp[j] = ft_strdup(envp[j]);
+		j++;
+	}
+	j = 0;
+	while (local_envp[j])
+	{
+		new_envp[envp_size + j] = ft_strdup(local_envp[j]);
 		j++;
 	}
 	return (new_envp);

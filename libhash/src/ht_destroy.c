@@ -1,22 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   ht_destroy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/15 22:01:22 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 20:45:38 by aroque           ###   ########.fr       */
+/*   Created: 2021/03/16 23:29:29 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/16 23:57:54 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "hash.h"
-#include "minishell.h"
 
-int		ft_unset(char **argv, t_hashtable *env)
+void	ht_destroy(t_hashtable *ht, void (*del)(void *))
 {
-	argv++;
-	while (*argv)
-		ht_remove(env, *argv++, free_variable);
-	return (0);
+	unsigned	i;
+	t_htlist	*tmp;
+	t_htlist	*next;
+
+	i = 0;
+	while (i < ht->size)
+	{
+		tmp = ht->array[i];
+		while (tmp)
+		{
+			next = tmp->next;
+			del(tmp->value);
+			free(tmp->key);
+			free(tmp);
+			tmp = next;
+		}
+		i++;
+	}
+	free(ht->array);
+	free(ht);
 }

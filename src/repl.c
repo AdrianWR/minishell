@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 03:23:27 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/03/17 00:10:47 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,23 @@ void		repl(t_shell *shell)
 	char	*input;
 	t_token	*tokens;
 
-	while (shell->exit == false)
+	while (true)
 	{
 		signal(SIGINT, sighandler_prompt);
 		signal(SIGQUIT, sighandler_prompt);
 		prompt(shell->env);
-		if (get_next_line(STDIN_FILENO, &input) == 0)
-			ft_exit(shell);
+		if (!(get_next_line(STDIN_FILENO, &input)))
+		{
+			ht_destroy(shell->env, free_variable);
+			free(input);
+			free(shell);
+			ft_putendl_fd("exit", STDOUT_FILENO);
+			exit(EXIT_SUCCESS);
+		}
 		tokens = tokenizer(input, shell->env);
-		shell->jobs = parser(tokens);
-		execute_all(shell);
 		free(input);
+		shell->jobs = parser(tokens);
+		free_tokens(&tokens);
+		execute_all(shell);
 	}
 }

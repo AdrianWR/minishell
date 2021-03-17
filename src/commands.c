@@ -6,19 +6,20 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/15 22:12:01 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 23:44:30 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <stdlib.h>
 #include <unistd.h>
 
 int		ft_exit(t_shell *shell)
 {
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	shell->exit = true;
-	return (0);
+	free_shell(shell);
+	exit(EXIT_SUCCESS);
 }
 
 void	ft_pwd(t_shell *shell)
@@ -33,6 +34,7 @@ void	ft_pwd(t_shell *shell)
 
 void	ft_cd(t_shell *shell)
 {
-	if (chdir(shell->args[1]) != 0)
-		return ;
+	(void)shell;
+//	if (chdir(shell->args[1]) != 0)
+//		return ;
 }
