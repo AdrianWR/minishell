@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 23:16:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 16:50:09 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 00:09:11 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef	struct	s_shell
 	char		**envp;
 	char		**child_envp;
 	size_t		envp_size;
+	bool		signal;
 }				t_shell;
 
 extern t_shell	*g_shell;

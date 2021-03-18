@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 22:13:17 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 00:23:21 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int		execute_builtin(t_process *p, t_shell *shell, bool *exec, int out)
 {
 	unsigned	i;
 	int			status;
+	char		*note;
 
 	i = 0;
 	status = 0;
@@ -67,6 +68,10 @@ int		execute_builtin(t_process *p, t_shell *shell, bool *exec, int out)
 		return (status);
 	if (ft_streq(p->command, "echo"))
 		status = ft_echo(p->argv, out);
+	else if (ft_streq(p->command, "pwd"))
+		status = ft_pwd(out);
+	else if (ft_streq(p->command, "cd"))
+		status = ft_cd(p->argv, shell->env, &note);
 	else if (ft_streq(p->command, "exit"))
 		status = ft_exit(shell);
 	else if (ft_streq(p->command, "env"))
@@ -77,6 +82,11 @@ int		execute_builtin(t_process *p, t_shell *shell, bool *exec, int out)
 		status = ft_unset(p->argv, shell->env);
 	else
 		*exec = false;
+	if (status)
+	{
+		status = error_message(status, note);
+		free(note);
+	}
 	return (status);
 }
 
@@ -96,15 +106,19 @@ int		execute_process(t_process *p, t_shell *s, int in, int out)
 			message_and_exit(ERRSYS, NULL);
 		else if (pid == 0)
 		{
+			signal(SIGINT, sighandler_process);
+			signal(SIGQUIT, sighandler_process);
 			file_descriptor_handler(in, out);
 			s->child_envp = local_envp(p->local_env, s->envp, s->envp_size);
 			execute(p, s);
 		}
 		else
 			waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			status = WEXITSTATUS(status);
 	}
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		status = WTERMSIG(status);
 	set_exit_status(s->env, status);
 	return (status);
 }
@@ -140,8 +154,6 @@ int		execute_all(t_shell *shell)
 	int		fd[2];
 	t_job	*job;
 
-	signal(SIGINT, sighandler_process);
-	signal(SIGQUIT, sighandler_process);
 	status = 0;
 	job = shell->jobs;
 	while (job)

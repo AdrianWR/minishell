@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 12:44:55 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 00:22:20 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 23:21:37 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char			*get_value(t_hashtable *env, const char *key)
 	void		*value;
 
 	value = ht_get(env, key);
-	return (value ? ((t_variable *)value)->value : ft_strdup(""));
+	return (value ? ((t_variable *)value)->value : NULL);
 }
 
 void			key_value_pair(const char *str, char *pair[])

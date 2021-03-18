@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 17:05:47 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 23:43:55 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef enum		e_errcode {
 	ERRSYS = 0,
 	EUSAGE,
 	ENOFDI,
+	ETMARGS,
 	EPARSE,
 	EUNFQT,
 	EBADASS,
@@ -29,7 +30,8 @@ typedef enum		e_errcode {
 static char *const	g_errstr[__ERRMAX] = {
 	"__ERRSYS",
 	"Usage: ./minishell",
-	"No such file or directory: ",
+	"no such file or directory",
+	"too many arguments",
 	"Parse error",
 	"Unfinished quote",
 	"bad assignment",
@@ -39,6 +41,7 @@ static char *const	g_errstr[__ERRMAX] = {
 static const int	g_errstatus[__ERRMAX] = {
 	128,
 	0,
+	1,
 	1,
 	1,
 	1,
