@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/16 23:44:30 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 22:20:22 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,4 @@ void	ft_pwd(t_shell *shell)
 void	ft_cd(t_shell *shell)
 {
 	(void)shell;
-//	if (chdir(shell->args[1]) != 0)
-//		return ;
 }

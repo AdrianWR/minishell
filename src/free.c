@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:37:39 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/17 10:54:36 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 22:35:50 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,10 @@
 #include "minishell.h"
 #include "token.h"
 
-void	free_variable(void *v)
+static void	free_process(t_process **process)
 {
-	free(((t_variable *)v)->value);
-	free(v);
-}
-
-void	free_tokens(t_token **tokens)
-{
-	if (!(*tokens))
-		return ;
-	if ((*tokens)->next)
-		free_tokens(&(*tokens)->next);
-	free((*tokens)->value);
-	free(*tokens);
-	*tokens = NULL;
-}
-
-void	free_buffer(char **buffer)
-{
-	int	i;
-
-	i = 0;
-	while (buffer[i])
-		free(buffer[i++]);
-}
-
-void	free_process(t_process **process)
-{
-	int i;
-	t_process *p;
+	int			i;
+	t_process	*p;
 
 	p = *process;
 	if (!p)
@@ -68,9 +42,10 @@ void	free_process(t_process **process)
 	free(p);
 }
 
-void	free_jobs(t_job **jobs)
+void		free_jobs(t_job **jobs)
 {
-	t_job *job;
+	t_job	*job;
+
 	job = *jobs;
 	if (!job)
 		return ;
@@ -81,14 +56,21 @@ void	free_jobs(t_job **jobs)
 	return ;
 }
 
-void		freemat(char **mat)
+void		free_variable(void *v)
 {
-	int i;
+	free(((t_variable *)v)->value);
+	free(v);
+}
 
-	i = 0;
-	while (mat[i])
-		free(mat[i++]);
-	free(mat);
+void		free_tokens(t_token **tokens)
+{
+	if (!(*tokens))
+		return ;
+	if ((*tokens)->next)
+		free_tokens(&(*tokens)->next);
+	free((*tokens)->value);
+	free(*tokens);
+	*tokens = NULL;
 }
 
 void		free_shell(t_shell *shell)

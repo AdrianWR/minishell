@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 22:09:14 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 22:13:17 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ int		execute_job(t_process *process, t_shell *shell)
 
 int		execute_all(t_shell *shell)
 {
-	int status;
-	int fd[2];
-	t_job *job;
+	int		status;
+	int		fd[2];
+	t_job	*job;
 
 	signal(SIGINT, sighandler_process);
 	signal(SIGQUIT, sighandler_process);

@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:47:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 17:03:27 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 22:13:36 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	errlog(const char *str)
 		ft_putstr_fd(str, STDERR_FILENO);
 }
 
-int		error_message(t_errcode code, char *note)
+int			error_message(t_errcode code, char *note)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (errno && code == ERRSYS)

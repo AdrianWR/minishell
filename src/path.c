@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 22:41:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 10:38:57 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 22:19:48 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char	*setpath(const char *path, const char *argv, int i)
 	end = 0;
 	start = 0;
 	while (path[end])
-	{
 		if (path[end++] == ':')
 		{
 			if (!i-- && end--)
@@ -84,7 +83,6 @@ char	*setpath(const char *path, const char *argv, int i)
 			else
 				start = end;
 		}
-	}
 	if (!(fpath = ft_calloc((end - start + 2 + ft_strlen(argv)), sizeof(char))))
 		return (NULL);
 	i = 0;
