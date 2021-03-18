@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 14:58:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 08:46:07 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 17:11:38 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	set_exit_status(t_hashtable *env, int status)
 {
-	//char *exit_status;
 	t_variable *var;
 
 	var = ht_get(env, "?");

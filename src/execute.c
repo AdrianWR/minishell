@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 10:39:31 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 22:09:14 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,9 @@ void	execute(t_process *p, t_shell *shell)
 		r = execve(pathtotry, p->argv, shell->child_envp);
 		free(pathtotry);
 	}
-	if (r)
-		error_message(ECMDNF, p->command);
-	free(path);
-	free_buffer(shell->child_envp);
+	if (r == -1)
+		r = error_message(ECMDNF, p->command);
+	freemat(shell->child_envp);
 	free_shell(shell);
 	exit(r);
 }
@@ -119,7 +118,7 @@ int		execute_job(t_process *process, t_shell *shell)
 
 	status = 0;
 	in_fd = STDIN_FILENO;
-	while (process->next && !status)
+	while (process->next)
 	{
 		if (pipe(fd) < 0)
 			return (ERRSYS);
@@ -131,8 +130,7 @@ int		execute_job(t_process *process, t_shell *shell)
 		in_fd = fd[0];
 		process = process->next;
 	}
-	if (!status)
-		status = execute_process(process, shell, in_fd, STDOUT_FILENO);
+	status = execute_process(process, shell, in_fd, STDOUT_FILENO);
 	return (status);
 }
 

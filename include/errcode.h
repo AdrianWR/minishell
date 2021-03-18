@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 09:55:48 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/17 17:05:47 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <errno.h>
 
 typedef enum		e_errcode {
-	ERRSYS,
+	ERRSYS = 0,
 	EUSAGE,
 	ENOFDI,
 	EPARSE,
@@ -46,7 +46,7 @@ static const int	g_errstatus[__ERRMAX] = {
 	127,
 };
 
-void				error_message(t_errcode code, char *note);
+int					error_message(t_errcode code, char *note);
 void				message_and_exit(t_errcode code, char *note);
 
 #endif
