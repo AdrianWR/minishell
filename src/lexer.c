@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:44:50 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 23:22:35 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 23:22:29 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,25 @@ static int	lex_dquote(t_token *token, t_hashtable *env)
 	return (0);
 }
 
+bool		special_token(t_token *token, const char *str)
+{
+	return (ft_streq(token->value, str) && token->type == T_UNDEFINED);
+}
+
 int			lexer(t_token *token, t_hashtable *env)
 {
 	int		err;
 
 	err = 0;
-	if (ft_streq(token->value, ">"))
+	if (special_token(token, ">"))
 		token->type = T_OREDIRECT;
-	else if (ft_streq(token->value, ">>"))
+	else if (special_token(token, ">>"))
 		token->type = T_OAPPEND;
-	else if (ft_streq(token->value, "<"))
+	else if (special_token(token, "<"))
 		token->type = T_IREDIRECT;
-	else if (ft_streq(token->value, ";"))
+	else if (special_token(token, ";"))
 		token->type = T_SEPARATOR;
-	else if (ft_streq(token->value, "|"))
+	else if (special_token(token, "|"))
 		token->type = T_PIPE;
 	else if (token->value[0] == '\'')
 		err = lex_squote(token);
@@ -110,7 +115,8 @@ int			lexer(t_token *token, t_hashtable *env)
 		err = lex_dquote(token, env);
 	else
 	{
-		expand_env(&token->value, env);
+		if (!token->type)
+			expand_env(&token->value, env);
 		token->type = T_WORD;
 	}
 	return (err);

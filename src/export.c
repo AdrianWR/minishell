@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 00:11:02 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 23:08:35 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 22:15:34 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,44 @@ static void	export_raw(char **envp, int size, int out)
 	}
 }
 
-int			ft_export(t_process *p, t_shell *shell, int out)
+int export_variable(t_process *p, t_shell *s, char **note)
 {
+	int			status;
 	unsigned	i;
+	char		*tmp;
 	t_variable	*v;
 
 	i = 1;
-	if (!p->argv[i])
+	status = 0;
+	while (p->argv[i])
+	{
+		if (!ft_isalpha(p->argv[i][0]) || p->argv[i][0] == '=')
+		{
+			tmp = ft_strjoin("export: \'", p->argv[i]);
+			*note = ft_strjoin(tmp, "\': ");
+			free(tmp);
+			status = ENOTVI;
+		}
+		else if ((v = (t_variable *)ht_get(s->env, p->argv[i])))
+			v->env = true;
+		else
+			set_value(s->env, p->argv[i], true);
+		i++;
+	}
+	return (status);
+}
+
+
+int			ft_export(t_process *p, t_shell *shell, int out, char **note)
+{
+	int status;
+
+	status = 0;
+	if (!p->argv[1])
 	{
 		export_raw(shell->envp, shell->envp_size, out);
 		return (0);
 	}
-	while (p->argv[i])
-	{
-		if (p->argv[i][0] == '=')
-			return (EBADASS);
-		if ((v = (t_variable *)ht_get(shell->env, p->argv[i])))
-			v->env = true;
-		else
-			set_value(shell->env, p->argv[i], true);
-		i++;
-	}
-	return (0);
+	status = export_variable(p, shell, note);
+	return (status);
 }

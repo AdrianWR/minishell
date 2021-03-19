@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:47:10 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 22:13:36 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 22:06:03 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ int			error_message(t_errcode code, char *note)
 	else if (code > 0)
 	{
 		if (note)
-		{
 			errlog(note);
-			errlog(": ");
-		}
 		errlog(g_errstr[code]);
 		ft_putchar_fd('\n', STDERR_FILENO);
 	}

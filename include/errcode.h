@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 23:43:55 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 22:09:28 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ typedef enum		e_errcode {
 	ETMARGS,
 	EPARSE,
 	EUNFQT,
-	EBADASS,
+	ENOTVI,
 	ECMDNF,
+	ESYNTAX,
 	__ERRMAX
 }					t_errcode;
 
@@ -33,9 +34,10 @@ static char *const	g_errstr[__ERRMAX] = {
 	"no such file or directory",
 	"too many arguments",
 	"Parse error",
-	"Unfinished quote",
-	"bad assignment",
-	"command not found...",
+	"unfinished quote",
+	"not a valid identifier",
+	": command not found...",
+	""
 };
 
 static const int	g_errstatus[__ERRMAX] = {
@@ -47,6 +49,7 @@ static const int	g_errstatus[__ERRMAX] = {
 	1,
 	1,
 	127,
+	2
 };
 
 int					error_message(t_errcode code, char *note);

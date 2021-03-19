@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 00:23:21 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 23:50:30 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,43 +53,6 @@ void	execute(t_process *p, t_shell *shell)
 	exit(r);
 }
 
-int		execute_builtin(t_process *p, t_shell *shell, bool *exec, int out)
-{
-	unsigned	i;
-	int			status;
-	char		*note;
-
-	i = 0;
-	status = 0;
-	*exec = true;
-	while (!p->command && p->local_env[i])
-		set_value(shell->env, p->local_env[i++], false);
-	if (!p->command)
-		return (status);
-	if (ft_streq(p->command, "echo"))
-		status = ft_echo(p->argv, out);
-	else if (ft_streq(p->command, "pwd"))
-		status = ft_pwd(out);
-	else if (ft_streq(p->command, "cd"))
-		status = ft_cd(p->argv, shell->env, &note);
-	else if (ft_streq(p->command, "exit"))
-		status = ft_exit(shell);
-	else if (ft_streq(p->command, "env"))
-		status = ft_env(shell->envp, out);
-	else if (ft_streq(p->command, "export"))
-		status = ft_export(p, shell, out);
-	else if (ft_streq(p->command, "unset"))
-		status = ft_unset(p->argv, shell->env);
-	else
-		*exec = false;
-	if (status)
-	{
-		status = error_message(status, note);
-		free(note);
-	}
-	return (status);
-}
-
 int		execute_process(t_process *p, t_shell *s, int in, int out)
 {
 	pid_t	pid;
@@ -117,8 +80,6 @@ int		execute_process(t_process *p, t_shell *s, int in, int out)
 	}
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-		status = WTERMSIG(status);
 	set_exit_status(s->env, status);
 	return (status);
 }
@@ -156,7 +117,7 @@ int		execute_all(t_shell *shell)
 
 	status = 0;
 	job = shell->jobs;
-	while (job)
+	while (job && job->process_list)
 	{
 		fd[0] = dup(0);
 		fd[1] = dup(1);

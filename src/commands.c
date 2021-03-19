@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/17 23:48:50 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 22:08:20 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int			ft_cd(char **argv, t_hashtable *env, char **note)
 {
 	char	*old_pwd;
 	int		status;
+	char 	*tmp;
 
 	status = 0;
 	if ((old_pwd = get_pwd()) == NULL)
@@ -76,12 +77,14 @@ int			ft_cd(char **argv, t_hashtable *env, char **note)
 		status = chdir(argv[1]);
 	else
 	{
-		*note = ft_strdup("cd");
+		*note = ft_strdup("cd: ");
 		status = ETMARGS;
 	}
 	if (status && status != ETMARGS)
 	{
-		*note = ft_strjoin("cd: ", argv[1]);
+		tmp = ft_strjoin("cd: ", argv[1]);
+		*note = ft_strjoin(tmp, ": ");
+		free(tmp);
 		status = ENOFDI;
 	}
 	return (update_pwd(env, old_pwd, status));

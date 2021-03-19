@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 14:11:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/06 19:03:08 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 23:19:34 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ static void		get_token(t_tkdata *tk, t_token **tokens)
 		return ;
 	ft_bzero(token, sizeof(*token));
 	token->value = ft_strdup(tk->buffer);
+	token->type = tk->type;
 	lexer(token, tk->env);
 	push_token(tokens, token);
 	ft_bzero(tk->buffer, tk->j);
+	tk->type = T_UNDEFINED;
 	tk->j = 0;
 }
 
@@ -73,7 +75,10 @@ static void		tokenize_general(t_tkdata *tk, t_token **tokens)
 		get_token(tk, tokens);
 	}
 	else if (tk->input[tk->i] == C_ESCAPE)
+	{
 		tk->buffer[tk->j++] = tk->input[++tk->i];
+		tk->type = T_WORD;
+	}
 	else if (tk->input[tk->i] == C_SPACE)
 		get_token(tk, tokens);
 	else
