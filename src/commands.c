@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/19 00:06:13 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:33:05 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int			ft_cd(char **argv, t_hashtable *env, char **note)
 {
 	char	*old_pwd;
 	int		status;
-	char 	*tmp;
+	char	*tmp;
 
 	status = 0;
 	if ((old_pwd = get_pwd()) == NULL)

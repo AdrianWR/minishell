@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 00:11:50 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:38:52 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,22 @@ void		eof_exit(char *input, t_shell *shell)
 	exit(EXIT_SUCCESS);
 }
 
+int			token_error(t_token *tokens, t_shell *shell)
+{
+	int		status;
+	char	*note;
+
+	status = 0;
+	if ((status = validate_tokens(tokens, &note)))
+	{
+		free_tokens(&tokens);
+		status = error_message(status, note);
+		free(note);
+		set_exit_status(shell->env, status);
+	}
+	return (status);
+}
+
 /*
 ** Main shell execution loop. REPL stands
 ** for Read-Eval-Print-Loop. All the process
@@ -51,12 +67,9 @@ void		repl(t_shell *shell)
 {
 	char	*input;
 	t_token	*tokens;
-	char	*note;
-	int		status;
 
 	while (true)
 	{
-		status = 0;
 		signal(SIGINT, sighandler_prompt);
 		signal(SIGQUIT, sighandler_prompt);
 		prompt(shell->env);
@@ -64,14 +77,7 @@ void		repl(t_shell *shell)
 			eof_exit(input, shell);
 		tokens = tokenizer(input, shell->env);
 		free(input);
-		if ((status = validate_tokens(tokens, &note)))
-		{
-			free_tokens(&tokens);
-			status = error_message(status, note);
-			free(note);
-			set_exit_status(shell->env, status);
-		}
-		else
+		if (!(token_error(tokens, shell)))
 		{
 			shell->jobs = parser(tokens);
 			free_tokens(&tokens);

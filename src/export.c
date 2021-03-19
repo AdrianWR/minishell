@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 00:11:02 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 22:15:34 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:24:23 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	export_raw(char **envp, int size, int out)
 	}
 }
 
-int export_variable(t_process *p, t_shell *s, char **note)
+static int	export_variable(t_process *p, t_shell *s, char **note)
 {
 	int			status;
 	unsigned	i;
@@ -73,7 +73,6 @@ int export_variable(t_process *p, t_shell *s, char **note)
 	}
 	return (status);
 }
-
 
 int			ft_export(t_process *p, t_shell *shell, int out, char **note)
 {

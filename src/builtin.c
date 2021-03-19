@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 22:16:23 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 00:06:46 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:30:29 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "commands.h"
 #include "errcode.h"
 
-int		select_builtin(t_process *p, t_shell *s, bool *exec, int out, char **n)
+int		select_builtin(t_process *p, t_shell *s, int out, char **n)
 {
 	int status;
 
@@ -35,7 +35,7 @@ int		select_builtin(t_process *p, t_shell *s, bool *exec, int out, char **n)
 	else if (ft_streq(p->command, "unset"))
 		status = ft_unset(p->argv, s->env);
 	else
-		*exec = false;
+		status = ECOMMAND;
 	return (status);
 }
 
@@ -53,8 +53,10 @@ int		execute_builtin(t_process *p, t_shell *shell, bool *exec, int out)
 		set_value(shell->env, p->local_env[i++], false);
 	if (!p->command)
 		return (status);
-	status = select_builtin(p, shell, exec, out, &note);
-	if (status)
+	status = select_builtin(p, shell, out, &note);
+	if (status == ECOMMAND)
+		*exec = false;
+	else if (status)
 	{
 		status = error_message(status, note);
 		free(note);

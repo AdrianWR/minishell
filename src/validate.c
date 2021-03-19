@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 21:35:17 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 23:53:43 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:24:57 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 int	validate_tokens(t_token *tk, char **note)
 {
-	unsigned i;
-	int	status;
+	unsigned	i;
+	int			status;
 
 	i = 0;
 	status = 0;

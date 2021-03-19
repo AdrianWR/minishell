@@ -6,44 +6,13 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 14:11:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 23:19:34 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:44:42 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 #include "token.h"
-
-static void		push_token(t_token **token, t_token *new)
-{
-	t_token		*tmp;
-
-	if (!*token)
-		*token = new;
-	else
-	{
-		tmp = *token;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-}
-
-static void		get_token(t_tkdata *tk, t_token **tokens)
-{
-	t_token		*token;
-
-	if (!tk->j || !(token = malloc(sizeof(*token))))
-		return ;
-	ft_bzero(token, sizeof(*token));
-	token->value = ft_strdup(tk->buffer);
-	token->type = tk->type;
-	lexer(token, tk->env);
-	push_token(tokens, token);
-	ft_bzero(tk->buffer, tk->j);
-	tk->type = T_UNDEFINED;
-	tk->j = 0;
-}
 
 static void		tokenize_quoted(t_tkdata *tk, char quote)
 {
@@ -52,6 +21,15 @@ static void		tokenize_quoted(t_tkdata *tk, char quote)
 		tk->buffer[tk->j++] = tk->input[++tk->i];
 	else if (tk->input[tk->i] == quote)
 		tk->state = S_GENERAL;
+}
+
+static void		special_token(t_tkdata *tk, t_token **tokens)
+{
+	get_token(tk, tokens);
+	tk->buffer[tk->j++] = tk->input[tk->i];
+	if (tk->input[tk->i] == '>' && tk->input[tk->i + 1] == '>')
+		tk->buffer[tk->j++] = tk->input[++tk->i];
+	get_token(tk, tokens);
 }
 
 static void		tokenize_general(t_tkdata *tk, t_token **tokens)
@@ -67,13 +45,7 @@ static void		tokenize_general(t_tkdata *tk, t_token **tokens)
 		tk->buffer[tk->j++] = tk->input[tk->i];
 	}
 	else if (ft_strchr("|<>;", tk->input[tk->i]))
-	{
-		get_token(tk, tokens);
-		tk->buffer[tk->j++] = tk->input[tk->i];
-		if (tk->input[tk->i] == '>' && tk->input[tk->i + 1] == '>')
-			tk->buffer[tk->j++] = tk->input[++tk->i];
-		get_token(tk, tokens);
-	}
+		special_token(tk, tokens);
 	else if (tk->input[tk->i] == C_ESCAPE)
 	{
 		tk->buffer[tk->j++] = tk->input[++tk->i];

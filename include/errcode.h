@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 22:09:28 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:29:03 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef enum		e_errcode {
 	EUNFQT,
 	ENOTVI,
 	ECMDNF,
+	ECOMMAND,
 	ESYNTAX,
 	__ERRMAX
 }					t_errcode;
@@ -37,6 +38,7 @@ static char *const	g_errstr[__ERRMAX] = {
 	"unfinished quote",
 	"not a valid identifier",
 	": command not found...",
+	"not a built-in command",
 	""
 };
 
@@ -49,6 +51,7 @@ static const int	g_errstatus[__ERRMAX] = {
 	1,
 	1,
 	127,
+	0,
 	2
 };
 
