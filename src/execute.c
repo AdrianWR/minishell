@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 23:50:30 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/18 23:56:27 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ int		execute_process(t_process *p, t_shell *s, int in, int out)
 			message_and_exit(ERRSYS, NULL);
 		else if (pid == 0)
 		{
-			signal(SIGINT, sighandler_process);
-			signal(SIGQUIT, sighandler_process);
 			file_descriptor_handler(in, out);
 			s->child_envp = local_envp(p->local_env, s->envp, s->envp_size);
 			execute(p, s);
@@ -80,7 +78,8 @@ int		execute_process(t_process *p, t_shell *s, int in, int out)
 	}
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
-	set_exit_status(s->env, status);
+	if (!WIFSIGNALED(status))
+		set_exit_status(s->env, status);
 	return (status);
 }
 
@@ -117,6 +116,8 @@ int		execute_all(t_shell *shell)
 
 	status = 0;
 	job = shell->jobs;
+	signal(SIGINT, sighandler_process);
+	signal(SIGQUIT, sighandler_process);
 	while (job && job->process_list)
 	{
 		fd[0] = dup(0);

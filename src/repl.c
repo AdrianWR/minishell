@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 22:34:44 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 00:11:50 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void		repl(t_shell *shell)
 		free(input);
 		if ((status = validate_tokens(tokens, &note)))
 		{
+			free_tokens(&tokens);
 			status = error_message(status, note);
 			free(note);
 			set_exit_status(shell->env, status);

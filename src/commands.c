@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/18 22:08:20 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 00:06:13 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,23 @@ static char	*get_pwd(void)
 	return (pwd);
 }
 
-int			ft_pwd(int fd)
+int			ft_pwd(char **argv, int fd, char **note)
 {
+	int		status;
 	char	*pwd;
 
+	status = 0;
+	if (argv[1] != NULL)
+	{
+		*note = ft_strdup("pwd: ");
+		status = ETMARGS;
+	}
 	pwd = get_pwd();
 	if (pwd == NULL)
 		return (ERRSYS);
 	ft_putendl_fd(pwd, fd);
 	free(pwd);
-	return (0);
+	return (status);
 }
 
 static int	update_pwd(t_hashtable *env, char *old, int errcode)

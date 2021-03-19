@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 22:16:23 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/18 22:17:18 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 00:06:46 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		select_builtin(t_process *p, t_shell *s, bool *exec, int out, char **n)
 	if (ft_streq(p->command, "echo"))
 		status = ft_echo(p->argv, out);
 	else if (ft_streq(p->command, "pwd"))
-		status = ft_pwd(out);
+		status = ft_pwd(p->argv, out, n);
 	else if (ft_streq(p->command, "cd"))
 		status = ft_cd(p->argv, s->env, n);
 	else if (ft_streq(p->command, "exit"))
