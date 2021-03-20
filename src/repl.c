@@ -6,23 +6,38 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 09:04:44 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 09:18:25 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "free.h"
 #include "errcode.h"
+#include "libft.h"
 #include "minishell.h"
 #include "environment.h"
 #include "get_next_line.h"
 
 void		prompt(t_hashtable *env)
 {
-	ft_putstr_fd(get_value(env, "USERNAME"), STDOUT_FILENO);
+	char *pwd;
+	char *user;
+	char *host;
+
+	pwd = ft_strrchr(get_value(env, "PWD"), '/') + 1;
+	user = get_value(env, "USERNAME");
+	if (!user)
+		user = get_value(env, "USER");
+	host = get_value(env, "HOSTNAME");
+	if (!host)
+		host = get_value(env, "HOST");
+	ft_putchar_fd('[', STDOUT_FILENO);
+	ft_putstr_fd(user, STDOUT_FILENO);
 	ft_putchar_fd('@', STDOUT_FILENO);
-	ft_putstr_fd(get_value(env, "HOSTNAME"), STDOUT_FILENO);
-	ft_putstr_fd(" $ ", STDOUT_FILENO);
+	ft_putstr_fd(host, STDOUT_FILENO);
+	ft_putchar_fd(' ', STDOUT_FILENO);
+	ft_putstr_fd(pwd, STDOUT_FILENO);
+	ft_putstr_fd("]$ ", STDOUT_FILENO);
 }
 
 void		eof_exit(char *input, t_session *session)
