@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:36:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 15:08:07 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 19:00:21 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef enum		e_errcode {
 	ECMDNF,
 	ECOMMAND,
 	ESYNTAX,
+	ENUMARG,
 	__ERRMAX
 }					t_errcode;
 
@@ -39,7 +40,8 @@ static char *const	g_errstr[__ERRMAX] = {
 	"not a valid identifier",
 	": command not found...",
 	"not a built-in command",
-	""
+	"",
+	": requires numerical argument",
 };
 
 static const int	g_errstatus[__ERRMAX] = {
@@ -52,6 +54,7 @@ static const int	g_errstatus[__ERRMAX] = {
 	1,
 	127,
 	0,
+	2,
 	2
 };
 

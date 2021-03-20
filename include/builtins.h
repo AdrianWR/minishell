@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 22:57:42 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 09:00:52 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 18:24:20 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	ft_export(t_process *process, t_session *session, int out, char **note);
 int	ft_echo(char **argv, int out);
 int	ft_pwd(char **argv, int out, char **note);
 int	ft_cd(char **argv, t_hashtable *env, char **note);
-int	ft_exit(t_session *session);
+int	ft_exit(t_session *session, char **argv, char **note);
 
 #endif

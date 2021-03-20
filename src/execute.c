@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 15:07:27 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 18:53:51 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ int		execute_process(t_process *p, t_session *s, int in, int out)
 		}
 		else
 			waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
 	}
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	if (!WIFSIGNALED(status))
+	if (!WIFSIGNALED(status) || builtin)
 		set_exit_status(s->env, status);
 	return (status);
 }

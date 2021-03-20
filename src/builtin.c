@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 22:16:23 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:51:56 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 18:53:22 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		select_builtin(t_process *p, t_session *s, int out, char **n)
 	else if (ft_streq(p->command, "cd"))
 		status = ft_cd(p->argv, s->env, n);
 	else if (ft_streq(p->command, "exit"))
-		status = ft_exit(s);
+		status = ft_exit(s, p->argv, n);
 	else if (ft_streq(p->command, "env"))
 		status = ft_env(s->envp, out);
 	else if (ft_streq(p->command, "export"))
