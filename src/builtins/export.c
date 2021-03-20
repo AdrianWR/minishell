@@ -6,11 +6,12 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 00:11:02 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:55:36 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 18:12:49 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "errcode.h"
+#include "libft.h"
 #include "minishell.h"
 #include "environment.h"
 
@@ -39,11 +40,21 @@ static void	sort(char **array, int size)
 
 static void	export_raw(char **envp, int size, int out)
 {
+	char *str;
+	char buffer[4096];
+
 	sort(envp, size);
 	while (*envp)
 	{
-		ft_putstr_fd("export ", out);
-		ft_putendl_fd(*envp++, out);
+		ft_putstr_fd("declare -x ", out);
+		str = ft_strchr(*envp, '=');
+		ft_memmove(buffer, *envp, str - *envp + 1);
+		ft_putstr_fd(buffer, out);
+		ft_putchar_fd('\"', out);
+		ft_putstr_fd(str + 1, out);
+		ft_putendl_fd("\"", out);
+		ft_bzero(buffer, 4096);
+		envp++;
 	}
 }
 
