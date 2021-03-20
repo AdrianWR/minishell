@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/20 08:42:01 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 19:38:21 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,8 @@ int			ft_pwd(char **argv, int fd, char **note)
 	char	*pwd;
 
 	status = 0;
-	if (argv[1] != NULL)
-	{
-		*note = ft_strdup("pwd: ");
-		status = ETMARGS;
-	}
+	(void)argv;
+	(void)note;
 	pwd = get_pwd();
 	if (pwd == NULL)
 		return (ERRSYS);
