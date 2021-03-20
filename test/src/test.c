@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:45:52 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 14:14:20 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "token.h"
 #include "process.h"
 #include "job.h"
+#include "environment.h"
 
 t_session		*g_session;
 t_session		*session;

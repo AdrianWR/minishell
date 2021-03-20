@@ -34,8 +34,36 @@ override LDLIBS	+=
 .PHONY: all clean fclean re force test shell debug
 
 # Source and object files for the executable
-SRC_FILES = $(wildcard src/*.c)
-O_FILES = $(patsubst %.c,build/$(BUILD)/build/%.o,$(SRC_FILES))
+SRC_DIR		= 	src
+SRC_FILES	=	$(SRC_DIR)/builtins/cd.c	\
+				$(SRC_DIR)/builtins/echo.c	\
+				$(SRC_DIR)/builtins/env.c	\
+				$(SRC_DIR)/builtins/exit.c	\
+				$(SRC_DIR)/builtins/export.c\
+				$(SRC_DIR)/builtins/pwd.c	\
+				$(SRC_DIR)/builtins/unset.c	\
+				$(SRC_DIR)/builtin.c		\
+				$(SRC_DIR)/environment.c	\
+				$(SRC_DIR)/errcode.c		\
+				$(SRC_DIR)/execute.c		\
+				$(SRC_DIR)/expansion.c		\
+				$(SRC_DIR)/file_descriptor.c\
+				$(SRC_DIR)/free.c			\
+				$(SRC_DIR)/free_array.c		\
+				$(SRC_DIR)/job.c			\
+				$(SRC_DIR)/lexer.c			\
+				$(SRC_DIR)/main.c			\
+				$(SRC_DIR)/path.c			\
+				$(SRC_DIR)/process.c		\
+				$(SRC_DIR)/repl.c			\
+				$(SRC_DIR)/sighandler.c		\
+				$(SRC_DIR)/status.c			\
+				$(SRC_DIR)/token.c			\
+				$(SRC_DIR)/tokenizer.c		\
+				$(SRC_DIR)/validate.c		\
+				$(SRC_DIR)/variable.c
+
+O_FILES		= 	$(patsubst %.c,build/$(BUILD)/build/%.o,$(SRC_FILES))
 
 # Build and link of multiple libraries
 LIBRARY_FOLDERS = libft libhash
@@ -43,7 +71,66 @@ LIBRARY_INCLUDES = $(patsubst %,-I%/include,$(LIBRARY_FOLDERS))
 override CPPFLAGS += $(LIBRARY_INCLUDES)
 LIBRARY_FLAGS = $(patsubst lib%,-l%,$(LIBRARY_FOLDERS))
 override LDLIBS += $(LIBRARY_FLAGS)
-library_src_files = $(wildcard lib$(1)/src/*.c)
+library_src_files = libft/src/ft_atoi.c				\
+					libft/src/ft_bzero.c			\
+					libft/src/ft_calloc.c			\
+					libft/src/ft_isalnum.c			\
+					libft/src/ft_isalpha.c			\
+					libft/src/ft_isascii.c			\
+					libft/src/ft_isdigit.c			\
+					libft/src/ft_isprint.c			\
+					libft/src/ft_isspace.c			\
+					libft/src/ft_itoa.c				\
+					libft/src/ft_lstadd_front.c		\
+					libft/src/ft_lstdelone.c		\
+					libft/src/ft_lstfirst.c			\
+					libft/src/ft_lstmap.c			\
+					libft/src/ft_lstnew.c			\
+					libft/src/ft_lstsize.c			\
+					libft/src/ft_memccpy.c			\
+					libft/src/ft_strtrim.c			\
+					libft/src/ft_memcpy.c			\
+					libft/src/ft_strtok_r.c			\
+					libft/src/ft_memcmp.c			\
+					libft/src/ft_memset.c			\
+					libft/src/ft_putchar_fd.c		\
+					libft/src/ft_putendl_fd.c		\
+					libft/src/ft_putnbr_fd.c		\
+					libft/src/ft_putstr_fd.c		\
+					libft/src/ft_strchr.c			\
+					libft/src/ft_strcspn.c			\
+					libft/src/ft_strdup.c			\
+					libft/src/ft_strlcat.c			\
+					libft/src/ft_strlcpy.c			\
+					libft/src/ft_memmove.c			\
+					libft/src/ft_strmapi.c			\
+					libft/src/ft_strnstr.c			\
+					libft/src/ft_strrchr.c			\
+					libft/src/ft_strspn.c			\
+					libft/src/ft_split.c			\
+					libft/src/ft_lstiter.c			\
+					libft/src/ft_substr.c			\
+					libft/src/ft_tolower.c			\
+					libft/src/ft_toupper.c			\
+					libft/src/ft_strjoin.c			\
+					libft/src/ft_strtok.c			\
+					libft/src/ft_lstadd_back.c		\
+					libft/src/ft_lstlast.c			\
+					libft/src/ft_isalnum_or_uscore.c\
+					libft/src/ft_memchr.c			\
+					libft/src/ft_strlen.c			\
+					libft/src/ft_strncmp.c			\
+					libft/src/ft_strreplace.c		\
+					libft/src/ft_streq.c			\
+					libft/src/ft_lstclear.c			\
+					libft/src/get_next_line.c		\
+					libhash/src/hash.c				\
+					libhash/src/ht_free.c			\
+					libhash/src/ht_create.c			\
+					libhash/src/ht_set.c			\
+					libhash/src/ht_remove.c			\
+					libhash/src/ht_get.c			\
+					libhash/src/ht_destroy.c
 library_o_files   = $(patsubst %.c,build/$(BUILD)/build/%.o,$(call library_src_files,$(1)))
 STATIC_LIBRARY_OUTPUT = $(patsubst %,lib/%.a,$(LIBRARY_FOLDERS))
 
@@ -51,7 +138,7 @@ STATIC_LIBRARY_OUTPUT = $(patsubst %,lib/%.a,$(LIBRARY_FOLDERS))
 TEST_FOLDER = test
 TEST_INCLUDES = $(patsubst %,-I%/include,$(TEST_FOLDER))
 override CPPFLAGS += $(TEST_INCLUDES)
-TEST_SRC_FILES = $(wildcard $(TEST_FOLDER)/src/*.c)
+TEST_SRC_FILES = $(TEST_FOLDER)/src/test.c
 TEST_O_FILES   = $(patsubst %.c,build/$(BUILD)/build/%.o, $(TEST_SRC_FILES))
 override TEST_O_FILES += $(filter-out $(filter %/main.o, $(O_FILES)), $(O_FILES))
 
