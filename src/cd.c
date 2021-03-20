@@ -6,13 +6,14 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 08:40:25 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:41:19 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:52:43 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include "minishell.h"
+#include "libft.h"
 #include "errcode.h"
+#include "environment.h"
 
 static char	*get_pwd(void)
 {

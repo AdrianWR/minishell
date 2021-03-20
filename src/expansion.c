@@ -6,13 +6,12 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 08:45:43 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 08:46:27 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:54:50 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "hash.h"
 #include "libft.h"
+#include "environment.h"
 
 static void	replace_env(char **str, t_hashtable *env, size_t *i)
 {

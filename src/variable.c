@@ -6,14 +6,12 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 12:44:55 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 23:21:37 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:59:14 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "hash.h"
 #include "libft.h"
-#include "minishell.h"
+#include "environment.h"
 
 char			*get_value(t_hashtable *env, const char *key)
 {

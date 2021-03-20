@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.h                                         :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 22:57:42 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 00:07:02 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 09:00:52 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMANDS_H
-# define COMMANDS_H
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-# include "hash.h"
 # include "minishell.h"
 
 int ft_unset(char **argv, t_hashtable *env);

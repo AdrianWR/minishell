@@ -6,13 +6,12 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:37:39 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/20 08:36:57 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 09:04:28 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "minishell.h"
-#include "token.h"
+#include "free.h"
+#include "environment.h"
 
 static void	free_process(t_process **process)
 {

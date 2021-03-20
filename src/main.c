@@ -6,16 +6,13 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:14:00 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:39:04 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:56:30 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash.h"
-#include "libft.h"
 #include "minishell.h"
 #include "errcode.h"
-#include "commands.h"
-#include <unistd.h>
+#include "environment.h"
 
 t_session			*g_session;
 

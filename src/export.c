@@ -6,13 +6,13 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 00:11:02 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:36:41 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:55:36 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "errcode.h"
 #include "minishell.h"
+#include "environment.h"
 
 #define MAX_STRING_SIZE 64
 

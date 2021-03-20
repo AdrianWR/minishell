@@ -6,14 +6,13 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:50 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/18 00:19:52 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:58:18 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
-#include <unistd.h>
-#include "libft.h"
 #include "minishell.h"
+#include "environment.h"
 
 void	sighandler_prompt(int signum)
 {

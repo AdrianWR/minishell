@@ -6,22 +6,16 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:34:31 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 09:04:44 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include "hash.h"
-#include "commands.h"
-#include "libft.h"
-#include "minishell.h"
-#include "errcode.h"
-#include "token.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include <signal.h>
+#include "free.h"
+#include "errcode.h"
+#include "minishell.h"
+#include "environment.h"
+#include "get_next_line.h"
 
 void		prompt(t_hashtable *env)
 {

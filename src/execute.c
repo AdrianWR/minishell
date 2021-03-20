@@ -6,22 +6,21 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:36:28 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 09:07:07 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <signal.h>
 #include <fcntl.h>
-#include "commands.h"
+#include "builtins.h"
 #include "minishell.h"
 #include "libft.h"
 #include "errcode.h"
-#include "job.h"
+#include "environment.h"
+#include "free.h"
 
 /*
 ** Use environment path and argv to make

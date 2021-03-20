@@ -6,14 +6,15 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 22:16:23 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:35:29 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:51:56 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "process.h"
-#include "commands.h"
+#include "builtins.h"
 #include "errcode.h"
+#include "environment.h"
 
 int		select_builtin(t_process *p, t_session *s, int out, char **n)
 {

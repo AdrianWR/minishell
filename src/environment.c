@@ -6,14 +6,12 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 23:13:03 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:55:03 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "hash.h"
 #include "libft.h"
-#include "minishell.h"
+#include "environment.h"
 
 #define HT_SIZE_ENV 1031
 
