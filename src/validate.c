@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 21:35:17 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 08:24:57 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 14:42:33 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int	validate_tokens(t_token *tk, char **note)
 	status = 0;
 	while (tk)
 	{
-		if ((tk->type != T_WORD && tk->next && tk->next->type != T_WORD) ||
-			(tk->type != T_WORD && !tk->next))
+		if (tk->type != T_WORD && (!tk->next || tk->next->type != T_WORD))
 		{
 			if (tk->next || tk->type != T_SEPARATOR || !i)
 			{
