@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 08:40:25 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:52:43 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 18:00:51 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,36 @@ static char	*get_pwd(void)
 	return (pwd);
 }
 
+static void	pwd_variable(t_hashtable *env, const char *key, char *pwd)
+{
+	char		*tmp;
+	char		*tmp2;
+	t_variable	*v;
+
+	v = ht_get(env, key);
+	if (v)
+	{
+		free(v->value);
+		v->value = pwd;
+	}
+	else
+	{
+		if (!pwd)
+			tmp = ft_strdup(key);
+		else
+		{
+			tmp2 = ft_strjoin(key, "=");
+			tmp = ft_strjoin(tmp2, pwd);
+			free(tmp2);
+		}
+		set_value(env, tmp, false);
+		free(tmp);
+		free(pwd);
+	}
+}
+
 static int	update_pwd(t_hashtable *env, char *old, int errcode)
 {
-	t_variable	*tmp;
 	char		*new;
 
 	if (errcode)
@@ -39,12 +66,8 @@ static int	update_pwd(t_hashtable *env, char *old, int errcode)
 	}
 	if ((new = get_pwd()) == NULL)
 		return (ERRSYS);
-	tmp = ht_get(env, "OLDPWD");
-	free(tmp->value);
-	tmp->value = old;
-	tmp = ht_get(env, "PWD");
-	free(tmp->value);
-	tmp->value = new;
+	pwd_variable(env, "OLDPWD", old);
+	pwd_variable(env, "PWD", new);
 	return (errcode);
 }
 
@@ -55,8 +78,7 @@ int			ft_cd(char **argv, t_hashtable *env, char **note)
 	char	*tmp;
 
 	status = 0;
-	if ((old_pwd = get_pwd()) == NULL)
-		return (ERRSYS);
+	old_pwd = ft_strdup(get_value(env, "PWD"));
 	if (argv[1] == NULL)
 		status = chdir(get_value(env, "HOME"));
 	else if (argv[2] == NULL)
