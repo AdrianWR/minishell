@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/20 08:35:42 by aroque           ###   ########.fr       */
+/*   Created: 2021/03/20 08:40:25 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/20 08:41:19 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash.h"
+#include <unistd.h>
 #include "minishell.h"
 #include "errcode.h"
-#include "libft.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 static char	*get_pwd(void)
 {
@@ -27,25 +24,6 @@ static char	*get_pwd(void)
 		return (NULL);
 	pwd = ft_strdup(cwd);
 	return (pwd);
-}
-
-int			ft_pwd(char **argv, int fd, char **note)
-{
-	int		status;
-	char	*pwd;
-
-	status = 0;
-	if (argv[1] != NULL)
-	{
-		*note = ft_strdup("pwd: ");
-		status = ETMARGS;
-	}
-	pwd = get_pwd();
-	if (pwd == NULL)
-		return (ERRSYS);
-	ft_putendl_fd(pwd, fd);
-	free(pwd);
-	return (status);
 }
 
 static int	update_pwd(t_hashtable *env, char *old, int errcode)
@@ -95,11 +73,4 @@ int			ft_cd(char **argv, t_hashtable *env, char **note)
 		status = ENOFDI;
 	}
 	return (update_pwd(env, old_pwd, status));
-}
-
-int			ft_exit(t_session *session)
-{
-	ft_putendl_fd("exit", STDOUT_FILENO);
-	free_shell(session);
-	exit(EXIT_SUCCESS);
 }
