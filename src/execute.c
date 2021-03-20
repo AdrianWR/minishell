@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 09:07:07 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 15:07:27 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	execute(t_process *p, t_session *session)
 		r = execve(pathtotry, p->argv, session->child_envp);
 		free(pathtotry);
 	}
+	if (r == -1 && !path)
+		r = error_message(ENOFDI, p->command);
 	if (r == -1)
 		r = error_message(ECMDNF, p->command);
 	freemat(session->child_envp);

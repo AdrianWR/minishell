@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 09:18:25 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 15:26:01 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,25 @@
 #include "environment.h"
 #include "get_next_line.h"
 
+static char	*get_current_pwd(void)
+{
+	char	cwd[4096 + 1];
+	char	*pwd;
+
+	pwd = NULL;
+	if (getcwd(cwd, 4096) == NULL)
+		return (NULL);
+	pwd = ft_strdup(ft_strrchr(cwd, '/') + 1);
+	return (pwd);
+}
+
 void		prompt(t_hashtable *env)
 {
 	char *pwd;
 	char *user;
 	char *host;
 
-	pwd = ft_strrchr(get_value(env, "PWD"), '/') + 1;
+	pwd = get_current_pwd();
 	user = get_value(env, "USERNAME");
 	if (!user)
 		user = get_value(env, "USER");
@@ -38,6 +50,7 @@ void		prompt(t_hashtable *env)
 	ft_putchar_fd(' ', STDOUT_FILENO);
 	ft_putstr_fd(pwd, STDOUT_FILENO);
 	ft_putstr_fd("]$ ", STDOUT_FILENO);
+	free(pwd);
 }
 
 void		eof_exit(char *input, t_session *session)

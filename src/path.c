@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 22:41:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 22:19:48 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 15:37:37 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@ int		pathslen(char c, const char *path)
 {
 	int len;
 
+	if (c == '/' || c == '~' || c == '.')
+		return (1);
+	if (!path)
+		return (0);
 	len = 0;
 	if (*path)
 		len++;
 	while (*path)
 		if (*path++ == ':')
 			len++;
-	if (c == '/' || c == '~' || c == '.')
-		len = 1;
 	return (len);
 }
 
@@ -71,7 +73,7 @@ char	*setpath(const char *path, const char *argv, int i)
 	int		start;
 	int		end;
 
-	if (*argv == '/' || *argv == '~' || *argv == '.')
+	if (*argv == '/' || *argv == '.')
 		return (abspath(argv));
 	end = 0;
 	start = 0;
