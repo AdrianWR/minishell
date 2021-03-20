@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 17:33:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 08:38:52 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:34:31 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@ void		prompt(t_hashtable *env)
 	ft_putstr_fd(" $ ", STDOUT_FILENO);
 }
 
-void		eof_exit(char *input, t_shell *shell)
+void		eof_exit(char *input, t_session *session)
 {
-	ht_destroy(shell->env, free_variable);
+	ht_destroy(session->env, free_variable);
 	free(input);
-	free(shell);
+	free(session);
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	exit(EXIT_SUCCESS);
 }
 
-int			token_error(t_token *tokens, t_shell *shell)
+int			token_error(t_token *tokens, t_session *session)
 {
 	int		status;
 	char	*note;
@@ -51,7 +51,7 @@ int			token_error(t_token *tokens, t_shell *shell)
 		free_tokens(&tokens);
 		status = error_message(status, note);
 		free(note);
-		set_exit_status(shell->env, status);
+		set_exit_status(session->env, status);
 	}
 	return (status);
 }
@@ -63,7 +63,7 @@ int			token_error(t_token *tokens, t_shell *shell)
 ** an 'exit' command or a SIGINT.
 */
 
-void		repl(t_shell *shell)
+void		repl(t_session *session)
 {
 	char	*input;
 	t_token	*tokens;
@@ -72,17 +72,17 @@ void		repl(t_shell *shell)
 	{
 		signal(SIGINT, sighandler_prompt);
 		signal(SIGQUIT, sighandler_prompt);
-		prompt(shell->env);
+		prompt(session->env);
 		if (!(get_next_line(STDIN_FILENO, &input)))
-			eof_exit(input, shell);
-		tokens = tokenizer(input, shell->env);
+			eof_exit(input, session);
+		tokens = tokenizer(input, session->env);
 		free(input);
-		if (!(token_error(tokens, shell)))
+		if (!(token_error(tokens, session)))
 		{
-			shell->jobs = parser(tokens);
+			session->jobs = parser(tokens);
 			free_tokens(&tokens);
-			execute_all(shell);
-			free_jobs(&(shell->jobs));
+			execute_all(session);
+			free_jobs(&(session->jobs));
 		}
 	}
 }

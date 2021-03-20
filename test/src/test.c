@@ -20,9 +20,9 @@
 #include "process.h"
 #include "job.h"
 
-t_shell		*shell;
+t_session		*session;
 t_hashtable	*htenv;
-t_shell		*g_shell;
+t_session		*g_shell;
 
 void			setup(void)
 {
@@ -36,7 +36,7 @@ void			setup(void)
 		"CAKE=strawberry"
 	};
 	htenv = load_env(envp);
-	shell = ft_calloc(1, sizeof(*shell));
+	shell = ft_calloc(1, sizeof(*session));
 }
 
 void	teardown(void)

@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:14:00 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 09:40:01 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:39:04 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 #include "commands.h"
 #include <unistd.h>
 
-t_shell			*g_shell;
+t_session			*g_session;
 
 int				main(int argc, char *argv[], char *envp[])
 {
-	t_shell	*shell;
+	t_session	*session;
 
 	(void)argv;
-	if (!(shell = ft_calloc(1, sizeof(*shell))))
+	if (!(session = ft_calloc(1, sizeof(*session))))
 		message_and_exit(ERRSYS, NULL);
-	g_shell = shell;
+	g_session = session;
 	if (argc != 1)
 		message_and_exit(EUSAGE, NULL);
-	shell->env = load_env(envp);
-	repl(shell);
+	session->env = load_env(envp);
+	repl(session);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:36:27 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/19 08:33:05 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:35:42 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ int			ft_cd(char **argv, t_hashtable *env, char **note)
 	return (update_pwd(env, old_pwd, status));
 }
 
-int			ft_exit(t_shell *shell)
+int			ft_exit(t_session *session)
 {
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	free_shell(shell);
+	free_shell(session);
 	exit(EXIT_SUCCESS);
 }

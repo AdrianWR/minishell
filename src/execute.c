@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:03:34 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 08:32:24 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:36:28 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 ** paths of a program to try to execute
 */
 
-void	execute(t_process *p, t_shell *shell)
+void	execute(t_process *p, t_session *session)
 {
 	char	*pathtotry;
 	char	*path;
@@ -38,22 +38,22 @@ void	execute(t_process *p, t_shell *shell)
 
 	i = 0;
 	r = -1;
-	path = get_value(shell->env, "PATH");
+	path = get_value(session->env, "PATH");
 	len = pathslen(p->argv[0][0], path);
 	while (r < 0 && len--)
 	{
 		pathtotry = setpath(path, p->command, i++);
-		r = execve(pathtotry, p->argv, shell->child_envp);
+		r = execve(pathtotry, p->argv, session->child_envp);
 		free(pathtotry);
 	}
 	if (r == -1)
 		r = error_message(ECMDNF, p->command);
-	freemat(shell->child_envp);
-	free_shell(shell);
+	freemat(session->child_envp);
+	free_shell(session);
 	exit(r);
 }
 
-int		execute_process(t_process *p, t_shell *s, int in, int out)
+int		execute_process(t_process *p, t_session *s, int in, int out)
 {
 	pid_t	pid;
 	int		status;
@@ -82,7 +82,7 @@ int		execute_process(t_process *p, t_shell *s, int in, int out)
 	return (status);
 }
 
-int		execute_job(t_process *process, t_shell *shell)
+int		execute_job(t_process *process, t_session *session)
 {
 	int	status;
 	int in_fd;
@@ -96,34 +96,34 @@ int		execute_job(t_process *process, t_shell *shell)
 		if (pipe(fd) < 0)
 			return (ERRSYS);
 		out_fd = fd[1];
-		status = execute_process(process, shell, in_fd, out_fd);
+		status = execute_process(process, session, in_fd, out_fd);
 		close(out_fd);
 		if (in_fd != 0)
 			close(in_fd);
 		in_fd = fd[0];
 		process = process->next;
 	}
-	status = execute_process(process, shell, in_fd, STDOUT_FILENO);
+	status = execute_process(process, session, in_fd, STDOUT_FILENO);
 	return (status);
 }
 
-int		execute_all(t_shell *shell)
+int		execute_all(t_session *session)
 {
 	int		status;
 	int		fd[2];
 	t_job	*job;
 
 	status = 0;
-	job = shell->jobs;
+	job = session->jobs;
 	signal(SIGINT, sighandler_process);
 	signal(SIGQUIT, sighandler_process);
 	while (job && job->process_list)
 	{
 		fd[0] = dup(0);
 		fd[1] = dup(1);
-		shell->envp = unload_env(shell->env, &(shell->envp_size));
-		status = execute_job(job->process_list, shell);
-		freemat(shell->envp);
+		session->envp = unload_env(session->env, &(session->envp_size));
+		status = execute_job(job->process_list, session);
+		freemat(session->envp);
 		dup2(fd[0], 0);
 		dup2(fd[1], 1);
 		close(fd[0]);

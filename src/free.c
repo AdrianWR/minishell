@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 02:37:39 by gariadno          #+#    #+#             */
-/*   Updated: 2021/03/17 22:35:50 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:36:57 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void		free_tokens(t_token **tokens)
 	*tokens = NULL;
 }
 
-void		free_shell(t_shell *shell)
+void		free_shell(t_session *session)
 {
-	ht_destroy(shell->env, free_variable);
-	free_jobs(&(shell->jobs));
-	freemat(shell->envp);
-	free(shell);
+	ht_destroy(session->env, free_variable);
+	free_jobs(&(session->jobs));
+	freemat(session->envp);
+	free(session);
 }

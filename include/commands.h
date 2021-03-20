@@ -18,10 +18,10 @@
 
 int ft_unset(char **argv, t_hashtable *env);
 int	ft_env(char **envp, int out);
-int	ft_export(t_process *process, t_shell *shell, int out, char **note);
+int	ft_export(t_process *process, t_session *session, int out, char **note);
 int	ft_echo(char **argv, int out);
 int	ft_pwd(char **argv, int out, char **note);
 int	ft_cd(char **argv, t_hashtable *env, char **note);
-int	ft_exit(t_shell *shell);
+int	ft_exit(t_session *session);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 00:11:02 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 08:24:23 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:36:41 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	export_raw(char **envp, int size, int out)
 	}
 }
 
-static int	export_variable(t_process *p, t_shell *s, char **note)
+static int	export_variable(t_process *p, t_session *s, char **note)
 {
 	int			status;
 	unsigned	i;
@@ -74,16 +74,16 @@ static int	export_variable(t_process *p, t_shell *s, char **note)
 	return (status);
 }
 
-int			ft_export(t_process *p, t_shell *shell, int out, char **note)
+int			ft_export(t_process *p, t_session *session, int out, char **note)
 {
 	int status;
 
 	status = 0;
 	if (!p->argv[1])
 	{
-		export_raw(shell->envp, shell->envp_size, out);
+		export_raw(session->envp, session->envp_size, out);
 		return (0);
 	}
-	status = export_variable(p, shell, note);
+	status = export_variable(p, session, note);
 	return (status);
 }
