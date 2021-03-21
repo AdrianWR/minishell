@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 14:14:20 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 20:39:00 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,13 @@ MU_TEST(test_lexer)
 	lexer(&tk, htenv);
 	mu_assert_int_eq(T_WORD, tk.type);
 	mu_assert_string_eq("gariadno, this cake has strawberry flavor.", tk.value);
+	free(tk.value);
+
+	tk.value = ft_strdup("\"\\$USER\"");
+	tk.type = T_UNDEFINED;
+	lexer(&tk, htenv);
+	mu_assert_int_eq(T_WORD, tk.type);
+	mu_assert_string_eq("$USER", tk.value);
 	free(tk.value);
 
 	tk.value = ft_strdup("\"This cake has $NOTHING flavor.\"");

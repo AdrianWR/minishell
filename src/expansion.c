@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 08:45:43 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:54:50 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 21:56:42 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ static void	replace_env(char **str, t_hashtable *env, size_t *i)
 	free(key);
 }
 
+static int	literal_variable(char **s, int i)
+{
+	char *str;
+	str = *s;
+	ft_memmove(&str[i], &str[i + 1], ft_strlen(str) - i);
+	return (2);
+}
+
 int			expand_env(char **str, t_hashtable *env)
 {
 	size_t	i;
@@ -45,7 +53,9 @@ int			expand_env(char **str, t_hashtable *env)
 	i = 0;
 	while ((*str)[i])
 	{
-		if ((*str)[i] == '$')
+		if ((*str)[i] == '\\' && (*str)[i + 1] == '$')
+			i += literal_variable(str, i);
+		else if ((*str)[i] == '$')
 			replace_env(str, env, &i);
 		else if ((*str)[i] == '~')
 			ft_strreplace(str, "~", get_value(env, "HOME"));

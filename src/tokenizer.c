@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 14:11:31 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/19 08:44:42 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 21:36:55 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,20 @@
 
 static void		tokenize_quoted(t_tkdata *tk, char quote)
 {
-	tk->buffer[tk->j++] = tk->input[tk->i];
-	if (quote == C_DQUOTE && tk->input[tk->i] == C_ESCAPE)
-		tk->buffer[tk->j++] = tk->input[++tk->i];
+	if (quote == C_DQUOTE && tk->input[tk->i] == C_ESCAPE
+		&& tk->input[tk->i + 1] == '?')
+	{
+		tk->i++;
+		tk->buffer[tk->j++] = tk->input[tk->i];
+		tk->type = T_WORD;
+	}
 	else if (tk->input[tk->i] == quote)
+	{
+		tk->buffer[tk->j++] = tk->input[tk->i];
 		tk->state = S_GENERAL;
+	}
+	else
+		tk->buffer[tk->j++] = tk->input[tk->i];
 }
 
 static void		special_token(t_tkdata *tk, t_token **tokens)
