@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   free.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 22:35:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/02/04 22:37:21 by aroque           ###   ########.fr       */
+/*   Created: 2021/03/20 09:02:26 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/20 09:07:35 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef FREE_H
+# define FREE_H
 
-void			ft_env(t_shell *shell)
-{
-	unsigned	i;
+# include "minishell.h"
 
-	if (!shell->env)
-		return ;
-	i = 0;
-	while (i < shell->env->size)
-	{
-		if (shell->env->array[i])
-		{
-			ft_putstr_fd(shell->env->array[i]->key, shell->fd);
-			ft_putchar_fd('=', shell->fd);
-			ft_putendl_fd((char *)shell->env->array[i]->value, shell->fd);
-		}
-		i++;
-	}
-}
+void			freemat(char **mat);
+void			free_array(void **array);
+void			free_buffer(char **buffer);
+void			free_variable(void *v);
+void			free_shell(t_session *session);
+
+#endif

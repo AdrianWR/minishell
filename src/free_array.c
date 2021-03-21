@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   status.c                                           :+:      :+:    :+:   */
+/*   free_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/14 14:58:03 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 08:58:42 by aroque           ###   ########.fr       */
+/*   Created: 2021/03/17 22:33:42 by aroque            #+#    #+#             */
+/*   Updated: 2021/03/17 22:34:48 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "environment.h"
+#include <stdlib.h>
 
-void	set_exit_status(t_hashtable *env, int status)
+void	free_buffer(char **buffer)
 {
-	t_variable *var;
+	int	i;
 
-	var = ht_get(env, "?");
-	free(var->value);
-	var->value = ft_itoa(status);
+	i = 0;
+	while (buffer[i])
+		free(buffer[i++]);
+}
+
+void	freemat(char **mat)
+{
+	free_buffer(mat);
+	free(mat);
 }

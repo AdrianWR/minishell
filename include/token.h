@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 14:42:49 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 01:31:21 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:46:49 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct		s_tkdata
 	const char		*input;
 	t_state			state;
 	t_hashtable		*env;
+	t_type			type;
 	char			buffer[TOKEN_BUFFER_SIZE];
 }					t_tkdata;
 
@@ -68,6 +69,9 @@ typedef struct		s_token
 
 t_token				*tokenizer(const char *input, t_hashtable *env);
 int					lexer(t_token *token, t_hashtable *env);
-void				free_token(void *token);
+void				free_tokens(t_token **tokens);
+int					validate_tokens(t_token *token, char **note);
+void				get_token(t_tkdata *tk, t_token **tokens);
+int					expand_env(char **str, t_hashtable *env);
 
 #endif

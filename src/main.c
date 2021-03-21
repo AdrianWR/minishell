@@ -6,32 +6,27 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:14:00 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/16 03:30:08 by gariadno         ###   ########.fr       */
+/*   Updated: 2021/03/20 08:56:30 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash.h"
-#include "libft.h"
 #include "minishell.h"
 #include "errcode.h"
-#include "commands.h"
-#include <unistd.h>
+#include "environment.h"
 
-t_shell			*g_shell;
+t_session			*g_session;
 
 int				main(int argc, char *argv[], char *envp[])
 {
-	t_shell	*shell;
+	t_session	*session;
 
 	(void)argv;
-	if (!(shell = ft_calloc(1, sizeof(*shell))))
-		message_and_exit(ERRSYS, EXIT_FAILURE, NULL);
-	g_shell = shell;
+	if (!(session = ft_calloc(1, sizeof(*session))))
+		message_and_exit(ERRSYS, NULL);
+	g_session = session;
 	if (argc != 1)
-		message_and_exit(EUSAGE, EXIT_FAILURE, NULL);
-	shell->env = load_env(envp);
-	shell->fd = STDOUT_FILENO;
-	repl(shell);
-	free_shell(shell);
+		message_and_exit(EUSAGE, NULL);
+	session->env = load_env(envp);
+	repl(session);
 	return (EXIT_SUCCESS);
 }

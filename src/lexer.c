@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:44:50 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 14:36:57 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/19 08:47:52 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,47 +17,7 @@
 #include "minishell.h"
 #include <stdbool.h>
 
-static void	replace_env(char **str, t_hashtable *env, size_t *i)
-{
-	size_t	j;
-	char	*key;
-	char	*value;
-
-	j = 0;
-	if ((*str)[1] == '?')
-		j++;
-	else
-	{
-		while (ft_isalnum_or_uscore((*str)[*i + j + 1]))
-			j++;
-	}
-	key = ft_substr(*str, *i, j + 1);
-	value = get_value(env, key + 1);
-	if (!value)
-		value = "";
-	*str = ft_strreplace(str, key, value);
-	*i += ft_strlen(value);
-	j = 0;
-	free(key);
-}
-
-int			expand_env(char **str, t_hashtable *env)
-{
-	size_t	i;
-
-	if (env == NULL)
-		return (0);
-	i = 0;
-	while ((*str)[i])
-	{
-		if ((*str)[i] == '$')
-			replace_env(str, env, &i);
-		i++;
-	}
-	return (0);
-}
-
-static int	lex_squote(t_token *token)
+static int		lex_squote(t_token *token)
 {
 	size_t	len;
 	char	*tmp;
@@ -72,7 +32,7 @@ static int	lex_squote(t_token *token)
 	return (0);
 }
 
-static int	lex_dquote(t_token *token, t_hashtable *env)
+static int		lex_dquote(t_token *token, t_hashtable *env)
 {
 	size_t	len;
 	char	*tmp;
@@ -88,20 +48,25 @@ static int	lex_dquote(t_token *token, t_hashtable *env)
 	return (0);
 }
 
-int			lexer(t_token *token, t_hashtable *env)
+static bool		special_token(t_token *token, const char *str)
+{
+	return (ft_streq(token->value, str) && token->type == T_UNDEFINED);
+}
+
+int				lexer(t_token *token, t_hashtable *env)
 {
 	int		err;
 
 	err = 0;
-	if (ft_streq(token->value, ">"))
+	if (special_token(token, ">"))
 		token->type = T_OREDIRECT;
-	else if (ft_streq(token->value, ">>"))
+	else if (special_token(token, ">>"))
 		token->type = T_OAPPEND;
-	else if (ft_streq(token->value, "<"))
+	else if (special_token(token, "<"))
 		token->type = T_IREDIRECT;
-	else if (ft_streq(token->value, ";"))
+	else if (special_token(token, ";"))
 		token->type = T_SEPARATOR;
-	else if (ft_streq(token->value, "|"))
+	else if (special_token(token, "|"))
 		token->type = T_PIPE;
 	else if (token->value[0] == '\'')
 		err = lex_squote(token);
@@ -109,7 +74,8 @@ int			lexer(t_token *token, t_hashtable *env)
 		err = lex_dquote(token, env);
 	else
 	{
-		expand_env(&token->value, env);
+		if (!token->type)
+			expand_env(&token->value, env);
 		token->type = T_WORD;
 	}
 	return (err);

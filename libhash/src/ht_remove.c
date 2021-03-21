@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 21:18:05 by aroque            #+#    #+#             */
-/*   Updated: 2021/01/05 21:36:29 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/15 22:38:20 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ void		ht_remove(t_hashtable *ht, const char *key, void (*del)(void*))
 
 	i = hash(key, ht->size);
 	tmp = ht->array[i];
-	while (tmp != NULL)
+	while (ht->array[i] != NULL)
 	{
-		if (ft_strcmp(tmp->key, key) == 0)
-			del_node(&tmp, key, del);
+		if (ft_strcmp(ht->array[i]->key, key) == 0)
+			del_node(&(ht->array[i]), key, del);
+		else
+			ht->array[i] = ht->array[i]->next;
 	}
 }

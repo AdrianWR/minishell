@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 20:27:24 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 12:42:04 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 20:39:00 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,31 @@
 #include "token.h"
 #include "process.h"
 #include "job.h"
+#include "environment.h"
 
-t_shell		*shell;
+t_session		*g_session;
+t_session		*session;
 t_hashtable	*htenv;
-t_shell		*g_shell;
 
 void			setup(void)
 {
 	//htenv = ht_create(128);
 	//ht_set(htenv, "USER", ft_strdup("gariadno"));
-	//ht_set(htenv, "SHELL", ft_strdup("minishell"));
+	//ht_set(htenv, "SHELL", ft_strdup("minisession"));
 	//ht_set(htenv, "CAKE", ft_strdup("strawberry"));
 	char *envp[128] = {
 		"USER=gariadno",
-		"SHELL=minishell",
+		"SHELL=minisession",
 		"CAKE=strawberry"
 	};
 	htenv = load_env(envp);
-	shell = ft_calloc(1, sizeof(*shell));
+	session = ft_calloc(1, sizeof(*session));
 }
 
 void	teardown(void)
 {
 	ht_free(htenv, free);
-	free(shell);
+	free(session);
 }
 
 MU_TEST(test_ft_strspn)
@@ -127,30 +128,43 @@ MU_TEST(test_lexer)
 	t_token	tk;
 
 	tk.value = ">>";
+	tk.type = T_UNDEFINED;
 	lexer(&tk, htenv);
 	mu_assert_int_eq(T_OAPPEND, tk.type);
 
 	tk.value = ">";
+	tk.type = T_UNDEFINED;
 	lexer(&tk, htenv);
 	mu_assert_int_eq(T_OREDIRECT, tk.type);
 
 	tk.value = "<";
+	tk.type = T_UNDEFINED;
 	lexer(&tk, htenv);
 	mu_assert_int_eq(T_IREDIRECT, tk.type);
 
 	tk.value = ft_strdup("$CAKE");
+	tk.type = T_UNDEFINED;
 	lexer(&tk, htenv);
 	mu_assert_int_eq(T_WORD, tk.type);
 	mu_assert_string_eq("strawberry", tk.value);
 	free(tk.value);
 
 	tk.value = ft_strdup("\"$USER, this cake has $CAKE flavor.\"");
+	tk.type = T_UNDEFINED;
 	lexer(&tk, htenv);
 	mu_assert_int_eq(T_WORD, tk.type);
 	mu_assert_string_eq("gariadno, this cake has strawberry flavor.", tk.value);
 	free(tk.value);
 
+	tk.value = ft_strdup("\"\\$USER\"");
+	tk.type = T_UNDEFINED;
+	lexer(&tk, htenv);
+	mu_assert_int_eq(T_WORD, tk.type);
+	mu_assert_string_eq("$USER", tk.value);
+	free(tk.value);
+
 	tk.value = ft_strdup("\"This cake has $NOTHING flavor.\"");
+	tk.type = T_UNDEFINED;
 	lexer(&tk, htenv);
 	mu_assert_int_eq(T_WORD, tk.type);
 	mu_assert_string_eq("This cake has  flavor.", tk.value);
@@ -162,13 +176,14 @@ MU_TEST(test_parser)
 	t_job		*jobs;
 	t_token		*tokens;
 	t_process	*parsed;
-	char		str[] = "echo >alimento 'my command' is >>appendplease  cool  < fruta < abobora | cat something > here ; a new job";
+	char		str[] = "echo >alimento 'my command' is >>appendplease  cool  < fruta < abobora | cat something > here ; VARIABLE=something a new job";
 	int trunc_flags = O_WRONLY | O_CREAT | O_TRUNC;
 	int append_flags = O_WRONLY | O_CREAT | O_APPEND;
 
 	tokens = tokenizer(str, NULL);
 	jobs = parser(tokens);
 	parsed = jobs->process_list;
+	mu_assert_string_eq("echo", parsed->command);
 	mu_assert_string_eq("echo", parsed->argv[0]);
 	mu_assert_string_eq("my command", parsed->argv[1]);
 	mu_assert_string_eq("is", parsed->argv[2]);
@@ -189,15 +204,16 @@ MU_TEST(test_parser)
 	mu_assert_string_eq("a", parsed->argv[0]);
 	mu_assert_string_eq("new", parsed->argv[1]);
 	mu_assert_string_eq("job", parsed->argv[2]);
+	mu_assert_string_eq("VARIABLE=something", parsed->local_env[0]);
 }
 
 MU_TEST(test_unload_env)
 {
 	char **envp;
 
-	envp = unload_env(htenv);
+	envp = unload_env(htenv, NULL);
 	mu_assert_string_eq("CAKE=strawberry", envp[0]);
-	mu_assert_string_eq("SHELL=minishell", envp[1]);
+	mu_assert_string_eq("SHELL=minisession", envp[1]);
 	mu_assert_string_eq("USER=gariadno", envp[2]);
 	mu_assert(envp[3] == NULL, "Error: Last env not null.");
 }

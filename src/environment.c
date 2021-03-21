@@ -6,73 +6,46 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 11:45:19 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/14 14:24:49 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 08:55:03 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "hash.h"
 #include "libft.h"
-#include "minishell.h"
+#include "environment.h"
 
 #define HT_SIZE_ENV 1031
-
-char			*get_value(t_hashtable *env, const char *key)
-{
-	void		*value;
-
-	value = ht_get(env, key);
-	return (value ? ((t_variable *)value)->value : ft_strdup(""));
-}
-
-char			*set_value(t_hashtable *env, const char *key,
-					char *value, bool is_env)
-{
-	t_variable	*variable;
-
-	if (!(variable = malloc(sizeof(*variable))))
-		return (NULL);
-	variable->value = value;
-	variable->env = is_env;
-	ht_set(env, key, variable);
-	return (value);
-}
 
 t_hashtable		*load_env(char *envp[])
 {
 	t_hashtable	*env;
-	char		*tmp;
-	char		*key;
-	char		*value;
 
 	env = ht_create(HT_SIZE_ENV);
 	while (*envp)
-	{
-		tmp = ft_strchr(*envp, '=');
-		key = ft_substr(*envp, 0, tmp - *envp);
-		value = ft_strdup(tmp + 1);
-		set_value(env, key, value, true);
-		free(key);
-		envp++;
-	}
-	set_value(env, "?", ft_strdup("0"), false);
+		set_value(env, *envp++, true);
+	set_value(env, "?=0", false);
 	return (env);
 }
 
-static char		*node_to_envp(t_htlist *node)
+char			*node_to_envp(t_htlist *node)
 {
 	char		*str;
 	char		*tmp;
 
 	if (!node)
 		return (NULL);
-	tmp = ft_strjoin(node->key, "=");
-	str = ft_strjoin(tmp, ((t_variable *)node->value)->value);
-	free(tmp);
+	str = ((t_variable *)node->value)->value;
+	if (str)
+	{
+		tmp = ft_strjoin("=", str);
+		str = ft_strjoin(node->key, tmp);
+		free(tmp);
+	}
+	else
+		str = ft_strdup(node->key);
 	return (str);
 }
 
-char			**unload_env(t_hashtable *env)
+char			**unload_env(t_hashtable *env, size_t *envp_size)
 {
 	unsigned	i;
 	unsigned	j;
@@ -86,14 +59,42 @@ char			**unload_env(t_hashtable *env)
 	while (i < env->size && j < env->storage)
 	{
 		tmp = env->array[i];
-		while (tmp && j < env->storage)
+		while (tmp && j < env->storage && ((t_variable *)(tmp->value))->env)
 		{
-			if (((t_variable *)(tmp->value))->env)
-				envp[j++] = node_to_envp(tmp);
+			envp[j++] = node_to_envp(tmp);
 			tmp = tmp->next;
 		}
 		i++;
 	}
-	envp[env->storage] = NULL;
+	envp[j] = NULL;
+	if (envp_size)
+		*envp_size = j - 1;
 	return (envp);
+}
+
+char			**local_envp(char **local_envp, char **envp, size_t envp_size)
+{
+	unsigned	i;
+	unsigned	j;
+	char		**new_envp;
+
+	i = 0;
+	j = 0;
+	while (local_envp[i])
+		i++;
+	i += envp_size + 1;
+	if (!(new_envp = ft_calloc(i + 1, sizeof(*new_envp))))
+		return (NULL);
+	while (envp[j])
+	{
+		new_envp[j] = ft_strdup(envp[j]);
+		j++;
+	}
+	j = 0;
+	while (local_envp[j])
+	{
+		new_envp[envp_size + j] = ft_strdup(local_envp[j]);
+		j++;
+	}
+	return (new_envp);
 }

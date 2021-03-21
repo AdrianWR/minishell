@@ -6,7 +6,7 @@
 /*   By: gariadno <gariadno@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 22:41:28 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/11 23:01:01 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 15:37:37 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@ int		pathslen(char c, const char *path)
 {
 	int len;
 
+	if (c == '/' || c == '~' || c == '.')
+		return (1);
+	if (!path)
+		return (0);
 	len = 0;
 	if (*path)
 		len++;
 	while (*path)
 		if (*path++ == ':')
 			len++;
-	if (c == '/' || c == '~' || c == '.')
-		len = 1;
 	return (len);
 }
 
@@ -44,14 +46,16 @@ char	*abspath(const char *argv)
 	{
 		if (getcwd(cwd, 4096) == NULL)
 			return (NULL);
-		abspath = malloc((ft_strlen(cwd) + ft_strlen(argv) + 1) * sizeof(char));
+		abspath = malloc((ft_strlen(cwd) + ft_strlen(argv) + 2) * sizeof(char));
 		if (!abspath)
 			return (NULL);
 		i = -1;
 		while (cwd[++i])
 			abspath[i] = cwd[i];
+		abspath[i++] = '/';
 		while (*argv)
 			abspath[i++] = *argv++;
+		abspath[i] = '\0';
 		return (abspath);
 	}
 	return (ft_strdup(argv));
@@ -69,7 +73,7 @@ char	*setpath(const char *path, const char *argv, int i)
 	int		start;
 	int		end;
 
-	if (*argv == '/' || *argv == '~' || *argv == '.')
+	if (*argv == '/' || *argv == '.')
 		return (abspath(argv));
 	end = 0;
 	start = 0;

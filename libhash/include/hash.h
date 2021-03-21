@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 15:40:53 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/07 11:38:54 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/16 23:41:38 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ int					ht_set(t_hashtable *ht, const char *key, void *value);
 void				*ht_get(t_hashtable *ht, const void *key);
 void				ht_free(t_hashtable *ht, void (del)(void *));
 void				ht_remove(t_hashtable *h, const char *k, void (*d)(void*));
+void				ht_destroy(t_hashtable *ht, void (*del)(void *));
 
 #endif
