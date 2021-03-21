@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 08:45:43 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 21:56:42 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 21:58:55 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static void	replace_env(char **str, t_hashtable *env, size_t *i)
 
 static int	literal_variable(char **s, int i)
 {
-	char *str;
+	char	*str;
+
 	str = *s;
 	ft_memmove(&str[i], &str[i + 1], ft_strlen(str) - i);
 	return (2);

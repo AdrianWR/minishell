@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 08:41:39 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 19:15:10 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 21:59:14 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static bool	numerical(char *str)
 
 int			ft_exit(t_session *session, char **argv, char **note)
 {
-	int	n;
-	char *tmp;
+	int		n;
+	char	*tmp;
 
 	n = 0;
 	ft_putendl_fd("exit", STDOUT_FILENO);
