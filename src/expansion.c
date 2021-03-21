@@ -6,7 +6,7 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 08:45:43 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/20 21:58:55 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/20 22:17:49 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int			expand_env(char **str, t_hashtable *env)
 	{
 		if ((*str)[i] == '\\' && (*str)[i + 1] == '$')
 			i += literal_variable(str, i);
-		else if ((*str)[i] == '$')
+		else if ((*str)[i] == '$' &&
+			(ft_isalnum_or_uscore((*str)[i + 1]) || (*str)[i + 1] == '?'))
 			replace_env(str, env, &i);
 		else if ((*str)[i] == '~')
 			ft_strreplace(str, "~", get_value(env, "HOME"));
