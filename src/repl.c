@@ -43,6 +43,8 @@ void		prompt(t_hashtable *env)
 	host = get_value(env, "HOSTNAME");
 	if (!host)
 		host = get_value(env, "HOST");
+	if (!host)
+		host = "msh";
 	ft_putchar_fd('[', STDOUT_FILENO);
 	ft_putstr_fd(user, STDOUT_FILENO);
 	ft_putchar_fd('@', STDOUT_FILENO);
