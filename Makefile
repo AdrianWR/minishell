@@ -222,9 +222,6 @@ debug:
 	$(MAKE) BUILD=debug build/debug/bin/$(NAME)
 	gdb ./build/debug/bin/$(NAME)
 
-valgrind: $(NAME)
-	valgrind ./$<
-
 clean:
 	$(RM) -r bin build lib .build-target
 

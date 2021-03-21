@@ -6,14 +6,14 @@
 /*   By: aroque <aroque@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 11:50:29 by aroque            #+#    #+#             */
-/*   Updated: 2021/03/17 00:16:00 by aroque           ###   ########.fr       */
+/*   Updated: 2021/03/21 00:19:46 by aroque           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "get_next_line.h"
 
-static void	ft_strdel(char **str)
+static void		ft_strdel(char **str)
 {
 	if (str)
 	{
